@@ -79,26 +79,20 @@ cd $public_html_session_directory/private/.git/hooks/
 ln -sf ../../scripts/git-pre-commit pre-commit
 ln -sf ../../scripts/git-post-merge post-merge
 
-for p in public private
-do
 cd $public_html_session_directory/private
-last_two_commits=`git reflog|sed 2q|cut -c1-8`
+#last_two_commits=`git reflog|sed 2q|cut -c1-8`
 for d in lec assignments/* tlb/*
 do
+# FIXME This doesn't work
+#	git diff --quiet $last_two_commits -- . && continue
 	cd $public_html_session_directory/private/$d
-	git diff --quiet $last_two_commits -- . && continue
-	if test -x build.sh
-	then
-		</dev/null ./build.sh
-		cd $public_html_session_directory/public/$d
-		</dev/null ./build.sh
-	fi
+	test -x build.sh && </dev/null ./build.sh
+	cd $public_html_session_directory/public/$d
+	test -x build.sh && </dev/null ./build.sh
 	cd $public_html_session_directory/private/$d
-	if test -e Makefile
-	then
-		</dev/null make -j10 -s -C  $public_html_session_directory/private/$d
-		</dev/null make -j10 -s -C  $public_html_session_directory/public/$d
-	done
+	test -e Makefile && </dev/null make -j10 -s 
+	cd $public_html_session_directory/public/$d
+	test -e Makefile && </dev/null make -j10 -s
 done
 
 touch $public_html_session_directory/.build_finished

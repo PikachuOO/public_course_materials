@@ -35,21 +35,21 @@ unsw_session='17s2'
 #
 
 
-#dir = os.path.dirname(os.path.realpath(sys.argv[0]))
-#m = re.search(r'^(.*\b([a-z][a-z]\d{4})(cgi)?\b.*\b(\d\d[sx][12])\b).*', dir)
-#if m:
-#    (public_html_session_directory, course_account, unsw_session) = (m.group(1), m.group(2),  m.group(4))
-#else:
-#    m = re.search(r'^(.*\b([a-z][a-z]\d{4})(cgi)?(/public_html)?)\b.*', dir)
-#    if m:
-#        (public_html_session_directory, course_account, unsw_session) = (m.group(1), m.group(2), unsw_session)
-#
-#home_mount_pathname = re.sub('/tmp_amd/\w+/export/\w+/\d/(\w+)', r'/home/\1', public_html_session_directory)
-#web_mount_pathname = re.sub('/tmp_amd/\w+/export/\w+/\d/(\w+)/public_html', r'/web/\1', public_html_session_directory)
-#if os.path.exists(home_mount_pathname):
-#    public_html_session_directory = home_mount_pathname
-#elif os.path.exists(web_mount_pathname):
-#    public_html_session_directory = web_mount_pathname
+dir = os.path.dirname(os.path.realpath(sys.argv[0]))
+m = re.search(r'^(.*\b([a-z][a-z]\d{4})(cgi)?\b.*\b(\d\d[sx][12])\b).*', dir)
+if m:
+    (public_html_session_directory, course_account, unsw_session) = (m.group(1), m.group(2),  m.group(4))
+else:
+    m = re.search(r'^(.*\b([a-z][a-z]\d{4})(cgi)?(/public_html)?)\b.*', dir)
+    if m:
+        (public_html_session_directory, course_account, unsw_session) = (m.group(1), m.group(2), unsw_session)
+
+home_mount_pathname = re.sub('/tmp_amd/\w+/export/\w+/\d/(\w+)', r'/home/\1', public_html_session_directory)
+web_mount_pathname = re.sub('/tmp_amd/\w+/export/\w+/\d/(\w+)/public_html', r'/web/\1', public_html_session_directory)
+if os.path.exists(home_mount_pathname):
+    public_html_session_directory = home_mount_pathname
+elif os.path.exists(web_mount_pathname):
+    public_html_session_directory = web_mount_pathname
 
 course_code = course_account
 for (short,full) in {'cs':'COMP', 'en':'ENGG', 'se':'SENG', 'bi':'BINF'}.items():
@@ -82,7 +82,7 @@ variables = {
     'course_codes' : [course_code, postgraduate_course_code], # including aliases
     'tlb_directory' : os.path.join(public_html_session_directory, 'tlb'),
     'lecture_directory' : os.path.join(public_html_session_directory, 'lec'),
-    'testing_results_file' : os.path.join(public_html_session_directory, 'lib', 'testing_results.json'),
+    'testing_results_file' : os.path.join(public_html_session_directory, 'work', 'testing_results.json'),
     'autotest_upload_url' : 'https://cgi.cse.unsw.edu.au/~{}/cgi/autotest_upload.cgi'.format(course_account),
 }
 variables['PATH'] = ':'.join((variables['scripts_directory'], variables['bin_directory'],   os.environ['PATH']))

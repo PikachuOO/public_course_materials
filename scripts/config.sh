@@ -29,29 +29,29 @@ public_html_directory='/web/cs2041'
 course_account='cs2041'
 unsw_session='17s2'
 
-#
+
 # if we are running as a CGI script at CSE
 # home directories are not mounted
 # and public_html directory are mounted as /web/account/
-#
-#
-#dir=$(dirname $(readlink -f $0))
-#case "$dir" in
-#*/public_html/[0-9][0-9]??/*)
-#    public_html_session_directory=$(dirname "$dir")
-#    unsw_session=$(basename "$public_html_session_directory")
-#    public_html_directory=$(dirname "$public_html_session_directory")
-#    course_account=$(basename $(dirname "$public_html_directory")|sed 's/[a-z]*$//')
-#    ;;
-#
-#/web/*/[0-9]][0-9]??/*)
-#    public_html_session_directory=$(dirname "$dir")
-#    unsw_session=$(basename "$public_html_session_directory")
-#    public_html_directory=$(dirname "$public_html_session_directory")
-#    course_account=$(basename "$public_html_directory"|sed 's/[a-z]*$//')
-#    ;;
-#
-#esac
+
+
+dir=$(dirname $(readlink -f $0))
+case "$dir" in
+*/public_html/[0-9][0-9]??/*)
+    public_html_session_directory=$(echo "$dir"|sed 's?\(.*public_html/[0-9][0-9]..\).*?\1?')
+    unsw_session=$(basename "$public_html_session_directory")
+    public_html_directory=$(dirname "$public_html_session_directory")
+    course_account=$(basename $(dirname "$public_html_directory")|sed 's/[a-z]*$//')
+    ;;
+
+/web/*/[0-9]][0-9]??/*)
+    public_html_session_directory=$(dirname "$dir")
+    unsw_session=$(basename "$public_html_session_directory")
+    public_html_directory=$(dirname "$public_html_session_directory")
+    course_account=$(basename "$public_html_directory"|sed 's/[a-z]*$//')
+    ;;
+
+esac
 
 scripts_directory="$public_html_session_directory/scripts"
 home_directory="/home/$course_account"
@@ -65,7 +65,7 @@ course_code_regex=`echo "$course_code"|sed 's/COMP2041/COMP[29]041/'`
 canonical_url="https://cgi.cse.unsw.edu.au/~$course_account/"
 github_repo_url="https://github.com/${course_code}UNSW/course_materials"
 autotest_upload_url="${canonical_url}cgi/autotest_upload.cgi"
-testing_results_file="$public_html_session_directory/lib/testing_results.json"
+testing_results_file="$public_html_session_directory/work/testing_results.json"
 
 export WORK=$home_directory/$unsw_session.work/
 export OUT=$WORK/.out/
