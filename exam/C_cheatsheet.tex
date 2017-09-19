@@ -1,0 +1,294 @@
+\documentclass[twocolumn,12pt]{article}
+%\usepackage{twocolumn}
+\usepackage{aa4-most}
+\usepackage{alltt}
+\begin{document}
+\noindent
+
+
+\newpage
+\noindent
+\textbf{\Huge C Information}
+
+\section*{C Programs}
+\begin{alltt}
+/*
+ * Program name and purpose
+ */
+#include <stdio.h>
+#include \emph{other libraries ...}
+
+#define CONST \emph{constant-expression}
+
+typedef \emph{type-expression} Type; ...
+
+\emph{type-expression} globalVar; ...
+
+Status main(int argc, char *argv[])
+\{
+   \emph{main program variables};
+
+   \emph{main program code};
+
+   return 0;
+\}
+
+/*
+ * Function name and purpose
+ * Pre- and post- conditions
+ */
+\emph{return-type} funcName(\emph{parameters} ...)
+\{
+   \emph{local variables};
+
+   \emph{function code};
+\}
+\end{alltt}
+\section*{C Data}
+\begin{alltt}
+\textrm{Basic data types:}
+
+int, long     - \textrm{integer numbers}
+                (e.g. 1, -1, -27, 1000)
+float, double - \textrm{real numbers}
+                (e.g. 1.0, 1e23, -0.005)
+char          - \textrm{characters}
+                (e.g. 'a', 'b', '2', '!')
+char *        - \textrm{character strings}
+                (e.g. "a string", "John")
+
+\textrm{Structured data types:}
+
+\emph{type} a[\emph{N}];
+   \textrm{Array} a \textrm{of} \emph{N} \textrm{objects of type} \emph{type}
+   \textrm{Indexed via} 0 .. \emph{N}-1
+
+struct \{\emph{t\(\sb{1}\)} a; \emph{t\(\sb{2}\)} b; \emph{t\(\sb{3}\)} c\} d;
+   \textrm{Record} d \textrm{with fields} (a,b,c) \textrm{of types} (\emph{t\(\sb{1}\)},\emph{t\(\sb{2}\)},\emph{t\(\sb{3}\)})
+\end{alltt}
+
+\section*{C Expressions}
+\begin{alltt}
+\textrm{Arithmetic operators:}
+   +   -   *   /   % \textrm{\tiny(modulus)}
+
+\textrm{Relational operators:}
+   ==   !=   <   >   <=   >=
+
+\textrm{Logical operators:}
+   ! \textrm{\tiny(NOT)}   && \textrm{\tiny(AND)}   || \textrm{\tiny(OR)}
+
+\textrm{Bitwise operators:}
+   ~ \textrm{\tiny(NOT)}   & \textrm{\tiny(AND)}   | \textrm{\tiny(OR)}   ^ \textrm{\tiny(XOR)}
+\end{alltt}
+
+\section*{C Statements}
+\begin{alltt}
+\textrm{Assignment:}
+
+   \emph{var} = \emph{expression};
+   x++;  ++x;  x+=\emph{expr};  x-=\emph{expr}; ...
+
+{\large if} \textrm{Statement:}
+
+   if (\emph{condition\(\sb{1}\)}) \{ \emph{statements\(\sb{1}\)}; \}
+   else if (\emph{condition\(\sb{2}\)}) \{ \emph{statements\(\sb{2}\)}; \}
+   ...
+   else if (\emph{condition\(\sb{n}\)}) \{ \emph{statements\(\sb{n}\)}; \}
+   else \{ \emph{statements\(\sb{n+1}\)}; \}
+
+{\large switch} \textrm{Statement:}
+
+   switch (\emph{expression}) \{
+   case \emph{const\(\sb{1}\)}: \emph{statements\(\sb{1}\)}; break;
+   case \emph{const\(\sb{2}\)}: \emph{statements\(\sb{2}\)}; break;
+   ...
+   case \emph{const\(\sb{n}\)}: \emph{statements\(\sb{n}\)}; break;
+   default: \emph{statements\(\sb{n+1}\)};
+   \}
+
+{\large while} \textrm{Statement:}
+
+   while (\emph{condition}) \{ \emph{statements}; \}
+
+   break - \textrm{exit the loop}
+   continue - \textrm{go to next iteration}
+
+{\large for} \textrm{Statement:}
+
+   for (\emph{init}; \emph{condition}; \emph{next})
+       \{ \emph{statements}; \}
+
+      \textrm{\small which is equivalent to}
+
+   \emph{init};  while (\emph{condition})
+             \{ \emph{statements}; \emph{next}; \}
+\end{alltt}
+
+% \section*{C Idioms}
+% Read in text input, character by character:
+% \begin{alltt}
+%    int c;
+%    while ((c = getchar()) != EOF) \{
+%       \emph{process} c;
+%    \}
+% \end{alltt}
+% Read in text input, line by line:
+% \begin{alltt}
+%    char s[\emph{N}];
+%    while (gets(s) != NULL) \{
+%       \emph{process} s;
+%    \}
+% \end{alltt}
+% Read in all integer value input:
+% \begin{alltt}
+%    int i;
+%    while (scanf("%d", &i) != EOF) \{
+%        \emph{process} i;
+%    \}
+% \end{alltt}
+% Scan along an array:
+% \begin{alltt}
+%    int i, a[\emph{N}];
+%    for (i = 0; i < \emph{N}; ++i) \{
+%       \emph{process} a[i];
+%    \}
+% \end{alltt}
+% Scan along a linked-list:
+% \begin{alltt}
+%    struct n \{int data; struct n *next;\};
+%    typedef struct n Node;
+%    typedef Node *List;
+%    List L;  Node *p;
+%    for (p = L; p!= NULL;  p = p->next) \{
+%       \emph{process} p->data;
+%    \}
+% \end{alltt}
+% 
+\section*{\texttt{<stdio.h>} Library}
+\begin{alltt}
+FILE *f; - \textrm{external file handle}
+
+int getchar(void);
+int getc(FILE *f);
+   \textrm{Fetch one character from input}
+
+int putchar(int ch);
+int putc(int ch, FILE *f);
+   \textrm{Display a character on output}
+
+char *gets(char *s);
+char *fgets(char *s, int len, FILE *f);
+   \textrm{Fetch one line into buffer;}
+   gets \textrm{discards the} \verb|'\n'|\textrm{;} fgets \textrm{keeps it}
+   \textrm{both return pointer to buffer or} NULL \textrm{if} EOF
+
+int puts(char *s);
+int fputs(char *s, FILE *f);
+   \textrm{Display buffer as line of text on output;}
+   puts \textrm{appends} \verb|'\n'| \textrm{on output;} fputs \textrm{doesn't}
+
+scanf(\emph{fmt-string}, \emph{address\(\sb{1}\)}, ...);
+fscanf(FILE *f, \emph{fmt-string}, \emph{address\(\sb{1}\)}, ...);
+   \textrm{Interpret input according to formats;}
+   \textrm{store results in specified addresses;}
+   \textrm{return number of valid, stored values}
+\textrm{e.g.}
+   scanf("%d", &i); - \textrm{read an integer}
+   scanf("%f", &r); - \textrm{read a real number}
+   scanf("%c", &c); - \textrm{read a character}
+   scanf("%s", s);  - \textrm{read a string}
+
+printf(\emph{fmt-string}, \emph{expr\(\sb{1}\)}, ...);
+fprintf(FILE *f, \emph{fmt-string}, \emph{expr\(\sb{1}\)}, ...);
+   \textrm{Display expressions according to specified}
+   \textrm{formats; expression type must match format}
+\textrm{e.g.}
+   printf("%3d", i);  - \textrm{show an integer}
+   printf("%.2f", r); - \textrm{show a real number}
+   printf("%c", c);   - \textrm{show a character}
+   printf("%s", s);    - \textrm{show a string}
+   printf("Hello\(\backslash\)n");  - \textrm{show literal text}
+\end{alltt}
+
+\section*{\texttt{<stdlib.h>} Library}
+\begin{alltt}
+EOF  - \textrm{end of file marker for i/o}
+NULL - \textrm{canonical invalid pointer}
+
+void *malloc(int size);
+   \textrm{allocate memory and return address}
+void free(void *addr);
+   \textrm{release previously allocated memory}
+int rand(void);
+   \textrm{generate a random} int \textrm{value}
+void exit(int status);
+   \textrm{terminate program with return status}
+\end{alltt}
+
+\section*{\texttt{<ctype.h>} Library}
+\begin{alltt}
+Bool isalpha(char), isdigit(char), isspace(char),
+     ispunct(char), islower(char), isupper(char);
+   \textrm{Character classification functions}
+
+char toupper(char), tolower(char);
+   \textrm{Case conversion functions}
+\end{alltt}
+
+\section*{\texttt{<math.h>} Library}
+\begin{alltt}
+double sin(double), cos(double), tan(double);
+   \textrm{Trigonometric functions - inputs are radians}
+
+double log(double x);
+   \textrm{Compute the natural logarithm of} x
+
+double sqrt(double);
+   \textrm{Compute the square root of} x
+
+double pow(double x, double y);
+   \textrm{Computes} x {raised to the power} y
+\end{alltt}
+
+\section*{\texttt{<string.h>} Library}
+\begin{alltt}
+char *strcpy(char *buff, char *src);
+char *strncpy(char *buff, char *src,
+                            int len);
+   \textrm{Copy} src \textrm{string int} buffer;
+   strncpy \textrm{stops copying after first} len \textrm{chars}
+
+char *strcat(char *dest, char *src);
+char *strncat(char *dest, char *src,
+                            int len);
+   \textrm{Concatenate} src \textrm{onto text in} buffer
+   strncat \textrm{stops copying after first} len \textrm{chars}
+
+int strcmp(char *s1, char *s2);
+int strncmp(char *s1, char *s2, int len);
+int strcasecmp(char *s1, char *s2);
+int strncasecmp(char *s1, char *s2);
+   \textrm{Compare two strings; return difference}
+   strncmp \textrm{stops comparing after first} len \textrm{chars}
+   strcasecmp \textrm{ignores case of alphabetic letters in comparison}
+
+int strlen(char *s)
+   \textrm{Return length of string} s
+
+char *strchr(char *s, int c);
+   \textrm{Find leftmost occurence of char} c \textrm{in string} s\textrm{;}
+   \textrm{returns pointer to} c \textrm{or} NULL \textrm{if not found}
+
+char *strrchr(char *s, int c);
+   \textrm{Find rightmost occurence of} c \textrm{in string} s\textrm{;}
+   \textrm{returns pointer to} c \textrm{or} NULL \textrm{if not found}
+
+char *strstr(char *str, char *pat);
+   \textrm{Look for occurence of} pat \textrm{in string} str\textrm{;}
+   \textrm{returns a pointer or} NULL \textrm{if} pat \textrm{not found}
+\end{alltt}
+
+
+\end{document}
+

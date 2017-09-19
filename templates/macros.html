@@ -32,15 +32,9 @@
 
 {% macro edit_github(pathname) -%}
 {% if is_tutor %}
-
-	{% if pathname.startswith('private/') %}
-		{% set pathname = pathname[len('private/'):] %}
-	{% endif %}
-	
-	<div class="edit_github">
-		<a href="{{github_repo_url}}/edit/master/{{pathname}}" class="edit_github_link btn btn-xs" role="button">Edit {{pathname}} on github</a>
-	</div>
-	
+<div class="edit_github">
+<a href="{{github_repo_url}}/edit/master/{{pathname}}" class="edit_github_link btn btn-xs" role="button">Edit {{pathname}} on github</a>
+</div>
 {% endif %}
 {%- endmacro %}
 

@@ -1,0 +1,294 @@
+\documentclass[twocolumn,12pt]{article}
+%\usepackage{twocolumn}
+\usepackage{aa4-most}
+\usepackage{alltt}
+\begin{document}
+\noindent
+
+\noindent
+\textbf{\huge Java Information}
+
+\section*{Applications}
+\begin{alltt}
+//
+// \emph{Program name and purpose}
+//
+import \emph{package}; ...
+
+public class \emph{ApplicationName}
+\{
+   public static int main(String args[])
+   \{
+      \emph{object definitions and code}
+   \}
+\}
+\end{alltt}
+\section*{Classes}
+\begin{alltt}
+package \emph{package-for-this-class};
+
+import \emph{package}; ...
+
+public class \emph{ClassName}
+\{
+   // Fields (members)
+   // \emph{data associated with each object} 
+   // \emph{except} static \emph{means class variable}
+
+   // Constructor methods \emph{e.g.}
+   public \emph{ClassName}(\emph{zero or more args})
+   \{
+      \emph{code to initialise object}
+   \}
+
+   // Other methods
+   // \emph{operations for objects in class}
+   // \emph{except} static \emph{means class method}
+\}
+\end{alltt}
+\section*{Data Types}
+\begin{alltt}
+\textrm{Primitive data types:}
+
+int, long     - \textrm{integer numbers}
+short, byte     (\textrm{e.g.} 1, -1, -27, 1000)
+float, double - \textrm{real numbers}
+                (e.g. 1.0, 1e23, -0.005)
+char          - \textrm{characters}
+                (\textrm{e.g.} 'a', 'b', '2', '!')
+boolean       - \textrm{truth values}
+                (\textrm{e.g.} true, false)
+
+\textrm{Structured data types:}
+
+\emph{type}[]      - \textrm{array of} \emph{type} \textrm{values}
+\emph{Class}       - \textrm{reference to object in} \emph{Class}
+\end{alltt}
+\section*{Variables/Objects}
+\begin{alltt}
+int x, y;
+   \textrm{two integer variables}
+
+final static char EXCLAIM = '!';
+   \textrm{character constant}
+
+\emph{Class} r = new \emph{Class}();
+   r \textrm{is a reference to a new} \emph{Class} \textrm{Object}
+
+\emph{type}[] a = new \emph{type}[\emph{N}];
+   \textrm{Array} a \textrm{of} \emph{N} \textrm{objects of type} \emph{type}
+   \textrm{Indexed via} 0 .. \emph{N}-1
+
+\textrm{Unitialised variables have zero or null value.}
+\end{alltt}
+
+\section*{Expressions}
+\begin{alltt}
+\textrm{Arithmetic operators:}
+   +   -   *   /   % \textrm{\footnotesize(modulus)}
+
+\textrm{Relational operators:}
+   ==   !=   <   >   <=   >=
+
+\textrm{Logical operators:}
+   ! \textrm{\tiny(NOT)}   && \textrm{\tiny(AND)}   || \textrm{\tiny(OR)}
+
+\textrm{Bitwise operators:}
+   ~ \textrm{\tiny(NOT)}   & \textrm{\tiny(AND)}   | \textrm{\tiny(OR)}   ^ \textrm{\tiny(XOR)}
+
+\textrm{String concatentation:}
+   + \textrm{\footnotesize(convert operands to string and join)}
+   \textrm{e.g.} "Here is " + 3.141 + " and " + (i+1)
+
+\textrm{Object comparison:}
+   \emph{obj}\(\sb{1}\) == \emph{obj}\(\sb{2}\)
+      \textrm{Do} \emph{obj}\(\sb{1}\) \textrm{and} \emph{obj}\(\sb{2}\) \textrm{refer to same object?}
+   \emph{obj}\(\sb{1}\).equals(\emph{obj}\(\sb{2}\))
+      \textrm{Do} \emph{obj}\(\sb{1}\) \textrm{and} \emph{obj}\(\sb{2}\) \textrm{contain same values?}
+\end{alltt}
+
+\section*{Statements}
+\begin{alltt}
+\textrm{Assignment:}
+
+\emph{var} = \emph{expression};
+x++;  ++x;  x+=\emph{expr};  x-=\emph{expr}; ...
+
+\textrm{Selection:}
+
+if (\emph{condition\(\sb{1}\)}) \{ \emph{statements\(\sb{1}\)}; \}
+else if (\emph{condition\(\sb{2}\)}) \{ \emph{statements\(\sb{2}\)}; \}
+...
+else if (\emph{condition\(\sb{n}\)}) \{ \emph{statements\(\sb{n}\)}; \}
+else \{ \emph{statements\(\sb{n+1}\)}; \}
+
+switch (\emph{expression}) \{
+case \emph{const\(\sb{1}\)}: \emph{statements\(\sb{1}\)}; break;
+...
+case \emph{const\(\sb{n}\)}: \emph{statements\(\sb{n}\)}; break;
+default: \emph{statements\(\sb{n+1}\)};
+\}
+
+\textrm{Iteration:}
+
+while (\emph{condition}) \{ \emph{statements}; \}
+
+for (\emph{init};\emph{condition};\emph{next}) \{ \emph{statements}; \}
+
+break - \textrm{exit the loop}
+continue - \textrm{go to next iteration}
+
+\textrm{Exceptions:}
+
+try \{ \emph{statements\(\sb{1}\)}; \}
+catch (\emph{Exception\(\sb{1}\)A} \emph{e\(\sb{1}\)})
+   \{ \emph{statements\(\sb{e\sb{1}}\)}; \}
+catch (\emph{Exception\(\sb{2}\)A} \emph{e\(\sb{2}\)})
+   \{ \emph{statements\(\sb{e\sb{2}}\)}; \}
+...
+finally \{ \emph{statements\(\sb{final}\)}; \}
+\end{alltt}
+
+\section*{Class \texttt{java.lang.System}}
+\begin{alltt}
+PrintStream out;  // \emph{standard output}
+PrintStream err;  // \emph{standard error}
+InputStream in;   // \emph{standard input}
+
+void exit(int status)
+   \textrm{terminate Java process and return} status
+\end{alltt}
+
+\section*{Class \texttt{java.io.PrintStream}}
+\begin{alltt}
+void print(\emph{object})
+void println(\emph{object})
+   \textrm{Prints \emph{object} on} stdout\textrm{, usually a} String
+   println \textrm{also appends a newline character}
+\end{alltt}
+
+\section*{Class \texttt{java.io.BufferedReader}}
+\begin{alltt}
+String readLine()
+   \textrm{read next line of text from stream}
+
+\textrm{Reading from \texttt{stdin}:}
+BufferedReader stdin = new BufferedReader
+      (new InputStreamReader(System.in));
+\end{alltt}
+
+\section*{Class \texttt{java.lang.Math}}
+\begin{alltt}
+\emph{num} = \textrm{one of} int, long, float, double
+
+\emph{num} abs(\emph{num})
+   \textrm{absolute value of number}
+double cos(double a)
+double sin(double a)
+double tan(double a)
+   \textrm{cosine,sine,tangent of angle} a
+\emph{num} max(\emph{num} x, \emph{num} y)
+   \textrm{larger of two numbers}
+\emph{num} min(\emph{num} x, \emph{num} y)
+   \textrm{smaller of two numbers}
+double pow(double x, double y)
+   \textrm{return \(x\sp{y}\)}
+double random()
+   \textrm{return a random floating value}
+int round(float x)
+long round(double x)
+   \textrm{round to nearest integer value}
+double sqrt(double a)
+   \textrm{compute square root of} a
+\end{alltt}
+
+\section*{Class \texttt{java.util.BitSet}}
+\begin{alltt}
+BitSet(int nbits)
+   \textrm{create} BitSet \textrm{of specified size}
+void and(BitSet bits)
+   \textrm{AND two} BitStrings \textrm{together}
+void or(BitSet bits)
+   \textrm{OR two} BitStrings \textrm{together}
+void clear(int n)
+   \textrm{set bit} n \textrm{to have value of zero}
+boolean get(int n)
+   \textrm{read value contained at bit} n
+void set(int n)
+   \textrm{set bit} n \textrm{to have value of one}
+\end{alltt}
+
+\section*{Class \texttt{java.util.Date}}
+\begin{alltt}
+boolean after(Date when)
+boolean before(Date when)
+boolean equals(Date when)
+   Date \textrm{comparison methods}
+long getTime()
+   \textrm{get current time as big number}
+\end{alltt}
+
+\section*{Class \texttt{java.util.HashTable}}
+\begin{alltt}
+boolean contains(Object elem)
+   \textrm{check whether} elem \textrm{is in table}
+boolean containsKey(Object key)
+   \textrm{check whether} key \textrm{is in table}
+Enumeration elements()
+   \textrm{return enumeration of all elements}
+Object get(Object key)
+   \textrm{return} Object \textrm{associated with} key
+boolean isEmpty()
+   \textrm{check whether table has any keys}
+Enumeration keys()
+   \textrm{return enumeration of key values}
+void put(Object key, Object value)
+   \textrm{insert} (key,value) \textrm{into table}
+Object remove(Object key)
+   \textrm{delete element with} key \textrm{from table}
+int size()
+   \textrm{return number of elements in table}
+\end{alltt}
+
+\section*{Class \texttt{java.util.Stack}}
+\begin{alltt}
+boolean empty()
+   \textrm{inidcate whether} Stack \textrm{has any items}
+Object peek()
+   \textrm{return item at top of} Stack
+Object pop()
+   \textrm{remove item from top of} Stack
+Object push(Object item)
+   \textrm{place} item \textrm{on top of} Stack
+\end{alltt}
+
+\section*{Class \texttt{java.util.Vector}}
+\begin{alltt}
+void addElement(Object elem)
+   \textrm{appends new element to} Vector
+Object elementAt(int index)
+   \textrm{obtains element at position} index
+void copyInto(Object array[])
+   \textrm{copy elements of} Vector \textrm{into} array
+Enumeration elements()
+   \textrm{return enumeration of all elements}
+Object firstElement()
+   \textrm{return first element of} Vector
+int indexOf(Object elem)
+   \textrm{return location of} elem \textrm{in} Vector
+void insertElementAt(int index)
+   \textrm{insert new element at position} index
+boolean isEmpty()
+   \textrm{check whether} Vector \textrm{has any elements}
+boolean removeElement(Object elem)
+   \textrm{remove given} Object \textrm{from} Vector
+boolean removeElementAt(int index)
+   \textrm{remove object at position} index
+void setElementAt(Object elem, int index)
+   \textrm{replace element at} index \textrm{by} elem
+int size()
+   \textrm{return number of elements in} Vector
+\end{alltt}
+
+\end{document}
+

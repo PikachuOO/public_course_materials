@@ -1,0 +1,113 @@
+\documentclass[twocolumn,12pt]{article}
+%\usepackage{twocolumn}
+\usepackage{aa4-most}
+\usepackage{alltt}
+\begin{document}
+\noindent
+
+
+\noindent
+\textbf{\LARGE Python Information}
+
+\begin{alltt}
+\verb|var|         - \textrm{variable}
+\verb|var[|\emph{n}\verb|]|      - \emph{n}\(\sp{th}\) \textrm{element of dict, list, ...}
+\verb|var[|\emph{n:m}\verb|]|      - slice of list, ...
+
+r'\emph{string}' = raw string
+'\emph{string}' and "\emph{string}" =  \emph{string} with
+    backslash escapes replaced
+
+\textrm{Arithmetic operators:}
+   +   -   *   /   %   ** \textrm{\tiny(exponentiation)}  
+\textrm{Relational operators:}
+   ==   !=   <   >   <=   >=  
+\textrm{Logical operators:}
+   not   and   or   in  \textrm{\tiny(membership of dict/list)}
+\textrm{Bitwise operators:}
+   ~ \textrm{\tiny(NOT)}   & \textrm{\tiny(AND)}   | \textrm{\tiny(OR)}   ^ \textrm{\tiny(XOR)}
+\textrm{String operations:}
+   + \textrm{\tiny(concatenation)} * \textrm{\tiny(repetition)} % \textrm{\tiny(sprintf)}
+
+while \emph{condition}:
+    \emph{statements}
+for $\emph{var} in (\emph{list}):
+    \emph{statements}
+break - \textrm{exit the loop}
+continue - \textrm{go to next iteration}
+
+if \emph{condition\(\sb{1}\)}:
+    \emph{statements\(\sb{1}\)}
+elif \emph{condition\(\sb{2}\)}:
+    \emph{statements\(\sb{2}\)}
+else:
+    \emph{statements\(\sb{3}\)}
+
+def \emph{name} (\emph{arguments}):
+    \emph{statements}
+    
+abs(emph{expr})
+   \textrm{returns absolute value of} \emph{expr}
+chr(\emph{expr})
+   \textrm{returns char represented by} \emph{expr}
+dict(\emph{value})
+    convert value to dict
+float(\emph{string})
+   convert  \emph{string} to floating point
+int(\emph{string})
+   convert  \emph{string} to integer
+len(\emph{list})
+    number of items in list
+map(\emph{function, list})
+   apply \emph{function} to each element of \emph{list}
+range([start], stop[, step])
+    list of integers between specified values
+round(\emph{float})
+    convert floating point value to integer 
+sorted(list)
+    list in sorted order
+
+\emph{string}.lower(), \emph{string}.upper(), 
+    \emph{string} converted to lower/upper case
+\emph{string}.join(\emph{list}), 
+    \emph{string} formed by concatenating \emph{list} with
+    \emph{string} as a separator
+    
+sys.argv
+    array of program arguments 
+    program name is first element
+sys.exit(\emph{value})
+    exit with status \emph{value}
+sys.stdin
+    standard input
+
+re.findall(\emph{regex}, \emph{string})
+    all matches of \emph{regex} in \emph{string},
+re.split(\emph{regex}, \emph{string})
+    split \emph{string} where \emph{regex} occurs
+re.sub(\emph{regex}, \emph{repl}, \emph{string})
+    \emph{string} with all occurences
+    of \emph{regex}  replaced with \emph{repl}
+
+\emph{dict}.keys() \emph{dict}.values()
+    list of keys/values of dict
+    
+\emph{list}.count(\emph{value})
+    how many times \emph{value} occurs in \emph{list}
+\emph{list}.append(\emph{value})
+    \emph{list} with \emph{value} appended
+    
+\emph{file} = open(\emph{filename})
+    read from \emph{filename}
+\emph{file}.\emph{read}()
+    read entire file as 1 string 
+\emph{file}.\emph{readline}()
+    read one line from file
+\emph{file}.\emph{readlines}()
+    read entire file as list of string 
+\emph{for line in file}:
+    loop to process file line by line
+\end{alltt}
+
+\end{document}
+

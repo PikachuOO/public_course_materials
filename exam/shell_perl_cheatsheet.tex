@@ -1,0 +1,398 @@
+\documentclass[twocolumn,12pt]{article}
+%\usepackage{twocolumn}
+\usepackage{aa4-most}
+\usepackage{alltt}
+\begin{document}
+\noindent
+
+\noindent
+\section*{\LARGE Shell Information}
+\begin{alltt}
+\emph{command} > \emph{filename}
+    write output to \emph{filename}
+
+\emph{command} >> \emph{file}
+    append output to \emph{filename}
+
+\emph{command} 2> \emph{filename}
+    write stderr to \emph{filename}
+
+\emph{command} >\emph{file} 2>&1
+    write stdout and stderr to \emph{filename}
+
+<\emph{filename} \emph{command}
+    input from \emph{filename}
+
+\emph{command\(\sb{1}\)} | \emph{command\(\sb{2}\)}
+    pipe output from \emph{command\(\sb{1}\)}
+    as input to \emph{command\(\sb{2}\)}
+
+\emph{command\(\sb{1}\)} \&\& \emph{command\(\sb{2}\)}
+    execute \emph{command\(\sb{2}\)} if \emph{command\(\sb{1}\)}
+    has exit status zero
+
+\emph{command\(\sb{1}\)} || \emph{command\(\sb{2}\)}
+    execute \emph{command\(\sb{2}\)} if \emph{command\(\sb{1}\)}
+    does not have exit status zero
+
+$((\emph{expression}))
+    \emph{expression} evaluated as arithmetic
+
+$0 = \textrm{name of currently executing command}
+$1,$2,$3,... = \textrm{command-line arguments}
+$# = \textrm{count of command-line arguments}
+$? = \textrm{exit status of previous command}
+
+read \emph{varName}
+   \textrm{sets value of variable} \emph{varName} \textrm{to}
+   \textrm{next line read from} stdin
+
+'\emph{str}' = \emph{str}
+"\emph{str}" = \emph{str} with variables interpolated
+`\emph{command}` = output of \emph{command} as string
+\end{alltt}
+
+\begin{alltt}
+\textrm{Zero exit status means true/successful}
+\textrm{Non-zero exit status means false/failure}
+
+test \emph{expression}
+   \textrm{returns} \emph{expression} \textrm{result as exit status}
+   integer operators: -lt,-gt,-eq,-ne,-ge,-le
+   string operators: =, -z, -n
+   file operators: -d, -e, -f, -s, -nt
+   
+exit \emph{Number}
+   \textrm{terminate script with exit status} \emph{Number}
+
+if \emph{Command\(\sb{a}\)} ; then
+   \emph{Commands\(\sb{1}\)}
+elif \emph{Command\(\sb{b}\)} ; then
+   \emph{Commands\(\sb{2}\)}
+else
+   \emph{Commands\(\sb{3}\)};
+fi
+
+case \emph{Word} in
+\emph{Pattern\(\sb{1}\)}) \emph{Commands\(\sb{1}\)} ;;
+\emph{Pattern\(\sb{2}\)}) \emph{Commands\(\sb{2}\)} ;;
+...
+*)        \emph{Commands\(\sb{n}\)} ;;
+esac
+
+while \emph{Command} ; do
+   \emph{Commands}
+done
+
+for \emph{var} in \emph{Word\(\sb{1}\)} \emph{Word\(\sb{2}\)} ...
+do
+   \emph{Commands}
+done
+
+# \textrm{Display} lines from file
+count=0
+while read line
+do
+   count=$((count + 1))
+   echo "Line $count: $line"
+done <file 
+
+# \textrm{Interactively rm files in current dir}
+for f in *
+do
+   echo -n "Remove $f? "
+   read answer
+   if test $answer = y
+   then
+        echo $f
+   fi
+done
+\end{alltt}
+
+\
+\noindent
+\textbf{\LARGE Regular Expressions}
+
+\begin{alltt}
+\textrm{Atomic Patterns:}
+
+\textrm{letters, digits, punctuation {\small(except those below)}}
+   \textrm{match any occurrence of themselves}
+\verb&\. \* \+ \? \| \^ \$ \[ \]&
+   \textrm{match any occurrence of the second character}
+. \textrm{(dot)}
+   \textrm{matches any single character}
+(\emph{pattern})
+   \textrm{matches} \emph{pattern}
+
+\textrm{Anchors:}
+
+^\emph{pattern}
+   \textrm{matches} \emph{pattern} \textrm{at the start of a line}
+\emph{pattern}$
+   \textrm{matches} \emph{pattern} \textrm{at the end of a line}
+
+\textrm{Selection:}
+
+[\emph{charList}]
+   \textrm{matches any single character in} \emph{charList}
+[^\emph{charList}]
+   \textrm{matches any single character not in} \emph{charList}
+\emph{pattern\(\sb{1}\)}|\emph{pattern\(\sb{2}\)}|\emph{pattern\(\sb{3}\)}|...
+   \textrm{matches any of the} \emph{pattern\(\sb{i}\)}\textrm{s}
+
+\emph{charList}\textrm{s use} \emph{c\(\sb{1}\)}-\emph{c\(\sb{2}\)} \textrm{to denote char ranges, and}
+\textrm{meta-characters lose their special meaning inside} \emph{charList}\textrm{s}
+
+\textrm{Repetition:}
+
+\emph{pattern}?
+   \textrm{zero or one occurrences of} \emph{pattern}
+\emph{pattern}*
+   \textrm{zero or more occurrences of} \emph{pattern}
+\emph{pattern}+
+   \textrm{one or more occurrences of} \emph{pattern}
+
+\verb|\w| \textrm{matches alphanumeric, including} \verb|'_'|
+\verb|\s| \textrm{matches whitespace}
+\verb|\d| \textrm{matches numeric}
+\verb|\b| \textrm{word boundary}
+
+\emph{pattern}\verb|{|\emph{N},\emph{M}\verb|}|
+   \textrm{matches} \emph{N} \textrm{to} \emph{M} \textrm{occurrences of} \emph{pattern}
+\end{alltt}
+
+\newpage
+\noindent
+\textbf{\LARGE Perl Information}
+
+\begin{alltt}
+\verb|$var|         - \textrm{simple scalar variable}
+\verb|$var[|\emph{n}\verb|]|      - \emph{n}\(\sp{th}\) \textrm{element of array}
+\verb|$var{|\emph{val}\verb|}|    - \textrm{element of hash for key} \emph{val}
+\verb|@var|         - \textrm{entire array, or}
+               \textrm{length in scalar context}
+\verb|@var[|\emph{i,j,k}\verb|]|  - \textrm{slice from array}
+\verb|%var|         - \textrm{entire hash}
+
+'\emph{str}' = \emph{str}
+"\emph{str}" = \emph{str} with variables interpolated
+`\emph{command}` = output of \emph{command} as string
+
+   empty string and numeric zero are FALSE
+   \textrm{anything else} is TRUE
+
+\verb|$_|    - \textrm{default input or matched pattern}
+\verb|$0|    - \textrm{name of the Perl script file}
+\verb|$?|    - \textrm{exit status of last system command}
+\verb|$$|    - \textrm{process id of Perl runtime process}
+\verb|@ARGV| - \textrm{command line arguments}
+\verb|%ENV|  - \textrm{environment variables}
+\verb|%INC|  - \textrm{path for included scripts}
+
+\textrm{Arithmetic operators:}
+   +  -  *  /  ** \textrm{\footnotesize(power)}  % \textrm{\footnotesize(mod)}  .. \textrm{\footnotesize(range)}
+
+\textrm{Relational operators:}
+   ==   !=   <   >   <=   >=   \textrm{(numeric)}
+   eq   ne   lt  gt  le   ge   \textrm{(string)}
+   =~   !~                     \textrm{(pattern)}
+
+\textrm{Logical operators:}
+   ! \textrm{\tiny(NOT)}   && \textrm{\tiny(AND)}   || \textrm{\tiny(OR)}
+   not   and   or   \textrm{\small (low-precedence versions)}
+
+\textrm{Bitwise operators:}
+   ~ \textrm{\tiny(NOT)}   & \textrm{\tiny(AND)}   | \textrm{\tiny(OR)}   ^ \textrm{\tiny(XOR)}
+
+\textrm{String operations:}
+   . concatenation
+   \emph{x} repetition
+   
+$\emph{var} = \emph{expression};
+$\emph{var}++;  ++$\emph{var};
+$\emph{var} += \emph{expr};  $\emph{var} -= \emph{expr}; ...
+$\emph{var} =~ s/\emph{pattern}/\emph{replacement}/;
+$\emph{var} =~ tr/\emph{chars}/\emph{chars}/;
+
+
+\emph{block} = \verb|{| \emph{statement\(\sb{1}\)}; \emph{statement\(\sb{2}\)}; ... \verb|}|
+
+while (\emph{condition}) \emph{block}
+until (\emph{condition}) \emph{block}
+do \emph{block} while (\emph{condition})
+do \emph{block} until (\emph{condition})
+for (\emph{init};\emph{test};\emph{next}) \emph{block}
+foreach $\emph{var} (\emph{list}) \emph{block}
+
+last - \textrm{exit the loop}
+next - \textrm{go to next iteration}
+redo - \textrm{restart this iteration}
+
+if (\emph{condition\(\sb{1}\)}) \emph{block\(\sb{1}\)}
+elsif (\emph{condition\(\sb{2}\)}) \emph{block\(\sb{2}\)}
+...
+elsif (\emph{condition\(\sb{n}\)}) \emph{block\(\sb{n}\)}
+else \emph{block\(\sb{n+1}\)}
+
+&\emph{subroutine}(\emph{arglist});
+   \textrm{\small(any of }\verb|&, (, )|\textrm{\small can be omitted)}
+
+sub \emph{name} \emph{block}
+   - \textrm{subroutine definition}
+   - \textrm{in \emph{block},} \verb|@_| \textrm{holds args}
+
+
+\textrm{\large\bf{Arithmetic:}}
+abs \emph{expr}
+   \textrm{returns absolute value of} \emph{expr}
+sin, cos, atan2 \emph{expr}
+   \textrm{returns geometric function on} \emph{expr}
+int \emph{expr}
+   \textrm{returns integer portion of} \emph{expr}
+rand [ \emph{expr} ]
+   \textrm{returns random value in 0..}\emph{expr}
+   \textrm{returns random in 0..1 if no} \emph{expr}
+sqrt \emph{expr}
+   \textrm{returns square root of} \emph{expr}
+time
+   \textrm{returns \# seconds since Jan 1 1970}
+
+\textrm{\large\bf{Conversions:}}
+chr \emph{expr}
+   \textrm{returns char represented by} \emph{expr}
+localtime \emph{expr}
+   \textrm{converts} \emph{expr} \textrm{into a date/time string}
+ord \emph{expr}
+   \textrm{returns ascii for first char in} \emph{expr}
+
+\textrm{\large\bf{Strings:}}
+chomp \emph{list}
+   \textrm{removes line endings from each string in} \emph{list}
+chop \emph{list}
+   \textrm{removes last char from each string in} \emph{list}
+index \emph{str},\emph{substr}[,\emph{offset}]
+   \textrm{returns position of \emph{substr} in \emph{str} (or -1)}
+   \textrm{and starts looking from \emph{offset}, if given}
+length \emph{str}
+   \textrm{returns \# characters in} \emph{str}
+lc \emph{str}
+uc \emph{str}
+   \textrm{returns lower/upper case version of} \emph{str}
+lcfirst \emph{str}
+ucfirst \emph{str}
+   \textrm{returns} \emph{str} \textrm{with 1st char in lower/upper case}
+substr \emph{str},\emph{offset}[,\emph{len}]
+   \textrm{returns substring of} \emph{str} \textrm{starting at} \emph{offset}
+   \textrm{extending to end (or} \emph{len} \textrm{chars, if supplied)}
+
+\textrm{\large\bf{Arrays:}}
+delete $\emph{hash}\verb|{|\emph{key}\verb|}|
+   \textrm{remove} \emph{key} \textrm{and its value from hash}
+grep \emph{expr},\emph{list}
+grep \emph{block},\emph{list}
+   \textrm{returns array of all elements from} \emph{list}
+   \textrm{for which} \emph{expr}/\emph{block} \textrm{evaluates to true}
+join \emph{expr},\emph{list}
+   \textrm{returns a string containing all elements}
+   \textrm{from} \emph{list}, \textrm{separated by} \emph{expr}
+keys %\emph{hash}
+values %\emph{hash}
+   \textrm{returns an array of all keys/values in} \emph{hash}
+map \emph{expr},\emph{list}
+map \emph{block},\emph{list}
+   \textrm{evaluates} \emph{expr}/\emph{block} \textrm{for each element}
+   \textrm{of list and returns array of results}
+pop @\emph{array}
+   \textrm{pops off and returns last element from} \emph{array}
+push @\emph{array},\emph{list}
+   \textrm{pushes values of} \emph{list} \textrm{onto end of} \emph{array}
+reverse \emph{list}
+   \textrm{returns the \emph{list} in reverse order}
+shift @\emph{array}
+   \textrm{pops off and returns first element from} \emph{array}
+sort [\emph{block}|\emph{subr}] \emph{list}
+   \textrm{returns a sorted array of values from} \emph{list}
+   \emph{block}/\emph{subr} \textrm{can be used to define ordering}
+split /\emph{pattern}/,\emph{string}
+   \textrm{split} \emph{string} \textrm{at} \emph{pattern}s \textrm{(default} \verb|\s|\textrm{)}
+   \textrm{returns an array of split fragments}
+unshift @\emph{array},\emph{list}
+   \textrm{pushes values of} \emph{list} \textrm{onto front of} \emph{array}
+
+\textrm{\large\bf{Files/Directories:}}
+\textrm{Tests \small{(argument is either filename or filehandle)}}
+-r -w -x  - \textrm{file is read/write/executable}
+-e -z     - \textrm{file exists, has zero size}
+-s        - \textrm{file size in bytes}
+-M        - \textrm{time since file modified}
+-f -d     - \textrm{file is plain file, directory}
+chmod \emph{list}
+    \textrm{change permissions of files in} \emph{list}
+    \textrm{first list element must be numerical mode}
+link \emph{oldfile},\emph{newfile}
+symlink \emph{oldfile},\emph{newfile}
+    \textrm{creates a link/symlink}
+mkdir \emph{dirname},\emph{mode}
+rmdir \emph{dirname}
+    \textrm{create/remove directory} \emph{dirname}
+unlink \emph{list},
+    \textrm{remove all files named in} \emph{list}
+
+\textrm{\large\bf{Input/Output:}}
+<\emph{handle}>
+    \textrm{in scalar context, read next line from} \emph{handle}
+    \textrm{in array context, read all lines from} \emph{handle}
+<>
+    \textrm{reads from input stream made from all files}
+    \textrm{specified in} @ARGV \textrm{or else from} STDIN
+close \emph{handle}
+    \textrm{closes the file/pipe associated with} \emph{handle}
+flock \emph{handle},\emph{op}
+    \textrm{performs file-locking operation on} \emph{handle}
+    op \textrm{is a combination of 1(shared),}
+    \textrm{2(exclusive), 4(non-block), 8(unlock)}
+getc \emph{handle}
+    \textrm{returns next character from} \emph{handle}
+open \emph{handle},\emph{filename}
+    \textrm{opens a file and associates it with} \emph{handle}
+    \textrm{conventions for specifying} \emph{filename}\textrm{:}
+    "<\emph{file}"  \textrm{open \emph{file} for input}
+    "\emph{file}"   \textrm{open \emph{file} for input;} == "<\emph{file}"
+    ">\emph{file}"  \textrm{open \emph{file} for output and truncate}
+    ">>\emph{file}" \textrm{open \emph{file} for appending}
+    "|\emph{cmd}"   \textrm{open pipe to write to} \emph{cmd}
+    "\emph{cmd}|"   \textrm{open pipe to read from} \emph{cmd}
+print [\emph{handle}] \emph{expr}
+    \textrm{displays} \emph{expr} \textrm{on} \emph{handle} \textrm{(}STDOUT\textrm{) stream}
+printf [\emph{handle}] \emph{fmt},\emph{list}
+    \textrm{formats} \emph{list} \textrm{using} \emph{fmt} \textrm{and displays}
+
+\textrm{\large\bf{System interation:}}
+chdir \emph{expr}
+    \textrm{Changes working directory to \emph{expr}}
+die \emph{expr}
+    \textrm{print value of \emph{expr} to} STDERR \textrm{and exit}
+exit \emph{expr}
+    \textrm{terminate with exit status \emph{expr}}
+sleep \emph{expr}
+    \textrm{suspend program execution for \emph{expr} secs}
+system \emph{expr}
+    \textrm{execute \emph{expr} as a Unix command}
+
+\textrm{\large\bf{CGI.pm}}
+header()
+    return HTTP header
+param()
+    list of parameters
+param(\emph{name})
+    value of parameter \emph{name}
+param(\emph{name}, \emph{value})
+    set parameter \emph{name} to \emph{value}
+start_html, end_html
+start_form, end_form
+textfield, textarea, submit, hidden
+    short cuts to produce HTML  
+\end{alltt}
+\end{document}
+

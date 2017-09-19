@@ -30,7 +30,7 @@ public_dir = os.path.join(config.variables['public_html_session_directory'], 'pu
 os.chdir(private_dir)
 
 last_commit_message = subprocess.run(['git', 'log', '-1', '--pretty=%B'], stdout=subprocess.PIPE, universal_newlines=True).stdout
-public_prefixes = set("home_computing lec lib scripts static templates code".split())
+public_prefixes = set("exam home_computing lec lib scripts static templates code".split())
 
 # FIXME need to be able to make assignments and files in 
 # assignment directories selectively public
@@ -38,7 +38,7 @@ public_prefixes = set("home_computing lec lib scripts static templates code".spl
 
 public_prefixes.add("assignments/pypl")
 
-for path in glob.glob('*.*') + glob.glob('cgi/*.*'):
+for path in glob.glob('*.*') + glob.glob('cgi/*.*') + ['.gitignore']:
 	if not os.path.isdir(path):
 		public_prefixes.add(path)
 
