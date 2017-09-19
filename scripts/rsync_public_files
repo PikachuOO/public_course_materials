@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.5
 
-import glob,os,re,subprocess
+import glob,os,re,subprocess, sys
 from bs4 import BeautifulSoup
 import config
 
@@ -82,7 +82,8 @@ for censored_file in censored_files:
 public_files.update(censored_files)
 
 os.chdir(public_dir)
-assert(os.path.isdir('.git'))
+if not os.path.isdir('.git'):
+	sys.exit(0)
 
 p = subprocess.run(['git','ls-tree', '-r', 'master', '--name-only'], stdout=subprocess.PIPE, universal_newlines=True)
 old_public_files = set()

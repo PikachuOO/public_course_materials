@@ -132,21 +132,6 @@ def tlb_url(tut_or_lab_or_test, week, questions_or_answers):
         except IOError:
             template_variables['programs'] = '<programs>'
 
-    try:
-        with open(config.variables['testing_results_file']) as f:
-            testing_results = json.load(f)
-    except (FileNotFoundError,PermissionError,IOError,ValueError):
-        testing_results = {}
-
-    for exercise_results in testing_results.values():
-        for autotest_automarking in exercise_results.values():
-            for test_group_results in autotest_automarking.values():
-                for individual_test in test_group_results.get('individual_tests', {}).values():
-                     n = individual_test.setdefault('passed', 0) + individual_test.setdefault('failed', 0)
-                     individual_test['passed_fraction'] = individual_test['passed'] / (n or 1)
-                n = test_group_results.setdefault('passed', 0) + test_group_results.setdefault('failed', 0)
-                test_group_results['passed_fraction'] = test_group_results['passed'] / (n or 1)
-    template_variables['testing_results'] = testing_results
     if questions_or_answers == 'answers':
         return render_template_with_variables(page, **template_variables)
     else:
@@ -457,6 +442,23 @@ def get_common_template_variables(static_checking=False):
         tv['current_week'] = tv['weeks'][-1]
     else:
         tv['current_week'] = ''
+
+    try:
+        with open(config.variables['testing_results_file']) as f:
+            testing_results = json.load(f)
+    except (FileNotFoundError,PermissionError,IOError,ValueError):
+        testing_results = {}
+
+    for exercise_results in testing_results.values():
+        for autotest_automarking in exercise_results.values():
+            for test_group_results in autotest_automarking.values():
+                for individual_test in test_group_results.get('individual_tests', {}).values():
+                     n = individual_test.setdefault('passed', 0) + individual_test.setdefault('failed', 0)
+                     individual_test['passed_fraction'] = individual_test['passed'] / (n or 1)
+                n = test_group_results.setdefault('passed', 0) + test_group_results.setdefault('failed', 0)
+                test_group_results['passed_fraction'] = test_group_results['passed'] / (n or 1)
+    tv['testing_results'] = testing_results
+
     tv['template_variables'] = tv
     return tv
 

@@ -6,10 +6,10 @@ touch .build_started
 
 chmod 755 public
 cd private
-git diff --name-only `git reflog|sed 2q|cut -c1-8`|set_filesystem_permissions
+git diff --name-only `git reflog|sed 2q|cut -c1-8`|scripts/set_filesystem_permissions
 chmod 750 .
 
-rsync_public_files
+scripts/rsync_public_files
 
 case `whoami` in
 cs[0-9][0-9][0-9][0-9])
@@ -46,7 +46,7 @@ cd public
 ln -sf ../.github_secret
 ln -sf ../.flask_key
 
-cd ..
+cd $public_html_directory
 for d in *
 do
 	test ! -r "$d" && rm -f "$d"
@@ -79,7 +79,6 @@ cd $public_html_session_directory/private/.git/hooks/
 ln -sf ../../scripts/git-pre-commit pre-commit
 ln -sf ../../scripts/git-post-merge post-merge
 
-
 for p in public private
 do
 	cd $public_html_session_directory/$p
@@ -93,4 +92,4 @@ do
 	done
 done
 
-touch .build_finished
+touch $public_html_session_directory/.build_finished
