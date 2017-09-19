@@ -81,14 +81,23 @@ ln -sf ../../scripts/git-post-merge post-merge
 
 for p in public private
 do
-	cd $public_html_session_directory/$p
-	last_two_commits=`git reflog|sed 2q|cut -c1-8`
-	for d in lec assignments/* tlb/*
-	do
-		cd $public_html_session_directory/$p/$d
-		git diff --quiet $last_two_commits -- . && continue
-		test -x build.sh && </dev/null ./build.sh
-		test -e Makefile && </dev/null make -j10 -s
+cd $public_html_session_directory/private
+last_two_commits=`git reflog|sed 2q|cut -c1-8`
+for d in lec assignments/* tlb/*
+do
+	cd $public_html_session_directory/private/$d
+	git diff --quiet $last_two_commits -- . && continue
+	if test -x build.sh
+	then
+		</dev/null ./build.sh
+		cd $public_html_session_directory/public/$d
+		</dev/null ./build.sh
+	fi
+	cd $public_html_session_directory/private/$d
+	if test -e Makefile
+	then
+		</dev/null make -j10 -s -C  $public_html_session_directory/private/$d
+		</dev/null make -j10 -s -C  $public_html_session_directory/public/$d
 	done
 done
 
