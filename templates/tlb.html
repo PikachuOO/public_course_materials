@@ -1,5 +1,6 @@
 {% extends "templates/base.html" %}
 {% set autotest_command = course_number + " autotest" %}
+
 {% macro autotest_reminder() -%}
 {% set autotest_files = " ".join(sorted(varargs)) %}
 <p>
@@ -9,47 +10,7 @@ As usual use <code>autotest</code> to assist in testing your code (do your own t
 <kbd class="shell">{{autotest_command}} {{exercise_name}} {{autotest_files}}</kbd>
 </pre>
 
-{% if testing_results.get(exercise_name, {}).get('automarking', {}).get(autotest_files, {}) %}
-    {% set which = "marking" %}
-{% elif testing_results.get(exercise_name, {}).get('autotest', {}).get(autotest_files, {}) %}
-    {% set which = "test" %}
-{% endif %}
-
-{% if which %}
-    {% set results = testing_results[exercise_name]['auto'+which][autotest_files] %}
-    {% set individual_tests = results.get('individual_tests',{}) %}
-    <div class="autotest_results">
-    <h4>Auto{{which}} Results</h4>
-        <span class="autotest_results_emphasis">{{"%.0f" % (100 * results.get('passed_fraction', 0))}}%</span>
-        {# <span class="autotest_results_emphasis">({{results.get('passed', 0)}})</span> #}
-        of <span class="autotest_results_emphasis">{{results.get('passed', 0)+results.get('failed', 0)}}</span> students
-        {% if which == "marking" %}
-            who submitted
-            <span class="autotest_results_emphasis">{{autotest_files}}</span>
-            (that could be marked)
-        {% else %}
-            who have autotested
-            <span class="autotest_results_emphasis">{{autotest_files}}</span>
-            so far,
-        {% endif %}
-        {% if len(individual_tests) == 1 %}
-            passed the auto{{which}} test.
-        {% else %}
-            passed all auto{{which}} tests.
-            {% if 1.0 > results.get('passed_fraction', 0) > 0.0 %}
-                <div class="autotest_results_individual">
-                <ul>
-                {% for (label,test) in sorted(individual_tests.items()) %}
-                    <li><span class="autotest_results_emphasis">{{"%.0f" % (100 * test.get('passed_fraction', 0))}}%</span>
-                    {# ({{test.get('passed', 0)}}) #}
-                    passed test <i>{{label}}</i>
-                {% endfor %}
-                </ul>
-                </div>
-            {% endif %}
-        {% endif %}
-    </div>
-{% endif %}
+{{ autotest_summary(exercise_name, autotest_files) }}
 
 {%- endmacro %}
 

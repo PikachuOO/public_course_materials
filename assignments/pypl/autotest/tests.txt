@@ -1,0 +1,22 @@
+
+max_cpu=3
+max_wall_clock=30
+program=pypl.pl
+shell=1
+
+0-hello_world command="./pypl.pl <examples/0/hello_world.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/0/hello_world.py"
+1-answer3 command="./pypl.pl <examples/1/answer3.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/1/answer3.py"
+1-answer2 command="./pypl.pl <examples/1/answer2.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/1/answer2.py"
+1-answer4 command="./pypl.pl <examples/1/answer4.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/1/answer4.py"
+1-answer1 command="./pypl.pl <examples/1/answer1.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/1/answer1.py"
+1-answer0 command="./pypl.pl <examples/1/answer0.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/1/answer0.py"
+2-iota command="./pypl.pl <examples/2/iota.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/2/iota.py"
+2-answer5 command="./pypl.pl <examples/2/answer5.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/2/answer5.py"
+2-answer6 command="./pypl.pl <examples/2/answer6.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/2/answer6.py"
+3-size command="./pypl.pl <examples/3/size.py >tmp.pl; chmod +x tmp.pl;./tmp.pl  <examples/input" description="examples/3/size.py"
+3-tetrahedral command="./pypl.pl <examples/3/tetrahedral.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/3/tetrahedral.py"
+3-odd command="./pypl.pl <examples/3/odd.py >tmp.pl; chmod +x tmp.pl;./tmp.pl  <examples/input" description="examples/3/odd.py"
+3-triangle command="./pypl.pl <examples/3/triangle.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/3/triangle.py"
+3-prime1 command="./pypl.pl <examples/3/prime1.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/3/prime1.py"
+3-prime0 command="./pypl.pl <examples/3/prime0.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/3/prime0.py"
+3-five command="./pypl.pl <examples/3/five.py >tmp.pl; chmod +x tmp.pl;./tmp.pl " description="examples/3/five.py"

@@ -42,6 +42,9 @@ done
 
 ln -sf private/.flask_key
 ln -sf private/.github_secret
+cd public
+ln -sf ../.github_secret
+ln -sf ../.flask_key
 
 cd ..
 for d in *
