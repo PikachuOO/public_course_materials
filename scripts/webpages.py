@@ -43,27 +43,6 @@ def gzipped(f):
             response.headers['Vary'] = 'Accept-Encoding'
             response.headers['Content-Length'] = len(response.data)
             return response
-#       def cache(response):
-#           cache_filename = '/web/cs2041/flask_cache' + request.path
-#           if (response.status_code < 200 or
-#               response.status_code >= 300 or
-#               response.headers.get('Content-Encoding', '') != 'gzip' or
-#               response.headers.get('Content-Type', '') != 'text/html; charset=utf-8' or
-#               request.path.endswith('/') or
-#               os.path.exists(cache_filename) or
-#               is_tutor()):
-#               return
-#           try:
-#               dir = os.path.dirname(cache_filename)
-#               os.makedirs(dir, mode=0o755, exist_ok=True)
-#               temporary_pathname = '%s.%50d.tmp' % (cache_filename, os.getpid())
-#               fd = os.open(temporary_pathname, os.O_WRONLY|os.O_CREAT|os.O_EXCL, 0o666)
-#               with os.fdopen(fd, 'wb') as f:
-#                   f.write(response.data)
-#               os.rename(temporary_pathname, cache_filename)
-#           except IOError:
-#               pass
-#           return
         return f(*args, **kwargs)
     return view_func
 
@@ -357,7 +336,7 @@ def get_common_template_variables(static_checking=False):
         # these fail when static checking a template because there is no http request
         tv['url'] = request.url
         tv['directory_url'] = re.sub(r'/\w*\.cgi/', '/', re.sub(r'[^/]*$', '', request.url))
-        tv['url_root'] = re.sub(r'\w*\.cgi/?$', '', request.url_root)
+        tv['url_root'] = re.sub(r'flask\.cgi/?$', '', request.url_root)
         tv['script_root'] = request.script_root
         tv['is_tutor'] = is_tutor()
     tv['full_name'] = {

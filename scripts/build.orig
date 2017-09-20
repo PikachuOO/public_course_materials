@@ -19,7 +19,6 @@ cs[0-9][0-9][0-9][0-9])
 *)
 	htaccess_suffix=localhost
 	link_dir=private
-	chmod 755 .
 esac
 
 cd $public_html_session_directory
@@ -84,6 +83,7 @@ cd $public_html_session_directory/private
 #last_two_commits=`git reflog|sed 2q|cut -c1-8`
 for d in lec assignments/* tlb/*
 do
+<<<<<<< HEAD
 # FIXME This doesn't work
 #	git diff --quiet $last_two_commits -- . && continue
 	cd $public_html_session_directory/private/$d
@@ -94,6 +94,26 @@ do
 	test -e Makefile && </dev/null make -j10 -s 
 	cd $public_html_session_directory/public/$d
 	test -e Makefile && </dev/null make -j10 -s
+=======
+cd $public_html_session_directory/private
+last_two_commits=`git reflog|sed 2q|cut -c1-8`
+for d in lec assignments/* tlb/*
+do
+	cd $public_html_session_directory/private/$d
+	git diff --quiet $last_two_commits -- . && continue
+	if test -x build.sh
+	then
+		</dev/null ./build.sh
+		cd $public_html_session_directory/public/$d
+		</dev/null ./build.sh
+	fi
+	cd $public_html_session_directory/private/$d
+	if test -e Makefile
+	then
+		</dev/null make -j10 -s -C  $public_html_session_directory/private/$d
+		</dev/null make -j10 -s -C  $public_html_session_directory/public/$d
+	done
+>>>>>>> 8841e8fe5ca1dcc8a81dc6c521acce114a98b638
 done
 
 touch $public_html_session_directory/.build_finished
