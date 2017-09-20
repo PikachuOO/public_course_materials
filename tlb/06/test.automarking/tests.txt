@@ -1,0 +1,28 @@
+max_cpu=3
+max_wall_clock=30
+
+program=filter_digits.pl
+command=filter_digits.pl
+filter_digits_1 stdin="1 234 5aaaa678 9\n"
+filter_digits_2 stdin="I can think of 100's\nof other things I'd rather\nbe doing than these 3 questions\n"
+filter_digits_3 stdin="A line with lots of numbers:\n123456789123456789123456789\nA line with all zeroes\n000000000000000000000000000\nA line with blanks at the end    \n1 2 3\n"
+filter_digits_4 stdin="Input with absolutely 0 digits in it\nWell ... apart from that one ans this 1...\n"
+filter_digits_5 stdin="1111111 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536\n"
+
+program=nth_line.pl
+nth_line_1	command=./nth_line.pl 1 t1.txt
+nth_line_2	command=./nth_line.pl 5 t1.txt
+nth_line_3	command=./nth_line.pl 11 t1.txt
+nth_line_4	command=./nth_line.pl 12 t1.txt
+nth_line_5	command=./nth_line.pl 1 t2.txt
+nth_line_6	command=./nth_line.pl 0 t2.txt
+nth_line_7	command=./nth_line.pl 12 t3.txt
+
+
+program=snap_n.pl
+snap_n_1 command=./snap_n.pl 2 stdin="hi\nhow\nare\nyou\nhi\n"
+snap_n_2 command=./snap_n.pl 2 stdin="hi\nhow\nare\nyou\nhi\nhello\n"
+snap_n_3 command=./snap_n.pl 2 stdin="line rpted three times\nline repeapted twice\nline rpted 4 times\nline rpted once\nline repeapted twice\nline rpted three times\nline rpted 4 times\nline rpted three times\nline rpted 4 times\nline rpted 4 times\n"
+snap_n_4 command=./snap_n.pl 3 stdin="line rpted three times\nline repeapted twice\nline rpted 4 times\nline rpted once\nline repeapted twice\nline rpted three times\nline rpted 4 times\nline rpted three times\nline rpted 4 times\nline rpted 4 times\n"
+snap_n_5 command=./snap_n.pl 4 stdin="line rpted three times\nline repeapted twice\nline rpted 4 times\nline rpted once\nline repeapted twice\nline rpted three times\nline rpted 4 times\nline rpted three times\nline rpted 4 times\nline rpted 4 times\n"
+snap_n_6 command=./snap_n.pl 5 stdin="line rpted three times\nline repeapted twice\nline rpted 4 times\nline rpted once\nline repeapted twice\nline rpted three times\nline rpted 4 times\nline rpted three times\nline rpted 4 times\nline rpted 4 times\n"

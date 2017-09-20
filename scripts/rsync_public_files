@@ -38,7 +38,7 @@ public_prefixes = set("exam home_computing lec lib scripts static templates code
 
 public_prefixes.add("assignments/pypl")
 
-for path in glob.glob('*.*') + glob.glob('cgi/*.*') + ['.gitignore']:
+for path in glob.glob('*.*') + glob.glob('cgi/*.*') + glob.glob('assignments/ass?') + ['.gitignore']:
 	if not os.path.isdir(path):
 		public_prefixes.add(path)
 
