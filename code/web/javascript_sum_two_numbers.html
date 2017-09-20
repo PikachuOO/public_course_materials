@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Command</title>
+</head>
+<body>
+<input type=text id="x" onkeyup="sum();"> +
+<input type=text id="y" onkeyup="sum();"> =
+<input type=text id="sum" readonly="readonly">
+<script type="text/javascript">
+function sum() {
+    var x = parseInt(document.getElementById('x').value) || 0;
+    var y = parseInt(document.getElementById('y').value) || 0;
+    document.getElementById('sum').value = x + y;
+}
+</script>
+</body>
+</html>

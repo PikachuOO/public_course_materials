@@ -87,6 +87,8 @@
 
 \setbeamercolor{block body}{bg=gray!7}
 
+\usemintedstyle{tango}
+
 \newenvironment{C}
  {\VerbatimEnvironment
   \setbeamertemplate{blocks}[rounded][shadow=true]
@@ -116,5 +118,21 @@
   \setbeamertemplate{blocks}[rounded][shadow=true]
   \begin{block}{}
   \begin{minted}{python}}
+ {\end{minted}
+  \end{block}}
+  
+\newenvironment{html}
+ {\VerbatimEnvironment
+  \setbeamertemplate{blocks}[rounded][shadow=true]
+  \begin{block}{}
+  \begin{minted}{html}}
+ {\end{minted}
+  \end{block}}
+  
+\newenvironment{txt}
+ {\VerbatimEnvironment
+  \setbeamertemplate{blocks}[rounded][shadow=true]
+  \begin{block}{}
+  \begin{minted}{text}}
  {\end{minted}
   \end{block}}

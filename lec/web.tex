@@ -1,0 +1,1489 @@
+\input{include.tex}
+\begin{document}
+\section{Perl/CGI Scripting}
+\begin{frame}[fragile]
+\frametitle{TCP/IP Intro}
+
+TCP/IP beyond scope of this course - take COMP[39]331.
+
+But easier to understand  CGI using TCP/IP from Perl
+
+Easy to establish a TCP/IP connection.
+
+Server running on host williams.cse.unsw.edu.au does this:
+\begin{perl}
+use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 1234,
+               Listen => SOMAXCONN) or die;
+$c = $server->accept()
+\end{perl}
+
+Client running anywhere on internet does this:
+
+\begin{perl}
+use IO::Socket;
+$host = "williams.cse.unsw.edu.au";
+$c = IO::Socket::INET->new(PeerAddr=>$host,
+                           PeerPort=>1234) or die;
+\end{perl}
+
+Then \textbf{\tt{\$c}} effectively a bidirectional file handle.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Time Server}
+
+A simple TCP/IP server which supplies the current time as an ASCII string.
+
+\begin{perl}
+use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 4242,
+               Listen => SOMAXCONN) or die;
+while ($c = $server->accept()) {
+    printf "[Connection from %s]\n", $c->peerhost;
+    print $c scalar localtime,"\n";
+    close $c;
+}
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/timeserver.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/timeserver.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Time Client}
+
+Simple client which gets the time from the server on host \textbf{\tt{\$ARGV[0]}}
+and prints it.
+
+See NTP for how to seriously distribute time across networks.
+
+\begin{perl}
+use IO::Socket;
+$server_host =  $ARGV[0] || 'localhost';
+$server_port = 4242;
+$c = IO::Socket::INET->new(PeerAddr => $server_host,
+                PeerPort  => $server_port) or die;
+$time = <$c>;
+close $c;
+print "Time is $time\n";
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/timeclient.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/timeclient.pl}}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Well-known TCP/IP ports}
+To connect via TCP/IP you need to know the port.
+Particular services often listen to a standard TCP/IP port
+on the machine they are running. For example:
+
+\begin{itemize}
+\item  21 ftp
+\item  22 ssh (Secure shell)
+\item  23 telnet
+\item  25 SMTP (e-mail)
+\item  80 HTTP (Hypertext Transfer Protocol)
+\item  123 NTP (Network Time Protocol)
+\item  443 HTTPS (Hypertext Transfer Protocol over SSL/TLS)
+\end{itemize}
+
+So web server normally listens to port 80 (http) or 443 (https).
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Uniform Resource Locator (URL)}
+
+Familiar  syntax:
+
+\begin{txt}
+scheme://domain:port/path?query_string#fragment_id
+\end{txt}
+
+For example:
+
+\begin{txt}
+http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+http://www.google.com.au/search?q=COMP2041&hl=en
+\end{txt}
+
+Given a http URL a web browser extracts the hostname from the URL
+and connects to port 80 (unless another port is specified).
+
+It then sends the remainder of the URL to the server.
+
+The HTTP syntax of such a request is simple: \\[2ex]
+
+{\tt GET {\it{path}} HTTP/{\it{version}}} \\[2ex]
+
+We can do this easily in Perl
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Simple Web Client in Perl}
+A very simple web client - doesn't render the HTML, no GUI, no ... -
+see HTTP::Request::Common for a more general solution
+
+\begin{perl}
+use IO::Socket;
+foreach $url (@ARGV) {
+    $url =~ /http:\/\/([^\/]+)(:(\d+))?(.*)/ or die;
+    $c = IO::Socket::INET->new(PeerAddr => $1,
+            PeerPort => $2 || 80) or die;
+    # send request for web page to server
+    print $c "GET $4 HTTP/1.0\n\n";
+    # read what the server returns
+    my @webpage = <$c>; 
+    close $c;
+    print "GET $url =>\n", @webpage, "\n";
+}
+\end{perl}
+
+{\tiny Source: \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webget.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webget.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Simple Web Client in Perl}
+
+\begin{sh}
+$ cd /home/cs2041/public_html/lec/cgi/examples
+$ ./webget.pl http://cgi.cse.unsw.edu.au/
+GET http://cgi.cse.unsw.edu.au/ =>
+HTTP/1.1 200 OK
+Date: Sun, 21 Sep 2014 23:40:41 GMT
+Set-Cookie: JSESSIONID=CF09BE9CADA20036D93F39B04329DB
+Last-Modified: Sun, 21 Sep 2014 23:40:41 GMT
+Content-Type: text/html;charset=UTF-8
+Content-Length: 35811
+Connection: close
+
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+...
+\end{sh}
+
+Notice the web server returns some header lines and then data.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - getting started}
+
+This Perl web server just prints details of incoming requests \&
+always returns a 404 (not found) status.
+\begin{perl}
+use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041,
+          ReuseAddr => 1, Listen => SOMAXCONN) or die;
+while ($c = $server->accept()) {
+    printf "HTTP request from %s =>\n\n", $c->peerhost;
+    while ($request_line = <$c>) {
+        print "$request_line";
+        last if $request_line !~ /\S/;
+    }
+    print $c "HTTP/1.0 404 This server always 404s\n";
+    close $c;
+}
+\end{perl}
+
+{\tiny \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-404.pl}{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-404.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - getting started}
+\vspace{-7mm}
+\begin{small} 
+\begin{perl}
+use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041,
+          ReuseAddr => 1, Listen => SOMAXCONN) or die;
+$content = "Everything is OK - you love COMP[29]041.\n";
+while ($c = $server->accept()) {
+    printf "HTTP request from %s =>\n\n", $c->peerhost;
+    while ($request_line = <$c>) {
+        print "$request_line";
+        last if $request_line !~ /\S/;
+    }
+    my $request = <$c>;
+    print "Connection from ", $c->peerhost, ": $request";
+    $request =~ /^GET (.+) HTTP\/1.[01]\s*$/;
+    print "Sending back /home/cs2041/public_html/$1\n";
+    open my $f, '<', "/home/cs2041/public_html/$1";
+    $content = join "", <$f>;
+    print $c "HTTP/1.0 200 OK\nContent-Type: text/html\n";
+    print $c "Content-Length: ",length($content),"\n";
+    print $c $content;
+    close $c;
+}
+\end{perl}
+\end{small} 
+
+{\tiny \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-200.pl}{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-debug.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - too simple}
+A simple web server in Perl.
+
+Does fundamental job of serving web pages but
+has  bugs, securtity holes and huge limitations.
+
+\begin{perl}
+while ($c = $server->accept()) {
+    my $request = <$c>;
+    $request =~ /^GET (.+) HTTP\/1.[01]\s*$/;
+    open F, "</home/cs2041/public_html/$1";
+    $content = join "", <F>;
+    print $c "HTTP/1.0 200 OK\n";
+    print $c "Content-Type: text/html\n";
+    print $c "Content-Length: ",length($content),"\n";
+    print $c $content;
+    close $c;
+}
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-too-simple.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webserver-too-simple.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - mime-types}
+Web servers typically determine a file's type from its extension (suffix)
+and pass this back in a header line.
+
+ON Unix-like systems  file /etc/mime.types contains lines mapping extensions to
+mime-types, e.g.:
+
+\begin{txt}
+    application/pdf             pdf
+    image/jpeg                  jpeg jpg jpe
+    text/html                   html htm shtml
+\end{txt}
+
+May also be configured within web-server e.g cs2041's .htaccess file contains:
+
+\begin{txt}
+AddType text/plain pl py sh c cgi
+\end{txt}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - mime-types}
+
+Easy to read /etc/mime.types specifications into a hash:
+
+\begin{perl}
+open MT, '<', "/etc/mime.types") or die;
+while ($line = <MT>) {
+    $line =~ s/#.*//;
+    my ($mime_type, @extensions) = split /\s+/, $line;
+    foreach $extension (@extensions) {
+    	$mime_type{$extension} = $mime_type;
+    }
+}
+\end{perl}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - mime-types}
+
+Previous simple web server with code added to
+use the {\tt mime\_type} hash to return the appropriate {\tt Content-type}:
+
+\begin{small}
+\begin{perl}
+$url =~ s/(^|\/)\.\.(\/|$)//g;
+my $file = "/home/cs2041/public_html/$url";
+# prevent access outside 2041 directory
+$file =~ s/(^|\/)..(\/|$)//g;
+$file .= "/index.html" if -d $file;
+if (open my $f, '<', $file) {
+    my ($extension) = $file =~ /\.(\w+)$/;
+    print $c "HTTP/1.0 200 OK\n";
+    if ($extension && $mime_type{$extension}) {
+        print $c "Content-Type: $mime_type{$extension}\n";
+    }
+    print $c <my $f>;
+}
+\end{perl}
+\end{small}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-mime-types.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webserver-mime-types.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - multi-processing}
+
+Previous web server scripts serve only one request at a time.
+
+They can not handle a high volume of requests.
+
+And slow client can deny access for others to the web server, e.g 
+our previous web client with a 1 hour sleep added:
+
+\begin{perl}
+$url =~ /http:\/\/([^\/]+)(:(\d+))?(.*)/ or die;
+$c = IO::Socket::INET->new(PeerAddr => $1,
+      PeerPort => $2 || 80) or die;
+sleep 3600;
+print $c "GET $4 HTTP/1.0\n\n";
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webget-slow.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webget-slow.pl}}
+
+Simple solution is to process each request in a separate process.
+
+The Perl subroutine fork duplicates a running program.
+
+Returns 0 in new process (child) and process id of child in
+original process (parent).
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server in Perl - multi-processing}
+
+We can add this easily to our previous webserver:
+\begin{perl}
+while ($c = $server->accept()) {
+    if (fork() != 0) {
+        # parent process goes to waiting for next request
+        close($c);
+        next;
+    }
+    # child processes request
+    my $request = <$c>;
+    ...
+    close $c;
+    # child must terminate here otherwise
+    # it would compete with parent for requests
+    exit 0;
+}
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-parallel.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webserver-parallel.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server - Simple CGI}
+Web servers allow dynamic content to be generated via CGI (and other ways).
+
+Typically they can be configure to execute programs for certain URIS.
+
+for example cs2041's .htaccess file indicates files with suffix {\tt .cgi} should be executed.
+
+\begin{txt}
+<Files *.cgi>
+SetHandler application/x-setuid-cgi
+</Files>
+\end{txt}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server - Simple CGI}
+
+We can add this to our simple web-server:
+\begin{perl}
+if ($url =~ /^(.*\.cgi)(\?(.*))?$/) {
+    my $cgi_script = "/home/cs2041/public_html/$1";
+    $ENV{SCRIPT_URI} = $1;
+    $ENV{QUERY_STRING} = $3 || '';
+    $ENV{REQUEST_METHOD} = "GET";
+    $ENV{REQUEST_URI} = $url;
+    print $c "HTTP/1.0 200 OK\n";
+    print $c `$cgi_script` if -x $cgi_script;
+    close F;
+} 
+\end{perl}
+ 
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-simple-cgi.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webserver-simple-cgi.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Web server - CGI}
+
+A fuller CGI implementation implementing both GET and POST requests can be found here:
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webserver-cgi.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webserver-cgi.pl}}
+\end{frame}
+
+\begin{frame}
+\frametitle{HTML \& CSS}
+
+\begin{itemize}
+\item  We're (hopefully) all familiar with HTML .
+
+\item  HTML \& CSS not covered (much) in lectures.
+
+\item  If not familiar with HTML \& CSS, may need to do extra reading.
+
+\item Tutes \& labs will help.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Semantic Markup}
+
+\begin{itemize}
+\item  Use HTML tags to indicate the nature of the content. 
+
+\item  Use CSS to indicate how content type should be displayed
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Document Object Model}
+\begin{itemize}
+\item  content marked up with {\em{tags}} to describe appearance
+\item  browser reads HTML and builds Document Object Model (DOM)
+\item  browser produces a visible rendering of DOM
+\end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width = 0.9\textwidth]{Pic/staticpage}
+        % \caption{Caption}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dynamic Web Pages}
+HTML tags are {\em{static}}
+    ~ {\small  (i.e. produce a fixed rendering).}
+
+``Dynamic'' web content can be generated on server
+
+\begin{itemize}
+\item  Generated on the server:
+\begin{itemize}
+\item  SSP ~ {\small (program running in web server generates HTML)}
+\item  CGI ~ {\small (program running outside web server generates HTML)}
+\item  many other variants
+\end{itemize}
+
+\item  Generated in the browser
+\begin{itemize}
+\item  JavaScript ~ {\small (browser manipulates document object model)}
+\item  Java Applet ~ {\small (JVM in browser executes Java program) - dead}
+\item  Silverlight ~ {\small (Microsoft browser plugin) - dying}
+\item  Flash ~ {\small (Adobe browser plugin) - dying}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Dynamic Web Pages}
+For CGI and SSP, the scripts {\small (HTML generators)} are invoked
+\begin{itemize}
+\item  via a URL
+    ~ {\small (giving the name and type of application)}
+\item  passing some data values
+    ~ {\small (either in the URL or via stdin)}
+\end{itemize}
+The data values are typically
+\begin{itemize}
+\item  collected in a fill-in form which invokes the script
+\item  passed from page to page (script to script) via GET/POST
+\end{itemize}
+{\small 
+(other mechanisms for data transmission include cookies and server-state)
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI ~{\small (Common Gateway Interface)}}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width = 0.9\textwidth]{Pic/cgi}
+        % \caption{Caption}
+    \end{figure}
+
+Data is passed as \textbf{\tt{name=value}} pairs
+    ~ {\small (all values are strings)}.
+
+Application outputs (normally) HTML, which server passes to client.
+
+For HTML documents, header is ~ \textbf{\tt{Content-type: text/html}}
+
+{\small 
+Header can be any MIME-type (e.g. \textbf{\tt{text/html}}, ~ \textbf{\tt{image/gif}}, ...)
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Perl and CGI}
+So how does Perl fit into this scenario?
+
+CGI scripts typically:
+\begin{itemize}
+\item  do lots of complex string manipulation
+\item  write many complex strings (HTML) to output
+\end{itemize}
+Perl is good at manipulating strings - good for CGI.
+
+Libraries for Perl make CGI processing even easier.
+
+CGI.pm is one such library 
+    ~ {\small (see later for more details)}
+\end{frame}
+
+\begin{frame}
+\frametitle{SSP ~{\small (Server-side Programming)}}
+
+
+    \begin{figure}
+        \centering
+        \includegraphics[width = 0.9\textwidth]{Pic/sscript}
+        % \caption{Caption}
+    \end{figure}
+
+Data is available via library functions (e.g. \textbf{\tt{param}}).
+
+Script produces HTML output, which is sent to client (browser).
+
+\end{frame}
+
+\begin{frame}
+\frametitle{JavaScript ~{\small (Client-side DOM Scripting)}}
+
+
+    \begin{figure}
+        \centering
+        \includegraphics[width = 0.9\textwidth]{Pic/jscript}
+        % \caption{Caption}
+    \end{figure}
+Executing script can modify browser's internal representation of document (DOM)
+
+Browser then changes appearance of document on screen.
+
+This can happen at script load time or in response to {\em{events}}
+(such as \textbf{\tt{onClick}}, \textbf{\tt{onMouseOver}}, \textbf{\tt{onKeyPress}}) after
+script has loaded.
+
+Can also access data in form controls {\small (because they are also document elements)}.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{JavaScript ~{\small (Client-side DOM Scripting)}}
+For example, this web page has JavaScript embedded to sum two numbers from input fields and 
+store the result in a third  field.
+
+The function is run whenever a character is entered in either field.
+\begin{perl}
+<input type=text id="x" onkeyup="sum();"> +
+<input type=text id="y" onkeyup="sum();"> =
+<input type=text id="sum" readonly="readonly">
+<script type="text/javascript">
+function sum() {
+  var x = parseInt(document.getElementById('x').value);
+  var y = parseInt(document.getElementById('y').value);
+  document.getElementById('sum').value = num1 + num2;
+}
+</script>
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/javascript_sum_two_numbers.html}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/javascript\_sum\_two\_numbers.html}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ajax}
+Ajax provides a variation on the above approach:
+\begin{itemize}
+\item  ``normal'' browser-to-server interaction is HTTP request
+\item  this causes browser to read response as HTML {\small (new page)}
+\item  Ajax sends XMLHttpRequests from browser-to-server
+\item  browser does not refresh, but waits for a response
+\item  response data {\small (not HTML)} is read and added into DOM
+\end{itemize}
+Leads to interaction appearing more like traditional GUI.
+
+Examples: Gmail, Google calendar, Flickr, ....
+
+The popular JQuery library is an easy way to use AJAX.
+\end{frame}
+
+\begin{frame}
+\frametitle{Ajax}
+Ajax-style browser/server interaction:
+
+    \begin{figure}
+        \centering
+        \includegraphics[width = 0.9\textwidth]{Pic/webdb-ajax}
+        % \caption{Caption}
+    \end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Ajax showing result of matching Perl regex}
+\begin{perl}
+$(document).ready(
+ function() {
+  $("#match").click(
+   function() {
+    $.get(
+     "match.cgi",
+     {string:$("#string").val(), regex:$("#regex").val()},
+     function(data) {
+      $("#show").html(data)
+     }
+    )
+   }
+  )
+ }
+)
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041cgi/code/web/match.html}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041cgi/code/web/match.html}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Ajax}
+
+A new page is not loaded when the match button is pressed.
+
+JQuery only updates a field on the page.
+
+It fetches by http the results of the match from this CGI script:
+
+\begin{perl}
+use CGI qw/:all/;
+print header;
+if (param('string') =~ param('regex')) {
+    print b('Match succeeded, this substring matched: ');
+    print tt(escapeHTML($&));
+} else {
+    print b('Match failed');
+}
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/match.cgi}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/match.cgi}}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{HTML Forms}
+An HTML {\em{form}} combines the notions of
+     ~ {\em{user input}} ~\&~ {\em{function call}} :
+\begin{itemize}
+\item  collects data via {\em{form control}} elements
+\item  invokes a URL to process the collected data when \textbf{\tt{submit}}ted
+\end{itemize}
+Syntax:
+\begin{perl}
+    <form method=RequestMethod action=URL ...>
+    any HTML except another form
+       mixed with
+    data collection (form control) elements
+    </form>
+\end{perl}
+
+An HTML document may contain any number of \textbf{\tt{{\textless}form>}}'s.
+
+Forms can be arbitrarily interleaved with HMTL layout elements
+     {\small (e.g. \textbf{\tt{{\textless}table>}})}
+\end{frame}
+
+\begin{frame}
+\frametitle{\textbf{\tt{METHOD}} Attribute}
+The {\it{RequestMethod}} value indicates how data is passed to \textbf{\tt{action}} URL.
+
+Two {\it{RequestMethod}}s are available: \textbf{\tt{GET}} and \textbf{\tt{POST}}
+\begin{itemize}
+\item 
+\textbf{\tt{GET}}: data attached to URL
+    ~ (\textbf{\tt{{\it{URL}}{\bf{?}}{\it{name\_{1}}}={\it{val\_{1}}}{\bf{\&}}{\it{name\_{2}}}={\it{val\_{2}}}{\bf{\&}}...}})
+\item 
+\textbf{\tt{POST}}: data available to script via standard input
+\end{itemize}
+Within a server script all we see is a collection of variables:
+\begin{itemize}
+\item  with the same names as those used in the form elements
+\item  initialised with the values collected in the form
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{URL-encoded Strings}
+Data is passed from browser to server as a single string in the form:
+
+{\it{name}}{\bf{=}}{\it{val}}{\bf{\&}}{\it{name}}{\bf{=}}{\it{val}}{\bf{\&}}{\it{name}}{\bf{=}}{\it{val}}{\bf{\&}}...
+
+with no spaces and where '\textbf{\tt{{\bf{=}}}}' and '\textbf{\tt{{\bf{\&}}}}'
+are treated as special characters.
+
+To achieve this strings are "url-encoded" e.g: \\[2ex]
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{\tt{andrewt}} & \textbf{\tt{andrewt}} \\
+\hline
+\textbf{\tt{John Shepherd}}  &  \textbf{\tt{John{\em{+}}Shepherd}}  \\
+\hline
+\textbf{\tt{{\textasciitilde}cs2041 = /home/cs2041}}  & \textbf{\tt{{\em{\%7E}}cs2041{\em{+}}{\em{\%3D}}{\em{+}}{\em{\%2F}}home{\em{\%2F}}cs2041}}  \\
+\hline
+\textbf{\tt{1 + 1 = 2}}  & \textbf{\tt{1{\em{+}}{\em{\%2B}}{\em{+}}1{\em{+}}{\em{\%3D}}{\em{+}}2}}  \\
+\hline
+\textbf{\tt{Jack \& Jill = Love!}}  & \textbf{\tt{Jack{\em{+}}{\em{\%26}}{\em{+}}Jill{\em{+}}{\em{\%3D}}{\em{+}}Love{\em{\%21}} }}  \\
+\hline
+\end{tabular}
+ \\[2ex]
+URL-encoded strings are usually decoded by library before your code sees them.
+\end{frame}
+
+\begin{frame}
+\frametitle{\textbf{\tt{ACTION}} Attribute}
+\textbf{\tt{{\textless}form ... {\em{{\bf{action}}}}='{\it{URL}}' ... >}}
+\begin{itemize}
+\item  specifies script \textbf{\tt{{\it{URL}}}} to process form data
+\end{itemize}
+When the form is submitted ...
+\begin{itemize}
+\item  invoke the URL specified in \textbf{\tt{action}}
+\item  pass all form data to it
+\end{itemize}
+If no \textbf{\tt{action}} attribute, re-invoke the current script.
+\end{frame}
+
+\begin{frame}
+\frametitle{Other \textbf{\tt{{\textless}form>}} Attributes}
+\textbf{\tt{{\textless}form ... {\em{{\bf{name}}}}='{\it{FormName}}' ... >}}
+\begin{itemize}
+\item  associates the name \textbf{\tt{{\it{FormName}}}} with the entire form
+\item  useful for referring to form in JavaScript
+\end{itemize}
+\textbf{\tt{{\textless}form ... {\em{{\bf{target}}}}='{\it{WindowName}}' ... >}}
+\begin{itemize}
+\item  causes output from executing script to be placed in specified window
+\item  useful when dealing with frames ~ {\small (see later)}
+\end{itemize}
+\textbf{\tt{{\textless}form ... {\em{{\bf{onSubmit}}}}='{\it{Script}}' ... >}}
+\begin{itemize}
+\item  specifies actions to be carried out just before sending data to script
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Form Controls}
+{\em{Form controls}} are the individual data collection elements within a form.
+
+Data can be collected in the following styles:
+\begin{center}
+
+
+\begin{center}\begin{tabular}{|l|l|}
+\hline
+ text  &  single line or region of text \\ \hline
+ password  &  single line of text, value is hidden \\ \hline
+ menu  &  choose 1 or many from a number of options \\ \hline
+ checkbox  &  on/off toggle switch \\ \hline
+ radio  &  choose only 1 from a number of options \\ \hline
+ hidden  &  data item not displayed to user \\ \hline
+ submit  &  button, sends collected data to script \\ \hline
+ reset  &  button, resets all data elements in form \\ \hline
+ button  &  button, effect needs to be scripted \\ \hline
+\end{tabular}
+\end{center}
+
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Scripts}
+CGI scripts can be written in {\em{most}} languages.
+
+The better CGI languages:
+\begin{itemize}
+\item  are good at manipulating character strings
+\item  make it easy to produce HTML
+\end{itemize}
+Perl satisfies both of these criteria ok on its own.
+
+Libraries like \textbf{\tt{CGI.pm}} make Perl even better for CGI.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CGI at CSE}
+On CSE machines, users typically place CGI scripts in:
+
+{\tt /home/{\it{UserName}}/public\_html/cgi-bin}
+
+And access them via:
+
+{\tt http://cgi.cse.unsw.edu.au/\textasciitilde{\it{Username}}/cgi-bin/{\it{Script}}}
+
+Nowadays, you can place CGI scripts
+\begin{itemize}
+\item  anywhere under your \textbf{\tt{public\_html}} directory
+\item  provided that they have a \textbf{\tt{.cgi}} or suffix
+\end{itemize}
+and access them via e.g.
+
+    {\tt http://cgi.cse.unsw.edu.au/\textasciitilde{\it{UserName}}/path/to/script.cgi}
+
+The CSE web server will automatically forward them to
+the CGI server for execution.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CGI at CSE}
+A note on file/directory protections and security ...
+\begin{itemize}
+\item  files under \textbf{\tt{public\_html}} need to be readable
+\item  directories under \textbf{\tt{public\_html}} need to be executable
+\end{itemize}
+so that at least the Web server can access them.
+
+A special command:
+\begin{perl}
+    priv webonly FileOrDirecctory
+\end{perl}
+
+makes files/dirs readable only to you and the web server.
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI and Security}
+Putting up a CGI scripts means that
+\begin{itemize}
+\item  anyone, anywhere can execute your script
+\item  they can give it any data they like
+\end{itemize}
+If you are not careful how data is used ...
+
+Many prople run Perl CGI scripts in ``taint'' mode
+\begin{itemize}
+\item  generates an error if tainted data used unsafely
+\end{itemize}
+Tainted data = any CGI parameter
+
+Unsafely = in system-type operations (e.g. \textbf{\tt{`...`}})
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI.pm}
+{\tt CGI.pm} is a Perl module to simplify CGI scripts.
+
+It provides functions/methods that make it easy
+\begin{itemize}
+\item  to access parameters and other data for CGI scripts
+\item  to produce HTML output from the script
+\end{itemize}
+CGI.pm supports two styles of programming:
+
+\begin{itemize}
+\item  object-oriented, with CGI objects and methods 
+\item  function-oriented, with function calls (single implicit CGI object)
+\end{itemize}
+
+We'll use simpler function-oriented style in this course.
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI.pm}
+CGI.pm has a range of methods/functions for:
+\begin{itemize}
+\item  producing HTML ~ {\small (several flavours, including browser-specific)},
+\item  building HTML forms ~ {\small (overall wrapping, plus all form elements)}
+\item  CGI handling ~ {\small (manipulating parameters, managing state)}
+\end{itemize}
+HTML and form building methods typically
+\begin{itemize}
+\item  accept a collection of string arguments
+\item  return a string that contains a fragment of HTML
+\end{itemize}
+
+A dynamic Web page is produced by
+\begin{itemize}
+\item  printing a collection of such HTML fragments
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example CGI.pm}
+Consider a data collection form (\textbf{\tt{SayHello.html}}):
+\begin{perl}
+    <form name="Hello" action="HelloScript.cgi">
+    Your name: <input name="UserName" type="text">
+    <input type=submit value="Say Hello">
+    </form>
+\end{perl}
+
+And consider that we type \textbf{\tt{John}} into the input box.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example CGI.pm}
+An OO-style script (\textbf{\tt{HelloScript.cgi}})
+\begin{perl}
+use CGI;
+$cgi = new CGI;
+$name = $cgi->param("UserName");
+print $cgi->header(), $cgi->start_html(),
+      $cgi->p("Hello there, $name"),
+      $cgi->end_html();
+\end{perl}
+
+Output of script (sent to browser):
+\begin{perl}
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD><TITLE>Untitled Document</TITLE>
+</HEAD><BODY><P>Hello there, John</P></BODY></HTML>
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example CGI.pm}
+A function-style script (\textbf{\tt{HelloScript.cgi}})
+\begin{perl}
+use CGI qw/:standard/;
+$name = param("UserName");
+print header(), start_html(),
+      p("Hello there, $name"),
+      end_html();
+\end{perl}
+
+Output of script (sent to browser):
+\begin{perl}
+Content-type: text/html
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD><TITLE>Untitled Document</TITLE>
+</HEAD><BODY><P>Hello there, John</P></BODY></HTML>
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Calling CGI.pm Methods}
+CGI.pm methods often accept many (optional) parameters.
+
+Special method-call syntax available throughout CGI.pm:
+\begin{perl}
+    MethodName(-ArgName1=>Value1,
+               -ArgName2=>Value2,
+               -ArgName3=>Value3,
+               ...
+               -ArgNamen=>Valuen,
+               );
+\end{perl}
+
+Example:
+\begin{perl}
+    print header(-type=>'image/gif',-expires=>'+3d');
+\end{perl}
+
+Argument names are case-insensitive; args can be supplied in any order.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Calling CGI.pm Methods}
+CGI.pm doesn't explicitly define methods for all HMTL tags.
+
+Instead, constructs them on-the-fly using rules about arguments.
+
+This allows you to include arbitrary attributes in HTML tags
+\begin{perl}
+    MethodName(-AttrName=>Value,..., OtherArgs, ...);
+\end{perl}
+
+If first argument is an associative array, it is converted into tag attributes.
+
+Other unnamed string arguments are concatenated space-separated.
+
+Methods that behave like this are called {\em HTML shortcuts}.
+\end{frame}
+
+\begin{frame}
+\frametitle{Calling CGI.pm Methods}
+Examples of HTML shortcuts:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{\tt{h1()}} ~ or ~ \textbf{\tt{h1}}
+&
+\textbf{\tt{{\textless}H1>}}
+\\ \hline
+\textbf{\tt{h1('some','contents')}}
+&
+\textbf{\tt{{\textless}H1>some contents{\textless}/H1>}}
+\\ \hline
+\textbf{\tt{h1(\{-align=>left\})}}
+&
+\textbf{\tt{{\textless}H1 ALIGN="left">}}
+\\ \hline
+\textbf{\tt{h1(\{-align=>left\},'Head')}}
+&
+\textbf{\tt{{\textless}H1 ALIGN="left">Head{\textless}/H1>}}
+\\ \hline
+\textbf{\tt{p()}} ~ or ~ \textbf{\tt{p}}
+&
+\textbf{\tt{{\textless}P>}}
+\\ \hline
+\textbf{\tt{p('how's',"this","now")}}
+&
+\textbf{\tt{{\textless}P>how's this now{\textless}/P>}}
+\\ \hline
+\textbf{\tt{p(\{-align=>center\},'Now!')}} & \textbf{\tt{{\textless}P ALIGN="center">Now!{\textless}/P>}} \\ \hline\hline
+\end{tabular}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Accessing Data Items}
+The \textbf{\tt{{\bf{{\em{param}}}}}} method provides access to CGI parameters.
+\begin{itemize}
+\item  can get a list of names for all parameters
+\item  can get value for a single named parameter
+\item  can modify the values of individual parameters
+\end{itemize}
+Examples:
+\begin{perl}
+# get a list of names of all parameters
+@names = param();
+# get value of parameter "name"
+$name = param('name');
+# get values of parameter "choices"
+@list = param('choices');
+# set value of "colour" parameter to 'red"
+param('colour','red');
+param(-name=>'colour', -value='red');
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Accessing Data Items}
+Example - dump a table of CGI params:
+\begin{perl}
+#!/usr/bin/perl
+use CGI ':standard';
+@params = param();
+print header, "<html><body>";
+
+foreach $p (@params) {
+    $v = param($p);
+    $rows .= "<tr><td>$p</td><td>$v ";
+}
+
+print "<center><table border=1>
+<tr><th>Param<th>Value
+$rows
+</table>
+</body></center></html>";
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Accessing Data Items}
+Example - dump a table of CGI params, using shortcuts:
+\begin{perl}
+#!/usr/bin/perl
+use CGI ':standard';
+@params = param();
+print header, start_html;
+
+foreach $p (@params) {
+   $rows .= Tr(td([$p, param($p)]));
+}
+print center(
+         table({-border=>1},
+            Tr(th(['Param','Value'])),
+            $rows
+         )
+      ),
+      end_html;
+\end{perl}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Generating Forms}
+CGI.pm has methods to assist in generating forms dynamically:
+
+\begin{center}
+\begin{tabular}{lll}
+
+  \begin{minipage}{2.5cm}\textbf{\tt{start\_form}} ~\end{minipage}
+   & \begin{minipage}{8.5cm}generates a \textbf{\tt{{\textless}form>}} tag with \\
+    optional params for \textbf{\tt{action}},...~\end{minipage}
+\\[1ex]
+
+  \begin{minipage}{2.5cm}\textbf{\tt{end\_form}} ~\end{minipage}
+   & \begin{minipage}{8.5cm}generates a \textbf{\tt{{\textless}/form>}} tag~\end{minipage}
+\\[1ex]
+\end{tabular}
+\end{center}
+
+Plus methods for each different kind of data collection element \\
+\begin{itemize}
+\item  \textbf{\tt{textfield}}, ~ \textbf{\tt{textarea}}, ~ \textbf{\tt{password\_field}}
+\item  \textbf{\tt{popup\_menu}}, ~ \textbf{\tt{scrolling\_list}}
+\item  \textbf{\tt{checkbox}}, ~ \textbf{\tt{radio\_group}}, ~ \textbf{\tt{checkbox\_group}}
+\item  \textbf{\tt{submit}}, ~ \textbf{\tt{reset}}, ~ \textbf{\tt{button}}, ~ \textbf{\tt{hidden}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Self-invoking Form}
+
+\begin{perl}
+use CGI qw/:standard/;  # qw/X/ == 'X'
+print header,
+   start_html('A Simple Example'),
+   h1(font({-color=>'blue'},'A Simple Example')),
+   start_form,
+   "What's your name? ",textfield('name'),p,
+   "What's your favorite color? ",
+   popup_menu(-name=>'color',
+            -values=>['red','green','blue','yellow'])
+   p,
+   submit,
+   end_form;
+if (param()) {
+   print "Your name is ",em(param('name')),p,
+      "Your favorite color is ",em(param('color')),
+      hr;
+}
+\end{perl}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Script Structure}
+CGI scripts {\it{can}} interleave computation and output.
+
+Arbitrary interleaving is not generally effective \\
+{\small (e.g. produce some output and then encounter an error in middle of table)}
+
+Useful structure for (large) scripts:
+\begin{itemize}
+\item  collect and check parameters; handle errors
+\item  use parameters to compute result data structures
+\item  convert results into HTML string
+\item  output entire well-formed HTML string
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Multi-page (State-based) Scripts}
+Often, a Web-based transaction goes through several stages.
+
+Sometimes useful to implement all stages by a single script.
+
+Such scripts are
+\begin{itemize}
+\item  structured as a collection of cases, distinguished by a "state" variable
+\item  each state sets parameter to pass to next invocation of same script
+\item  new invocation produces a new state (different value of "state" variable)
+\end{itemize}
+Overall effect: a single script produces many different Web pages.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Multi-page (State-based) Scripts}
+Example (state-based script schema):
+\begin{perl}
+    $state = param("state");
+    if ($state eq "") {
+       do processing for initial state
+       set up form to invoke next state
+    } elsif ($state == Value1) {
+       do processing for state 1
+       set up form to invoke next state
+    } elsif ($state == Value2) {
+       do processing for state 2
+       set up form to invoke next state
+    } elsif ($state == Value3) {
+       do processing for state 3
+       set up form to invoke next state
+    }
+    ...
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Cookies}
+Web applications often need to maintain state (variables)
+between execution of their CGI script(s).
+
+Hidden input fields are useful for the one "session".
+
+Cookies provide more persistant storage.
+
+Cookies are strings sent to web clients in the response headers.
+
+Clients (browsers) store these strings in a file and send them back in the header
+when they subsequently access the site. For example:
+
+{\tiny
+\begin{sh}
+$ ./webget.pl  http://www.amazon.com/
+HTTP/1.1 200 OK
+Date: Thu, 19 May 2011 00:54:27 GMT
+Server: Server
+Set-Cookie: skin=noskin; path=/;domain=.amazon.com;expires=Thu, 19-May-2011 00:54:27 GMT
+Set-cookie: session-id-time=208567201l;path=/;domain=.amazon.com;expires=Tue Jan 01 08:00:01 2036 GMT
+Set-cookie: session-id=191-0575084-2685655;path=/;domain=.amazon.com;expires=Tue Jan 01 08:00:01 2036 GMT
+\end{sh}
+}
+Web clients send the cookie strings back next time they fetch pages from Amazon.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Storing a Hash}
+The Storable module provides an easy way to store a hash, e.g:
+
+\begin{perl}
+use Storable;
+$cache_file = "./.cache";
+%h = %{retrieve($cache_file)} if -r $cache_file;
+$h{COUNT}++;
+print "This script has now been run $h{COUNT} times\n";
+store(\%h, $cache_file);
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/persistent.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/persistent.pl}}
+
+\begin{sh}
+$ persistent.pl 
+This script has now been run 1 times
+$ persistent.pl 
+This script has now been run 2 times
+$ persistent.pl 
+This script has now been run 3 times
+...
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{A Web Client with Cookies}
+
+We can  add code to our simple web client to store cookies it receives using Storable.
+
+\begin{perl}
+use Storable;
+$cookies_db = "./.cookies";
+%cookies = %{retrieve($cookies_db)} if -r $cookies_db;
+...
+while (<$c>) {
+  last if /^\s*$/;
+  next if !/^Set-Cookie:/i;
+  my ($name,$value, %v) = /([^=;\s]+)=([^=;\s]+)/g;
+  my $domain = $v{'domain'} || $host;
+  my $path = $v{'path'} || $path;
+  $cookies{$domain}{$path}{$name} = $value;
+  print "Received cookie $domain $path $name=$value\n"
+}
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webget-cookies.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webget-cookies.pl}}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{A Web Client with Cookies}
+
+And add code to send cookies when making requests:
+
+\begin{small}
+\begin{perl}
+use Storable;
+$cookies_db = "./.cookies";
+%cookies = %{retrieve($cookies_db)} if -r $cookies_db;
+...
+foreach $domain (keys %cookies) {
+  next if $host !~ /$domain$/;
+  foreach $cookie_path (keys %{$cookies{$domain}}) {
+    next if $path !~ /^$cookie_path/;
+    foreach $name (keys %{$cookies{$domain}{$path}}) {
+      my $cookie = $cookies{$domain}{$path}{$name}
+      print $c "Cookie: $cookie\n";
+    }
+  }
+}
+\end{perl}
+\end{small}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/webget-cookies.pl}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/webget-cookies.pl}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{A Web Client with Cookies}
+
+In action:
+
+\begin{small}
+\begin{sh}
+$ webget-cookies.pl http://www.amazon.com/
+Received cookie .amazon.com / skin=noskin
+Received cookie .amazon.com / session-id-time=2092797201l
+Received cookie .amazon.com / session-id=192-8901109-68109
+$ webget-cookies.pl http://www.amazon.com/
+Sent cookie skin=noskin
+Sent cookie session-id-time=2092797201l
+Sent cookie session-id=192-8901109-6810988
+Received cookie .amazon.com / skin=noskin
+Received cookie .amazon.com / ubid-main=198-1199999-11869
+Received cookie .amazon.com / session-id-time=2092797201l
+Received cookie .amazon.com / session-id=192-8901109-68109
+\end{sh}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CGI Script Setting Cookie Directly}
+
+This crude script puts a cookie in the header directly.
+
+And retrieves a cookie from the HTTP\_COOKIE environment variable.
+
+\begin{perl}
+$x = 0;
+if ($ENV{HTTP_COOKIE} =~ /\bx=(\d+)/) {
+    $x = $1 + 1;
+}
+print "Content-type: text/html
+Set-Cookie: x=$x;
+
+<html><head></head><body>
+x=$x
+</body></html>";
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/simple_cookie.cgi}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/simple\_cookie.cgi}}
+\end{frame}
+
+\begin{frame}[fragile,shrink]
+\frametitle{Using CGI.pm to Set a Cookie}
+
+CGI.pm provides more convenient access to cookies.
+
+\begin{perl}
+use CGI qw/:all/;
+use CGI::Cookie;
+
+%cookies = fetch CGI::Cookie;
+$x = 0;
+$x = $cookies{'x'}->value if $cookies{'x'};
+$x++;
+print header(-cookie=>"x=$x");
+print start_html('Cookie Example')
+print "x=$x\n"
+print end_html;
+\end{perl}
+
+{\tiny Source:  \href{http://cgi.cse.unsw.edu.au/~cs2041/code/web/simple_cookie.cgipm.cgi}{http://cgi.cse.unsw.edu.au/{\textasciitilde}cs2041/code/web/simple\_cookie.cgipm.cgi}}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CGI Security Vulnerability - Input Parameter length}
+CGI script may expect a parameter containing a few bytes, e.g. user name.
+
+But a malicious user may supply instead megabytes.
+
+This may the first step in a buffer overflow or denial of service attack 
+
+Always check/limit length of input parameters.
+\begin{perl}
+$user = param('user');
+$user = substr $user, 0, 64;
+\end{perl}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{CGI Security Vulnerability - Absolute Pathname and ..}
+CGI script may use a parameter has a filename. 
+
+A malicious user may supply an input containing / or ..
+
+This will allow read and/or write access to other files on system.
+
+Always santitize of input parameters.
+
+Safest to remove all but necessary characters, e.g.:
+
+\begin{perl}
+$name = param('name');
+$name = s/[^a-z0-9]//g; 
+\end{perl}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Security Vulnerability - Perl's Two Argument Open}
+The 2 argument version of Perl's open treats {\textgreater} and |
+as special characters.
+
+A malicious user may supply an input containing thgese characters
+
+This will allow files to be written and arbitrary programs to be run.
+
+Always santitize input parameters.
+
+Safest to use 3 argument form of open.
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Security Vulnerability - User Input \& External Programs.}
+
+A CGI script may pass user input as arguments to an external program.
+External program are often run via a shell, e.g. Perl's system and back quotes.
+
+A malicious user may supply input containing shell metacharacters such as | or ;
+
+This will allow arbitrary programs to be run.
+
+Always santitize input parameters.
+
+Safest to run external programs directly (not via shell).
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Security Vulnerability - SQL Injection}
+
+A CGI script may incorporate user input in SQL commands.
+
+A malicious user may supply input containing SQL metacharacters such as '
+
+This may allow the user to circumvent authentication.
+
+Remove or quote SQL metacharacters before using them in queries.
+
+Safest to run query via PREPARE.
+\end{frame}
+
+\begin{frame}
+\frametitle{CGI Security Vulnerability - Cross-site Scripting (XSS)}
+
+A CGI script may incorporate user input into web pages shown to other users.
+
+A malicious user may supply input containing HTML particularly Javascript.
+
+This Javascript can redirect links, steal information etc.
+
+Remove {\textless}, \textgreater, \& characters from input before incorporating in web pages.
+
+In other contexts, e.g. within script tags, other characters unsafe.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Further Information ...}
+Comprehensive documentation attached to course Web page:
+
+\href{http://perldoc.perl.org/CGI.html}{http://perldoc.perl.org/CGI.html}
+
+Most Perl books have some material on CGI.pm.
+\end{frame}
+
+\end{document}
