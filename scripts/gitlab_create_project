@@ -1,4 +1,4 @@
-#!/web/cs2041/lib/Python-3.5.3/bin/python3
+#!/web/cs2041/Python-3.5.3/bin/python3
 
 # depends on $HOME/.python-gitlab.cfg containing gitlab token
 # and $SMSDB/security containing mapping of tutors to tuts
