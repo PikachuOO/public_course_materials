@@ -82,6 +82,7 @@ variables = {
     'course_codes' : [course_code, postgraduate_course_code], # including aliases
     'tlb_directory' : os.path.join(public_html_session_directory, 'tlb'),
     'lecture_directory' : os.path.join(public_html_session_directory, 'lec'),
+    'flask_cache_directory' :  os.path.join(public_html_session_directory, 'flask_cache'),
     'testing_results_file' : os.path.join(public_html_session_directory, 'work', 'testing_results.json'),
     'autotest_upload_url' : 'https://cgi.cse.unsw.edu.au/~{}/cgi/autotest_upload.cgi'.format(course_account),
 }
