@@ -26,19 +26,12 @@ cs[0-9][0-9][0-9][0-9])
 	chmod 777 $flask_cache_directory
 esac
 
-
-for p in public private 
-do
-	cd $public_html_session_directory/$p|| exit 1
-	# these symlinks allow images etc to be directly served
-	# from lab, tut or test URLs
-	rm -f lab tut test
-	ln -sf tlb lab
-	ln -sf tlb tut
-	ln -sf tlb test
-done
-
-cd $public_html_session_directory || exit 1
+# these symlinks allow images etc to be directly served
+# from lab, tut or test URLs
+rm -f lab tut test
+ln -sf tlb lab
+ln -sf tlb tut
+ln -sf tlb test
 
 for d in *
 do
@@ -52,13 +45,11 @@ done
 
 ln -sf private/.flask_key
 ln -sf private/.github_secret
-
-cd $public_html_session_directory/public || exit 1
+cd public
 ln -sf ../.github_secret
 ln -sf ../.flask_key
 
-cd $public_html_directory || exit 1
-
+cd $public_html_directory
 for d in *
 do
 	test ! -r "$d" && rm -f "$d"
