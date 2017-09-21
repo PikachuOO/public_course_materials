@@ -15,7 +15,7 @@ Allow from 192.168.0.0/255.255.0.0  # home
 Allow from 172.0.0.0/255.0.0.0      # docker
 Allow from ::1 #ipv6
 
-SetEnvIf Request_URI ^ BASE_URL=http://localhost//~cs2041
+SetEnvIf Request_URI ^ BASE_URL=/~cs2041
 
 # the tutors directory and other directories containing .py files which must run as CGI scripts
 # need htaccess files explicitly setting their type
@@ -64,4 +64,4 @@ RewriteRule \.(jpg|png|pbm|zip|txt|pdf)$ - [L]
 
 # Send everything else to flask
 
-RewriteRule ^(.*) %{ENV:BASE_URL}/flask.cgi/$1
+RewriteRule ^(.*) %{ENV:BASE_URL}/flask.cgi/$1 [L]
