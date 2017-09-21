@@ -29,7 +29,7 @@ esac
 
 for p in public private 
 do
-	cd $public_html_session_directory/$p|| exit 1
+	cd $public_html_session_directory/$p || exit 1
 	# these symlinks allow images etc to be directly served
 	# from lab, tut or test URLs
 	rm -f lab tut test
@@ -100,9 +100,9 @@ do
 #	git diff --quiet $last_two_commits -- . && continue
 	cd $public_html_session_directory/private/$d
 	test -x build.sh && </dev/null ./build.sh
-	cd $public_html_session_directory/public/$d
+	cd $public_html_session_directory/public/$d || continue
 	test -x build.sh && </dev/null ./build.sh
-	cd $public_html_session_directory/private/$d
+	cd $public_html_session_directory/private/$d || continue
 	test -e Makefile && </dev/null make -j10 -s 
 	cd $public_html_session_directory/public/$d
 	test -e Makefile && </dev/null make -j10 -s

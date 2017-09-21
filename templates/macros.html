@@ -102,8 +102,3 @@
 
 {%- endmacro %}
 
-{# append size as query fragment to invalidate caching if file changes #}
-{% macro url_for_with_size(filename) -%}
-{{url_for('static', filename=filename) + '?' + str(os.path.getsize('../static/'+filename))}}
-{%- endmacro %}
-
