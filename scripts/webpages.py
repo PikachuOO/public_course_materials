@@ -4,7 +4,7 @@ import datetime, glob, gzip, html, json, os, re, subprocess, traceback
 from collections import defaultdict, OrderedDict
 from io import BytesIO as IO
 
-from flask import Flask, render_template, request, abort, send_file, make_response, Response
+from flask import Flask, render_template, request, abort, send_file, url_for, Response
 from werkzeug.routing import BaseConverter
 from werkzeug.contrib.cache import FileSystemCache
 from bs4 import BeautifulSoup
@@ -23,7 +23,7 @@ if os.path.exists(config.variables['flask_cache_directory']):
 	except (OSError,ImportError):
 		pass
 
-# cache & gzip requests 		
+# cache & gzip requests			
 def before_request():
 	if not cache or 'gzip' not in request.headers.get('Accept-Encoding', '').lower():
 		return None
@@ -34,7 +34,7 @@ def before_request():
 def after_request(response):
 	response.direct_passthrough = False
 	if (
-		'Content-Encoding' in response.headers or   # will be set if before_request return cached response
+		'Content-Encoding' in response.headers or	# will be set if before_request return cached response
 		not cache or
 		'gzip' not in request.headers.get('Accept-Encoding', '').lower() or
 		not (200 <= response.status_code < 300) or
@@ -301,6 +301,13 @@ def execute_shell_command(shell_command, cwd=None, input=None):
 	p = subprocess.run(shell_command, cwd=cwd, input=input, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True,  universal_newlines=True)
 	return p.stdout
 
+def unique_static_url_for(filename):
+	try:
+		suffix = '?' + str(os.path.getsize(os.path.join(app.static_folder, filename)))
+	except OSError:
+		suffix = ''
+	return url_for('static', filename=filename) + suffix
+
 # should we show things that are only visible to course staff
 def is_tutor():
 	return request.script_root.endswith('flask_tutors.cgi') or not request.script_root
@@ -334,6 +341,7 @@ def get_common_template_variables(static_checking=False):
 	# pass in some functions from this file so they can beused in templates
 	tv['read_code'] = read_code
 	tv['execute_shell_command'] = execute_shell_command
+	tv['unique_static_url_for'] = unique_static_url_for
 
 	# pass in some modules used in templates
 	tv['os'] = os
