@@ -26,11 +26,10 @@ cs[0-9][0-9][0-9][0-9])
 	chmod 777 $flask_cache_directory
 esac
 
-cd $public_html_session_directory || exit 1
 
 for p in public private 
 do
-	cd $public_html_session_directory/$p
+	cd $public_html_session_directory/$p|| exit 1
 	# these symlinks allow images etc to be directly served
 	# from lab, tut or test URLs
 	rm -f lab tut test
@@ -38,6 +37,7 @@ do
 	ln -sf tlb tut
 	ln -sf tlb test
 done
+
 cd $public_html_session_directory || exit 1
 
 for d in *
@@ -52,11 +52,13 @@ done
 
 ln -sf private/.flask_key
 ln -sf private/.github_secret
-cd public
+
+cd $public_html_session_directory/public || exit 1
 ln -sf ../.github_secret
 ln -sf ../.flask_key
 
-cd $public_html_directory
+cd $public_html_directory || exit 1
+
 for d in *
 do
 	test ! -r "$d" && rm -f "$d"
@@ -89,7 +91,6 @@ cd $public_html_session_directory/private/.git/hooks/
 ln -sf ../../scripts/git-pre-commit pre-commit
 ln -sf ../../scripts/git-post-merge post-merge
 
-exit 1
 cd $public_html_session_directory/private
 #last_two_commits=`git reflog|sed 2q|cut -c1-8`
 for d in lec assignments/* tlb/*
