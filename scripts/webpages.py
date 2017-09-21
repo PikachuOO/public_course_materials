@@ -1,12 +1,10 @@
 #!/usr/bin/python3.5
 
-import datetime, glob, gzip, html, json, os, re, subprocess, traceback
+import datetime, glob, html, json, os, re, subprocess, traceback
 from collections import defaultdict, OrderedDict
-from io import BytesIO as IO
 
-from flask import Flask, render_template, request, abort, send_file, make_response, Response
+from flask import Flask, render_template, request, abort, send_file
 from werkzeug.routing import BaseConverter
-from werkzeug.contrib.cache import FileSystemCache
 from bs4 import BeautifulSoup
 
 
@@ -16,58 +14,37 @@ import config
 app = Flask(__name__, template_folder=os.path.join(config.variables['public_html_session_directory'],'.'), static_folder=os.path.join(config.variables['public_html_session_directory'], 'static'))
 app.config.from_object(__name__)
 
-cache = None
-if os.path.exists(config.variables['flask_cache_directory']):
-    try:
-        cache = FileSystemCache(config.variables['flask_cache_directory'])
-    except (OSError,ImportError):
-        pass
+# add gzip compression (mod_deflate would be better if it were enabled)
+# taken from http://flask.pocoo.org/snippets/122/
+from flask import after_this_request
+from io import BytesIO as IO
+import gzip
+import functools
 
-def before_request():
-    if not cache or 'gzip' not in request.headers.get('Accept-Encoding', '').lower():
-        return None
-    cache_key = str(is_tutor()) + str(request.path)
-    return cache.get(cache_key)
-
-def after_request(response):
-    response.direct_passthrough = False
-    if (
-        'Content-Encoding' in response.headers or  # e.g.cached response
-        not cache or
-        'gzip' not in request.headers.get('Accept-Encoding', '').lower() or
-        not (200 <= response.status_code < 300) or
-        len(response.data) < 512 or
-        not any(response.mimetype.startswith(r) for r in ['text/', 'application/json', 'application/javascript'])
-        ):
-        #print(request.path, 'not caching', response.status_code, response.mimetype, response.headers)
-        return response
-    gzip_buffer = IO()
-    gzip_file = gzip.GzipFile(mode='wb', fileobj=gzip_buffer)
-    gzip_file.write(response.data)
-    gzip_file.close()
-    cached_response = Response(status=response.status,content_type=response.content_type,mimetype=response.mimetype,headers=response.headers)
-    cached_response.data = gzip_buffer.getvalue()
-    cached_response.headers['Content-Encoding'] = 'gzip'
-    cached_response.headers['Vary'] = 'Accept-Encoding'
-    cached_response.headers['Content-Length'] = len(cached_response.data)
-    if 'Cache-Control' in response.headers:
-        if request.path.startswith('/static'):
-            #  file in /static/ which should have a query fragment with it size to invalidate caching if it changes
-            # so give long expiry time
-            timeout = 365 * 24 * 60 * 60
-        else:
-            timeout = 12 * 60 * 60
-    else:
-        timeout = 60 * 60
-    response.cache_control.public = True
-    response.cache_control.max_age = timeout
-    cache_key = str(is_tutor()) + str(request.path)
-    #print('cache set', cache_key, response.headers['Content-Type'])
-    cache.set(cache_key, cached_response, timeout=timeout)
-    return cached_response
-
-app.before_request(before_request)
-app.after_request(after_request)
+def gzipped(f):
+    @functools.wraps(f)
+    def view_func(*args, **kwargs):
+        @after_this_request
+        def zipper(response):
+            accept_encoding = request.headers.get('Accept-Encoding', '')
+            if 'gzip' not in accept_encoding.lower():
+                return response
+            response.direct_passthrough = False
+            if (response.status_code < 200 or
+                response.status_code >= 300 or
+                'Content-Encoding' in response.headers):
+                return response
+            gzip_buffer = IO()
+            gzip_file = gzip.GzipFile(mode='wb', fileobj=gzip_buffer)
+            gzip_file.write(response.data)
+            gzip_file.close()
+            response.data = gzip_buffer.getvalue()
+            response.headers['Content-Encoding'] = 'gzip'
+            response.headers['Vary'] = 'Accept-Encoding'
+            response.headers['Content-Length'] = len(response.data)
+            return response
+        return f(*args, **kwargs)
+    return view_func
 
 # Add regex matching for URLs
 #
@@ -81,6 +58,7 @@ app.url_map.converters['regex'] = RegexConverter
 # HTML files in top-level directory, assignments, code, exam or home computing sub-trees
 @app.route("/<string:subpath>.html")
 @app.route("/<regex(r'assignments|code|exam|home_computing'):top_level_dir>/<path:subpath>.html")
+@gzipped
 def html_url(**kwargs):
     return render_template_with_variables(request.path)
 
@@ -90,6 +68,7 @@ def html_url(**kwargs):
 
 @app.route("/assignments/<string:assignment>/examples/<regex(r'\d+'):subset>/<string:filename>")
 @app.route("/<regex(r'assignments|code|exam|home_computing'):top_level_dir>/<path:subpath><regex(r'.*\.(jpg|png|pbm|zip|txt)$'):filename>")
+@gzipped
 def plain_files(**kwargs):
     return check_send_file(config.variables['public_html_session_directory'] + request.path)
 
@@ -98,11 +77,13 @@ def plain_files(**kwargs):
 # solutions will be in sub-directory solutions and aren't served directly
 # note this must not match .html suffixes
 @app.route("/<regex(r'tut|lab|lab|test'):tut_or_lab_or_test>/<regex(r'\d\d'):week>/<regex(r'.*\.\w{1,3}'):filename>")
+@gzipped
 def supplied_code(tut_or_lab_or_test, week, filename):
     return check_send_file(config.variables['tlb_directory'], week, filename)
 
 # tutorial & lab questions & answers
 @app.route("/<regex(r'tut|lab|test'):tut_or_lab_or_test>/<regex(r'\d\d'):week>/<regex(r'questions|answers'):questions_or_answers>")
+@gzipped
 def tlb_url(tut_or_lab_or_test, week, questions_or_answers):
     template_variables = get_common_template_variables()
     template_variables['week'] = week
@@ -137,6 +118,7 @@ def tlb_url(tut_or_lab_or_test, week, questions_or_answers):
 
 # weekly notes for tutors
 @app.route("/notes/<regex(r'\d\d'):week>")
+@gzipped
 def tlb_notes_url(week):
     if not is_tutor():
         abort(404)
@@ -150,6 +132,7 @@ def lecture_slides_url(topic, slides_or_notes):
 # lecture code examples - html file can't be match here
 # they need to be templated above
 @app.route("/code/<string:topic>/<regex(r'\w+(|\.\w{1,3})'):filename>")
+@gzipped
 def tlb_code_example_url(topic, filename):
     return check_send_file(config.variables['public_html_session_directory'], 'code', topic, filename)
 
@@ -158,6 +141,7 @@ def tlb_code_example_url(topic, filename):
 @app.route('/code/<string:topic>/')
 @app.route('/code/<string:topic>/index')
 @app.route('/code/<string:topic>/index.html')
+@gzipped
 def lecture_code_topic_url(topic):
     topic_directory = os.path.join('code', topic)
     if os.path.normpath(topic_directory).rstrip('/') != topic_directory.rstrip('/'):
@@ -175,13 +159,10 @@ def lecture_code_topic_url(topic):
         code_files[html.escape(os.path.basename(pathname))] = None
     return render_template_with_variables('templates/lecture_example_code.html', topic=topic, code_files=code_files.keys())
 
-@app.route("/favicon.ico")
-def exclude():
-    abort(404)
-
 @app.route('/')
 @app.route('/index.html')
 @app.route('/<path:path>')
+@gzipped
 def catchall_url(**kwargs):
     return render_template_with_variables('templates/index.html')
 
