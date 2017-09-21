@@ -5,11 +5,14 @@ cd $public_html_session_directory || exit 1
 touch .build_started
 
 chmod 755 public
-cd private
+cd $public_html_session_directory/private || exit 1
 git diff --name-only `git reflog|sed 2q|cut -c1-8`|scripts/set_filesystem_permissions
 chmod 750 .
 
 scripts/rsync_public_files
+
+rm -r $flask_cache_directory
+mkdir -p -m 750  $flask_cache_directory
 
 case `whoami` in
 cs[0-9][0-9][0-9][0-9])
@@ -19,23 +22,45 @@ cs[0-9][0-9][0-9][0-9])
 *)
 	htaccess_suffix=localhost
 	link_dir=private
-	chmod 755 .
+	chmod 777 $flask_cache_directory
+	chmod 755 $public_html_session_directory/private 
 esac
 
-cd $public_html_session_directory
 
-# these symlinks allow images etc to be directly served
-# from lab, tut or test URLs
-rm -f lab tut test
-ln -sf tlb lab
-ln -sf tlb tut
-ln -sf tlb test
+for p in public private 
+do
+	cd $public_html_session_directory/$p|| exit 1
+	# these symlinks allow images etc to be directly served
+	# from lab, tut or test URLs
+	rm -f lab tut test
+	ln -sf tlb lab
+	ln -sf tlb tut
+	ln -sf tlb test
 
+	for d in . cgi cgi/*/ assignments/*/tournament
+	do
+		s=$htaccess_suffix
+		# use "class_account" htaccess for CGI account if there is no "cgi" htaccess
+		test ! -r  $d/htaccess.$s && s=class_account
+		if test -r $d/htaccess.$s
+		then
+			chmod 644 $d/htaccess.$s
+			ln -sf htaccess.$s $d/.htaccess
+		else
+			rm -f $d/.htaccess
+		fi
+	done
+done
+
+cd $public_html_session_directory || exit 1
+
+# remove dead links
 for d in *
 do
 	test -L "$d" && test ! -r "$d" && rm -f "$d"
 done
 
+#  links public course content into session directory
 for d in `ls $public_html_session_directory/public` .htaccess
 do
 	ln -sf $link_dir/$d
@@ -43,38 +68,25 @@ done
 
 ln -sf private/.flask_key
 ln -sf private/.github_secret
-cd public
+
+cd $public_html_session_directory/public || exit 1
 ln -sf ../.github_secret
 ln -sf ../.flask_key
 
-cd $public_html_directory
+cd $public_html_directory || exit 1
+
+# remove dead links
 for d in *
 do
 	test ! -r "$d" && rm -f "$d"
 done
 
-dir=`basename $public_html_session_directory`
-for d in `ls $public_html_session_directory/public` .htaccess .flask_key .github_secret
+#  links files for this session into public_html directory
+session=`basename $public_html_session_directory`
+for d in `ls $public_html_session_directory/public` .htaccess .flask_key
 do
-	test "$d" != doc && ln -sf $dir/$d
+	ln -sf $session/$d
 done
-
-cd $public_html_session_directory
-
-for d in . cgi cgi/*/ assignments/*/tournament
-do
-	s=$htaccess_suffix
-	# use "class_account" htaccess for CGI account if there is no "cgi" htaccess
-	test ! -r  $d/htaccess.$s && s=class_account
-	if test -r $d/htaccess.$s
-	then
-		chmod 644 $d/htaccess.$s
-		ln -sf htaccess.$s $d/.htaccess
-	else
-		rm -f $d/.htaccess
-	fi
-done
-
 
 cd $public_html_session_directory/private/.git/hooks/
 ln -sf ../../scripts/git-pre-commit pre-commit
