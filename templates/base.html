@@ -6,15 +6,17 @@
 {{course_code}} - {{course_name}} - {{unsw_session}}
 {% endblock %}
 </title>
-<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ url_for('static', filename='course.css') }}" rel="stylesheet">
-<script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+{% from "templates/macros.html" import execute,include_code,edit_github,autotest_summary with context %}
+
+<link href="{{ unique_static_url_for('bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ unique_static_url_for('course.css') }}" rel="stylesheet">
+<script type="text/javascript" src="{{ unique_static_url_for('jquery.min.js') }}"></script>
+<script type="text/javascript" src="{{ unique_static_url_for('bootstrap.min.js') }}"></script>
 <link rel="canonical" href="{{ canonical_url }}" />
 </head>
 <body>
 
-{% from "templates/macros.html" import execute,include_code,edit_github,autotest_summary with context %}
 
 
 {% block body %}
