@@ -64,11 +64,8 @@ course_code_regex=`echo "$course_code"|sed 's/COMP2041/COMP[29]041/'`
 
 canonical_url="https://cgi.cse.unsw.edu.au/~$course_account/"
 github_repo_url="https://github.com/${course_code}UNSW/course_materials"
-tlb_directory=$public_html_session_directory/tlb/
-lecture_directory=$public_html_session_directory/lec
-flask_cache_directory=$public_html_session_directory/flask_cache
-testing_results_file="$public_html_session_directory/work/testing_results.json"
 autotest_upload_url="${canonical_url}cgi/autotest_upload.cgi"
+testing_results_file="$public_html_session_directory/work/testing_results.json"
 
 export WORK=$home_directory/$unsw_session.work/
 export OUT=$WORK/.out/

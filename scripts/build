@@ -11,9 +11,6 @@ chmod 750 .
 
 scripts/rsync_public_files
 
-rm -r $flask_cache_directory
-mkdir -p -m 750  $flask_cache_directory
-
 case `whoami` in
 cs[0-9][0-9][0-9][0-9])
 	htaccess_suffix=class_account
@@ -23,8 +20,9 @@ cs[0-9][0-9][0-9][0-9])
 	htaccess_suffix=localhost
 	link_dir=private
 	chmod 755 .
-	chmod 777 $flask_cache_directory
 esac
+
+cd $public_html_session_directory
 
 # these symlinks allow images etc to be directly served
 # from lab, tut or test URLs
