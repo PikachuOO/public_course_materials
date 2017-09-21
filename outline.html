@@ -1,1 +1,500 @@
-public/outline.html
+{% extends "templates/base.html" %}
+{% block title %}
+Course Outline
+{% endblock %}
+
+{% block body_contents %}
+<h2>Course Details</h2>
+<table class="table table-condensed table-bordered">
+<tbody>
+<tr>
+    <td><strong>Course Codes</strong>
+    <td>{{course_code}}/{{postgraduate_course_code}}
+<tr>
+    <td><strong>Course Title</strong>
+    <td>{{course_name}}
+<tr>
+    <td><strong>Units of Credit</strong>
+    <td>6
+<tr>
+    <td><strong>Course Website</strong>
+    <td><a href="http://cse.unsw.edu.au/~{{course_account}}">http://cse.unsw.edu.au/~{{course_account}}</a>
+<tr>
+    <td><strong>Handbook</strong>
+    <td><a href="http://www.handbook.unsw.edu.au/undergraduate/courses/current/{{course_code}}.html">{{course_code}}</a>
+    &emsp;<a href="http://www.handbook.unsw.edu.au/postgraduate/courses/current/{{postgraduate_course_code}}.html">{{postgraduate_course_code}}</a>
+
+<tr>
+    <td><strong>Lecturer/Convener/Admin</strong>
+    <td>Andrew Taylor <code>andrewt@unsw.edu.au</code>
+<tr>
+    <td rowspan=2><strong>Lectures</strong>
+    <td>Wednesday 16:00-18:00 <a href="https://maps.google.com/?q=-33.917204000000%2C151.227960000000">Law Theatre G04</a>
+<tr>
+    <td>Friday 14:00-16:00 <a href="https://maps.google.com/?q=-33.917272000000%2C151.232478000000">Central Lecture Block 7</a>
+
+<tr>
+    <td><strong>Tut-lab</strong>
+    <td>3 hour slot selected when you enrol (weeks 2-13)
+
+</tbody>
+</table>
+
+<h2>Lecture Recordings</h2>
+
+All lectures will be recorded.  Unfortunately UNSW's lecture recording system can only
+be accessed via <a href="{{lecture_recordings_url}}">Moodle</a>
+Moodle will not be used for any other course activities.
+
+<h2>Online Stream</h2>
+
+An online (WEB) stream is available.
+Students in this stream are welcome to attend lectures <b>if</b> there are spare seats in the lecture theatre.
+In past sessions there have been spare seats after week 1.
+Students in the WEB stream may need to rely on lecture recordings and the material
+placed on the web and should consider carefully whether this is sufficient
+for them to successfully complete the course.
+
+<h2>Communication with Course Staff</h2>
+
+Sometimes urgent information may be sent to you by email.
+Make sure you pay careful attention to any email you receive.
+<p>
+All official email will be sent to your UNSW email address.
+It's essential you read this email address regularly.
+If you forward your email, please be careful to do so correctly & test the forwarding.
+<p>
+Additional information will be provided in the <a href="{{course_forum_url}}">Course Forum</a>.
+You should check the course regularly.
+It is the best place to ask questions about the course.
+
+
+<p>
+Consultations times vary through session and are listed on the course home page.
+
+The forums is the best place to ask questions about the course.
+
+<h2>Course Summary</h2>
+The following is a summary of the topics that will be covered in this
+course.
+<ol>
+
+<li> Tools for software construction
+<ul>
+<li> Unix/Linux Filters   (sort, sed, grep, tr, ...)
+<li> Scripting languages   ( Shell,Perl, Python)
+<li> Analysis tools   (debuggers, profilers)
+<li> development tools   (git, make, ...)
+</ul>
+
+<li> Techniques for software construction
+<ul>
+<li> Analysis, design, coding, testing, debugging, tuning
+<li> Interface design, documentation, configuration
+</ul>
+
+<li> Qualities of software systems
+<ul>
+<li> Correctness, clarity, reliability, efficiency, portability, ...
+<ul>
+</ul>
+</ol>
+<p>
+The focus for the practical work will be shell, Perl and Python.
+
+
+<h2>Course Aims</h2>
+This course is designed for students who have mastered the basics of programming.
+It aims to broaden your knowledge of techniques and  tools
+for software construction.
+
+<h2>Learning Outcomes</h2>
+By the end of the course, you should have these attributes which will be
+useful to you for the remainder of your studies and after graduation:
+<ul>
+<li>
+have practical experience in programming with  the Unix shell,Perl and Python.
+<li>
+have a broader & deeper knowledge of building software systems
+<li>
+more appreciation of the use of specific technologies and
+strategies during software development
+<li>
+exposure to tools for  version control, performance improvement, configuration and debugging,
+<li>
+improvement of your ability to articulate  & communicate  concepts related to programming & systems
+</ul>
+
+<h2>Assumed Knowledge:</h2>
+COMP2041/9041 assumes that you have a sound understanding
+of a procedural programming language such as C and can:
+<ul>
+<li>produce a correct procedural program from a spec
+<li>understand fundamental data structures + algorithms
+(char, int, float, array, struct, pointers, sorting, searching)
+<li>appreciate use of abstraction in computing
+</ul>
+<p>
+For undergraduate (COMP2041) students, the above material will typically have been covered in
+COMP1511 (or its predecessor COMP1917) and COMP2521 (or its predecessor COMP1927) .
+<p>
+For postgraduate (COMP9041) students, the above material will have been covered
+in COMP9021 and COMP9024 or in equivalent courses in their undergraduate degree.
+<p>
+A limited amount of specific knowledge of the C programming language may be assumed during
+the course.
+<p>
+Students who are not competant C programmers should discuss with the lecturer at the first lecture
+the impact this might have.  Typically students who are competant in a similar languages such as C++ and Java
+only need to do  some extra reading.
+
+<h2>Teaching Rationale &amp; Strategies</h2>
+
+This course has a heavy practical orientation.
+Do not take this course unless you wish to do a very large amount of coding.
+This will place large demands on your time particularly in the second half of session.
+
+<h3>Lectures</h3>
+
+Lectures will be used to present the theory and
+practice of the techniques and tools in this course. There will be
+extensive use of  practical demonstrations during
+lectures. Lecture notes will be available on the course web pages
+before each lecture.
+
+<h3>Tutorials</h3>
+
+From week 2 you will also be expected to attend a one-hour tutorial
+session to clarify ideas from lectures and work through exercises
+based on the lecture material. You should make sure that you use them
+effectively by examining in advance the material to be covered in each
+week's tutorial, by asking questions, by offering suggestions and by generally
+participating. The tutorial questions will be posted on the Web in the
+week before each tutorial.  There are no marks for tutorial attendance
+but note students with borderline results will not be offered supplementary assessment unless
+they have attended tutorials (or are a COMP9041 student who has obtained exemption from the tut-lab component).
+
+
+<h3>Laboratory Classes</h3>
+
+Following the tutorial class each week, there will be a two-hour laboratory class,
+during which you will work on a variety of small practical problems
+involving the tools introduced in lectures.
+Because this course is practical in nature, laboratory classes are a very
+important component. If you do not put a great deal of effort into the lab classes
+you risk failing the final exam.
+<p>
+Most lab exercises will be automarked.  There will be partial marks for attempts which do not
+pass autotests.
+<p>
+You will need to submit the lab exercise by Sunday midnight to obtain the mark.
+Tutors will separately provide feedback on your code.
+<p>
+Submission of any work that it is not your own will result in an automatic
+mark of zero for the entire lab component.
+<p>
+Several labs will be contain exercises which will be assessed during the lab
+<p>
+COMP9041 students may request exemption from the lab component.
+This is only recommended if you have a major external commitments such as final-time work
+and are very confident you can master the course material.  Typically only 1 or 2 students each year take this option.
+If you wish to be exempt  from the lab component, you must advise the lecturer by email by the end of week 2.
+
+
+<h3>Weekly Programming Tests</h3>
+
+There will be weekly tests from weeks 5-12 designed to give you timely &amp; realistic feedback
+of your understanding of he course material.
+<p>
+These will be conducted in your own time under self-enforced exam-like conditions.
+<p>
+Each tests will specify the conditions but typically these will include
+<p>
+<ol>
+<li> No assistance from any person.
+<li> A time limit (probably 1 hour).
+<li> No access to materials (written or online) except specified language documentation or man pages.
+</ol>
+<p>
+Each programming test will be automarked.  There will be partial marks for attempts which do not
+pass autotests. Here is an indicative guide:
+<p>
+<table class="table table-bordered table-condensed  table-striped" style="width:50%;">
+<tr><td>Passes all autotests.<td>1/1
+<tr><td>Fails several autotests.<td>0.75/1
+<tr><td>otherwise<td>0.5/1
+</table>
+<p>
+Your mark for the test component will be the sum of the best 6 of 8 test marks.
+<p>
+Any violation of the test conditions will results in a mark of zero for the entire programming test component.
+
+<h3>Assignments</h3>
+
+There are two assessable programming assignments. Assignments give you the chance to practice what you have learnt on relatively large problems (compared to the small exercises in the labs). Assignments are a very important part of this course, therefore it is essential that you attempt them yourself.
+p>
+The first assignment will be a  Perl application
+ due start week 10, the second assignment will be Perl or Python web application due week 13.
+<p>
+<ul>
+<li>Assignment 1 (Submission, Week 10) 15%
+<li>Assignment 2 (Submission, Week 13) 15%
+</ul>
+<p>
+The assignment weighting and deadlines may be slightly varied when the assignment designs are complete.
+<p>
+Late assignments submissions will be penalized.  The exact penalty will be
+specified in the assignment specification - often it is 2% reduction in maximum
+mark for every hour late.
+
+
+
+<h2>Course schedule</h2>
+
+The course is being re-structured this year. 
+The anticipated course sequence
+is: shell scripting (weeks 1-3), Perl (weeks 3-6), Python (weeks 6-8) web applications (weeks 7-9), programming tools(10-12)
+We may need to vary this to some degree as we update material in the courses.
+<p>
+A more detailed course schedule will be posted here when available.
+<p>
+The lectures are  timetabled for weeks 1-12.
+It is possible the week 13 lecture slots will be used for a remedial revision lecture or
+other optional presentations so please keep them free.
+
+<h2>Assessment</h2>
+
+<table class="table table-bordered table-condensed  table-striped">
+<tr><th>Component<th>Week<th>Weight
+<tr><td>Labs<td>Weeks 2-13<td>9%
+<tr><td>Programming Tests<td>Weeks 5-12<td>6% (best 6 of 8 tests)
+<tr><td>Assignments<td>Weeks 10 &amp; 13<td>30%
+<tr><td>Final Exam<td>exam period<td>55%
+</table>
+<p>
+There a hurdle requirement for this course that you perform satisfactorily
+on the final exam to pass the course.
+
+<h3>Final Exam</h3>
+
+There will be a three-hour primarily practical exam held in the CSE labs
+during the exam period.
+<p>
+The exam will contain short answer questions which may require you to read code.
+<p>
+It will also contain six implementation tasks where you will be required to write code.
+<p>
+During this exam you will be able to execute, debug and test your answers.
+The implementation tasks will be similar to those encountered in lab exercises
+<p>
+You will not be expected to remember the details of programming languages
+used in the course; reference information will be provided along with the
+exam paper, giving a summary of any language that we expect you to use.
+<p>
+There a hurdle requirement for this course that you perform satisfactorily
+on the implementation tasks in the exam.  This is defined as
+successfully completing at least two of the six implementation tasks.
+
+<h3>Supplementary Exam</h3>
+
+Students will be offered a supplementary exam if they miss the original
+exam due to (documented) illness or misadventure.
+<p>
+Students close to passing the course will also be  automatically offered a supplementary
+exam if they:
+<p>
+<ol>
+<li>attended 9+ tutorials
+<li>attempted 9+ labs
+<li>attempted 6+ quizes
+<li>attempted both assignments (achieving 50+%)
+</ol>
+<p>
+If you meet the above four requirements and either:
+<p>
+<ol>
+<li>you achieve a final mark of 40-49
+<li>or you achieve a final mark of 50+ but fail to meet the hurdle requirement on the exam 
+</ol>
+<p>
+you will be automatically offered a supplementary exam.
+<p>
+The supplementary exam is tentatively scheduled for Friday Dec 6 - it is your
+responsibility to be in Sydney and  available for the supplementary exam around that date.
+No alternative will be offered.
+
+
+<h2>Academic Honesty and Plagiarism</h2>
+
+<hr>
+What is Plagiarism?
+<p>
+Plagiarism is the presentation of the thoughts or work of another as one's own.*
+Examples include:
+<ul>
+<li>  direct duplication of the thoughts or work of another, including by copying
+   material, ideas or concepts from a book, article, report or other written document
+   (whether published or unpublished), composition, artwork, design, drawing,
+   circuitry, computer program or software, web site, Internet, other electronic
+   resource, or another person's assignment without appropriate acknowledgement;
+<li>   paraphrasing another person's work with very minor changes keeping the
+   meaning, form and/or progression of ideas of the original;
+<li>  piecing together sections of the work of others into a new whole;
+<li>   presenting an assessment item as independent work when it has been produced
+    in whole or part in collusion with other people, for example, another student or a
+    tutor; and
+<li>   claiming credit for a proportion a work contributed to a group assessment item
+    that is greater than that actually contributed.
+</ul>
+<p>
+For the purposes of this policy, submitting an assessment item that has already been
+submitted for academic credit elsewhere may be considered plagiarism.
+Knowingly permitting your work to be copied by another student may also be
+considered to be plagiarism.
+<p>
+Note that an assessment item produced in oral, not written, form, or involving live
+presentation, may similarly contain plagiarised material.
+<p>
+The inclusion of the thoughts or work of another with attribution appropriate to the
+academic discipline does not amount to plagiarism.
+<p>
+The Learning Centre website is main repository for resources for staff and students
+on plagiarism and academic honesty. These resources can be located via:
+<a href="http://www.lc.unsw.edu.au/plagiarism">www.lc.unsw.edu.au/plagiarism</a>
+<p>
+The Learning Centre also provides substantial educational written materials,
+workshops, and tutorials to aid students, for example, in:
+<ul>
+<li>   correct referencing practices;
+<li>   paraphrasing, summarising, essay writing, and time management;
+<li>   appropriate use of, and attribution for, a range of materials including text, images,
+    formulae and concepts.
+</ul>
+Individual assistance is available on request from The Learning Centre.
+Students are also reminded that careful time management is an important part of
+study and one of the identified causes of plagiarism is poor time management.
+Students should allow sufficient time for research, drafting, and the proper
+referencing of sources in preparing all assessment items.
+<hr>
+
+<EM>All work submitted for assessment must be your own work.</EM>
+Lab exercises and assignments must be completed <em>individually</em>.
+We regard copying of
+assignments or lab exercises, in whole or part, as a very serious offence.
+We use plagiarism detection software to search for
+multiply-submitted work.
+<ol>
+<li>Submitting part or all of other students' work, with or without acknowledgement, is not acceptable.
+<li>Submitting solutions written by other persons is also not acceptable.
+<li>Building on ideas and partial solutions obtained from public sources, such as web resources, may be acceptable, provided full acknowledgement is made. However, the final mark will take into account the starting point and how much development work would have been required. Failing to acknowledge web or other resources is unacceptable.
+<li>Discussing approaches to solutions with other students is quite appropriate, but any discussions should remain at the design level, and must not include program text. Comparison tools will detect any common code across the student body.
+<li>The safest approach is to work diligently on your own, seeking help from the forum or course staff.
+</ol>
+<UL>
+<LI>
+Submission of work derived from
+another person, or jointly written with someone else will, may result in
+automatic failure for COMP2041/COMP9041  with a mark of zero.
+<LI>
+Allowing another
+student to copy from you will may result in a mark of zero for your own assignment or lab exercises.
+Do not provide your work to any other person, even people who not UNSW students.
+You will be held responsible for the actions of anyone you provide your work to.
+<LI>
+Severe or second offences will result in automatic failure, exclusion from the university, and
+possibly other academic discipline.
+</UL>
+<P>
+Refer also to the <a href="http://www.cse.unsw.edu.au/~studentoffice/policies/yellowform.html#assign">Yellow Form material on plagiarism</a> and the
+<a href="http://www.lc.unsw.edu.au/plagiarism">Learning Centre website </a>
+<script src ="2041.js"></script>
+
+<h2>Resources for Students</h2>
+
+<a href="http://www.studentequity.unsw.edu.au/">Information for students with disabilities</a>
+Talk to  the lecturer  if you have any disabilities that may affect this course.
+<p>
+There is no required textbook for the course.
+Useful reference books include the following:
+<ul>
+<li> <div class="book">Kernighan &amp; Pike,</div>
+    <a href="http://books.google.com.au/books?id=to6M9_dbjosC">The Practice of Programming</a>,
+    <br><small>Addison-Wesley, 1998.
+    <br>(Inspiration for 2041 - philosophy and some tool details)</small>
+<li> <div class="book">McConnell,</div>
+    <a href="http://books.google.com.au/books?id=QnghAQAAIAAJ">Code Complete</a> (2ed),
+    <br><small>Microsoft Press, 2004.
+    <br>(Many interesting case studies and practical ideas)</small>
+<li> <div class="book">Wall, Christiansen &amp; Orwant, </div>
+    <a href="http://books.google.com.au/books?id=xx5JBSqcQzIC">Programming Perl</a> (3ed),
+    <br><small>O'Reilly, 2000.
+        &nbsp; (Original &amp; best Perl reference manual)</small>
+<li> <div class="book">Schwartz, Phoenix &amp; Foy,</div>
+    <a href="http://books.google.com.au/books?id=lNVHi3TunxsC">Learning Perl</a> (5ed),
+    <br><small>O'Reilly, 2008.
+        &nbsp; (gentle &amp;  careful introduction to Perl)</small>
+<li> <div class="book">Christiansen &amp; Torkington,</div>
+    <a href="http://books.google.com.au/books?id=IzdJIax6J5oC">Perl Cookbook</a> (2ed),
+    <br><small>O'Reilly, 2003.
+        &nbsp; (Lots and lots of interesting Perl examples)</small>
+<li> <div class="book">Schwartz &amp; Phoenix,</div>
+    <a href="http://books.google.com.au/books?id=EeDqu4npkqMC">Learning Perl Objects, References, and Modules</a> (2ed),
+    <br><small>O'Reilly, 2003.
+        &nbsp; (gentle &amp;  careful introduction to parts of Perl mostly  not covered in this course)</small>
+<li> <div class="book">Schwartz, Phoenix &amp; Foy,</div>
+    <a href="http://books.google.com.au/books?id=oziJDqV0rRMC">Intermediate Perl </a> (2ed),
+    <br><small>O'Reilly, 2008.
+        &nbsp; (good book to read after 2041 - starts where this course finishes)</small>
+<li> <div class="book">Sebesta,</div>
+    <a href="http://books.google.com.au/books?id=mYXfQwAACAAJ">A Little Book on Perl</a>,
+    <br><small>Prentice Hall, 1999.
+        &nbsp; (Modern, concise introduction to Perl)</small>
+<li> <div class="book">Orwant, Hietaniemi, MacDonald,</div>
+    <a href="http://books.google.com.au/books?id=z9xMfXGoWd0C">Mastering Algorithms with Perl</a>,
+    <br><small>O'Reilly, 1999.
+        &nbsp; (Algorithms and data structures via Perl)</small>
+<li> <div class="book">Kochgan &amp; Wood 2003,</div>
+    <a href="http://books.google.com.au/books?id=hxEL__hcpSoC">Unix® Shell Programming</a>,
+    <br><small>Sams Publishing 2003
+        &nbsp; (Careful intoduction to Shell Programming)</small>
+<li> <div class="book">Peek, O'Reilly, Loukides,</div>
+    <a href="http://books.google.com.au/books?id=Qu6H8fnAvGoC">Bash Cookbook</a>,
+    <br><small>O'Reilly, 2007.
+        &nbsp; (Recipe(example) based intro to Shell programming)</small>
+<li> <div class="book">Powers, Peek, O'Reilly, Loukides,</div>
+    <a href="http://books.google.com.au/books?id=tDDb5zRoONwC">Unix Power Tools</a> (3ed),
+    <br><small>O'Reilly, 2003.
+        &nbsp; (Comprehensive guide to common Unix tools)</small>
+<li> <div class="book">Loukides &amp; Oram,</div>
+    <a href="http://books.google.com.au/books?id=IWzjnR8xLW0C">Programming with GNU Software</a>,
+    <br><small>O'Reilly, 1997.
+        &nbsp; (Tutorial on the GNU programming tools (gcc,gdb,...))</small>
+<li> <div class="book">Robbins,</div>
+    <a href="http://books.google.com.au/books?id=YkNiiLupct4C">Unix in a Nutshell</a> (4ed),
+    <br><small>O'Reilly, 2006.
+        &nbsp; (Concise guide to Unix and its toolset)</small>
+<li> <div class="book">Kernighan &amp; Pike,</div>
+    <a href="http://books.google.com.au/books?id=mcO0Vh9efE0C">The Unix Programming Environment</a>,
+    <br><small>Prentice Hall, 1984.
+        &nbsp; (Pre-cursor to the textbook, intro to Unix tools)</small>
+</ul>
+For pointers to other useful reading material, including documentation
+for all of the tools used in the practical work, see the course Web pages.
+
+<h2>Course evaluation and development</h2>
+
+Student feedback on this course will be obtained via electronic survey at the end of session, and will be used to make continual improvements to the course. Students are also encouraged to provide informal feedback during the session, and to let the lecturer in charge know of any problems, as soon as they arise. Suggestions will be listened to very openly, positively, constructively and thankfully, and every reasonable effort will be made to address them.
+<p>
+This feedback is used to improve the course materials & their delivery.
+In the most recent session feedback was very favourable probably as results of changes based on previous session's feedback.
+Some lab exercises and lecture topics will be updated
+to better reflect current practice.
+<p>
+<h2>Other matters</h2>
+<ul>
+<li><a href="http://www.hr.unsw.edu.au/ohswc/ohs/ohs_policies.html">Occupational Health and Safety policies</a>
+<li><a href="http://www.studentequity.unsw.edu.au/">Information for students with disabilities</a>
+Contact the lecturer ASAP if you have any disabilities that may affect this course.
+</ul>
+
+{% endblock %}

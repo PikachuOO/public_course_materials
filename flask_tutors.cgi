@@ -1,1 +1,1 @@
-public/flask_tutors.cgi
+flask.cgi
