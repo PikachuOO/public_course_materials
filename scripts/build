@@ -89,6 +89,7 @@ cd $public_html_session_directory/private/.git/hooks/
 ln -sf ../../scripts/git-pre-commit pre-commit
 ln -sf ../../scripts/git-post-merge post-merge
 
+exit 1
 cd $public_html_session_directory/private
 #last_two_commits=`git reflog|sed 2q|cut -c1-8`
 for d in lec assignments/* tlb/*
