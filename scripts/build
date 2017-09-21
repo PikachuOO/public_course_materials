@@ -38,6 +38,7 @@ do
 	ln -sf tlb tut
 	ln -sf tlb test
 done
+cd $public_html_session_directory || exit 1
 
 for d in *
 do
