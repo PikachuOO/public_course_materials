@@ -1,0 +1,110 @@
+{% set programs = 'uniq_echo.py sort_words.py distinct_lines.py' %}
+{% set submission_deadline = 'Tuesday 3 October 23:59' %}
+{% extends "templates/test.html" %}
+
+{% block questions %}
+
+<h3>Exercise: Unique Echo</h3>
+
+Write a Python program <b>uniq_echo.py</b> that prints its command-line argument to
+standard output, similar to <b>echo</b> command in shell.
+
+{{execute("./uniq_echo.py echo echo echo;./uniq_echo.py bird cow bird cow fish bird cow fish bird;./uniq_echo.py how much wood would a woodchuck chuck;./uniq_echo.py d c b d c a a d;./uniq_echo.py", cwd='solutions')}}
+
+{{autotest_reminder("uniq_echo.py")}}
+
+<p></p>
+<h3>Exercise: Sort Words</h3>
+
+Write a Python program <b>sort_words.py</b> that reads lines of text from its standard input
+and prints them to its standard output with the words on each line rearranged to be in sorted (alphabetic) order.
+<p>
+You can assume that a word is any sequence of non-whitespace characters.
+<p>
+You should print the words separated by a single space character.
+<p>
+For example:
+
+{{execute("./sort_words.py", cwd='solutions', input=
+"""I shall be telling this with a sigh
+Somewhere     ages and ages hence
+Two roads diverged in a   wood and I
+I took   the one   less traveled by
+And that has made all the difference
+""")}}
+
+
+{{autotest_reminder("sort_words.py")}}
+
+<p></p>
+<h3>Exercise: Distinct Lines</h3>
+
+Write a Python program <b>distinct_lines.py</b> which given a single argument <b>n</b>
+reads lines from standard input until  <b>n</b>
+different lines have been read.
+<p>
+It should then print a message (exactly as below) indicating  how many lines were read.
+It should then stop. It should not read futher input
+<p>
+If end-of-input is reached before <b>n</b> different lines
+it should print a message  indicating  how many lines were read.
+<p>
+Your program should ignore case and white-space when comapring lines.
+<p>
+You can assume your program is given a single positive integer as argument.
+
+{{execute("./distinct_lines.py 3", cwd='solutions', show_eof=False, input=
+"""hi
+hello world
+hi
+hello world
+hello world
+bye
+"""
+)}}
+
+{{execute("./distinct_lines.py 3", cwd='solutions', show_eof=False, input=
+"""hi
+hello world
+   hi
+hello        world
+   HELLO  world
+bye
+"""
+)}}
+
+
+{{execute("./distinct_lines.py 4", cwd='solutions', show_eof=False, input=
+"""how
+are
+you
+are
+how
+are
+well
+"""
+)}}
+
+{{execute("./distinct_lines.py 3", cwd='solutions', show_eof=False, input=
+"""how
+are
+you
+"""
+)}}
+
+{{execute("./distinct_lines.py 7", cwd='solutions', input=
+"""hello
+how
+are
+you
+"""
+)}}
+
+No error checking is necessary.
+{{autotest_reminder("distinct_lines.py")}}
+
+
+<p></p>
+
+{% endblock %}
+</p></p></p></p></p></p></p>

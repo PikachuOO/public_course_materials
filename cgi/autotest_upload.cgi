@@ -26,7 +26,7 @@ if not re.match(r'^\w+$', exercise):
 	print('bad exercise')
 	sys.exit(0)
 
-work_dir = '../work'
+work_dir = '../../work'
 exercise_dir = os.path.join(work_dir, exercise)
 if not os.path.exists(exercise_dir):
 	print('unknown exercise')

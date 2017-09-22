@@ -94,7 +94,7 @@ ln -sf ../../scripts/git-post-merge post-merge
 
 cd $public_html_session_directory/private
 #last_two_commits=`git reflog|sed 2q|cut -c1-8`
-for d in lec assignments/* tlb/*
+for d in exam lec assignments/* tlb/*
 do
 # FIXME This doesn't work
 #	git diff --quiet $last_two_commits -- . && continue

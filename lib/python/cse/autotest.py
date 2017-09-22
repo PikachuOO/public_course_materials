@@ -245,6 +245,8 @@ def run_tests_and_upload_results(tests, args, zid):
         buffer = io.BytesIO()
         zip_files_for_upload(buffer, tests, args)
         buffer.seek(0)
+        if debug:
+            print(args.ssh_upload_url, {"zid":zid, "exercise":args.exercise})
         r = requests.post(args.ssh_upload_url, data={"zid":zid, "exercise":args.exercise}, files={"zip": ("zip", buffer)})
         if debug:
             print(r.text, file=sys.stderr)

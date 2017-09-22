@@ -8,6 +8,8 @@ def extract_file_references_from_jinja(template, include_answers=False):
 	try:
 		with open(template) as f:
 			page = f.read()
+			# < characters in Jinja  break Beautiful Soup, e.g in Python betwee {{ }}
+			# The fragile workaround is to replace any < without a following > on the sameline 
 			page = re.sub('<([^>]*\n)', r'__ESCAPE_JINJA_LT__\1', page,flags=re.M)
 			soup = BeautifulSoup(page, 'html5lib')
 			if not include_answers:
@@ -77,6 +79,8 @@ subprocess.run(['rsync', '-a', '--chmod=Du=rwx,Dgo=rx,Fu=rwX,Fgo=rX', '--files-f
 for censored_file in censored_files:
 	with open(censored_file) as f:
 		page = f.read()
+		# < characters in Jinja  break Beautiful Soup, e.g in Python betwee {{ }}
+		# The fragile workaround is to replace any < without a following > on the sameline 
 		page = re.sub('<([^>]*\n)', r'__ESCAPE_JINJA_LT__\1', page,flags=re.M)
 		soup = BeautifulSoup(page, 'html.parser')
 		for tag in soup.findAll({'div':True,'span':True,'pre':True}, { "class" : re.compile(r'\banswer\b')}):
