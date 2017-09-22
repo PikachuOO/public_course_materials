@@ -6,8 +6,10 @@
 
 <h3>Exercise: Unique Echo</h3>
 
-Write a Python program <b>uniq_echo.py</b> that prints its command-line argument to
-standard output, similar to <b>echo</b> command in shell.
+Write a Python program <b>uniq_echo.py</b> that prints each different command-line argument to
+standard output exactly once, similar to <b>echo</b> command in shell but with duplicates removed.
+
+Print out the unique arguments in order of their first appearance.
 
 {{execute("./uniq_echo.py echo echo echo;./uniq_echo.py bird cow bird cow fish bird cow fish bird;./uniq_echo.py how much wood would a woodchuck chuck;./uniq_echo.py d c b d c a a d;./uniq_echo.py", cwd='solutions')}}
 
