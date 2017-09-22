@@ -67,7 +67,7 @@ for tlb_path in sorted(glob.glob(os.path.join('tlb', '[0-9][0-9]'))):
 #			if not os.path.isdir(path) and not path.endswith('.html'):
 #				public_prefixes.add(path)
 
-p = subprocess.run(['git','ls-tree', '-r', 'master', '--name-only'], stdout=subprocess.PIPE, universal_newlines=True)
+p = subprocess.run(['git','ls-tree', '-r', 'HEAD', '--name-only'], stdout=subprocess.PIPE, universal_newlines=True)
 public_files = set()
 for pathname in p.stdout.splitlines():
 	for prefix in public_prefixes:
