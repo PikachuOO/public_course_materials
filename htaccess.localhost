@@ -64,4 +64,4 @@ RewriteRule \.(jpg|png|pbm|zip|txt|pdf)$ - [L]
 
 # Send everything else to flask
 
-RewriteRule ^(.*) %{ENV:BASE_URL}/flask.cgi/$1 [L]
+RewriteRule ^(.*) %{ENV:BASE_URL}/flask.cgi/$1
