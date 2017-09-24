@@ -60,7 +60,6 @@ for tlb_path in sorted(glob.glob(os.path.join('tlb', '[0-9][0-9]'))):
 			public_prefixes.add(path_prefix + '.autotest')
 			file_references = extract_file_references_from_jinja(path_prefix + '.html')
 		public_prefixes.update([os.path.join(tlb_path, fr) for fr in file_references])
-	print(os.path.join(tlb_path, '*released'), glob.glob(os.path.join(tlb_path, '*released')))
 	public_prefixes.update(glob.glob(os.path.join(tlb_path, '*released')))
 #	if glob.glob(os.path.join(tlb_path, '*released')):
 #		for path in glob.glob(os.path.join(tlb_path, '*')):
@@ -77,6 +76,9 @@ for pathname in p.stdout.splitlines():
 			
 subprocess.run(['rsync', '-a', '--chmod=Du=rwx,Dgo=rx,Fu=rwX,Fgo=rX', '--files-from=-', '.', public_dir], input='\n'.join(public_files).encode('utf-8'))
 
+#
+# delete sample solutions from html source when solutions have not been released
+#
 for censored_file in censored_files:
 	with open(censored_file) as f:
 		page = f.read()
