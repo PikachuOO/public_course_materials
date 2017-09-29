@@ -7,9 +7,13 @@ Internal Error
 {% block body_contents %}
 
 An internal error has occurred in the {{course_code}} website.
+
+Page not found on the {{course_code}} website.
 <p>
 If you think the URL you've used should work,
-please e-mail the text below to {{course_account}} and we'll fix it as soon as we can.
+please post a message in the <a href="{{course_forum_url}}">course forum</a> and we'll fix it as soon as we can.
+<p>
+Please include the text below to help us fix the error.
 
 <pre>
 {{error_message}}

@@ -64,6 +64,7 @@ def after_request(response):
     response.cache_control.public = True
     response.cache_control.max_age = timeout
     cache_key = str(is_tutor()) + str(request.path)
+    cached_response.headers['X-Cache-Key'] = cache_key # for debugging
     #print('cache set', cache_key, response.headers['Content-Type'])
     cache.set(cache_key, cached_response, timeout=timeout)
     return cached_response
@@ -177,15 +178,17 @@ def lecture_code_topic_url(topic):
         code_files[html.escape(os.path.basename(pathname))] = None
     return render_template_with_variables('templates/lecture_example_code.html', topic=topic, code_files=code_files.keys())
 
-@app.route("/favicon.ico")
-def exclude():
-    abort(404)
-
 @app.route('/')
 @app.route('/index.html')
 @app.route('/<path:path>')
-def catchall_url(**kwargs):
+def catchall_url(path='index.html'):
+    if 'index' not in path:
+        abort(404)
     return render_template_with_variables('templates/index.html')
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template_with_variables('templates/404.html'), 404
 
 @app.errorhandler(Exception)
 def handle_error(e):
