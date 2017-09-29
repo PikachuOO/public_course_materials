@@ -20,8 +20,8 @@
     </IfModule>
 </Files>
 
-#SetEnvIf Request_URI ^ BASE_URL=/~cs2041
-RewriteBase /~cs2041/
+SetEnvIf Request_URI ^ BASE_URL=/~cs2041
+
 
 # the tutors directory and other directories containing .py files which must run as CGI scripts
 # need htaccess files explicitly setting their type

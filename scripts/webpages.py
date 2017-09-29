@@ -182,8 +182,8 @@ def lecture_code_topic_url(topic):
 @app.route('/index.html')
 @app.route('/<path:path>')
 def catchall_url(path='index.html'):
-    if 'index' not in path:
-        abort(404)
+#   if 'index' not in path:
+#       abort(404)
     return render_template_with_variables('templates/index.html')
 
 @app.errorhandler(404)
