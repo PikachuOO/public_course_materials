@@ -1,0 +1,33 @@
+max_cpu=3
+max_wall_clock=30
+
+program=middle_lines.pl
+
+middle_lines_1 command=./middle_lines.pl odd.txt
+middle_lines_2 command=./middle_lines.pl even.txt
+middle_lines_3 command=./middle_lines.pl /dev/null
+middle_lines_4 command=./middle_lines.pl 40_line_file.txt
+middle_lines_5 command=./middle_lines.pl 41_line_file.txt
+middle_lines_6 command=./middle_lines.pl 42_line_file.txt
+middle_lines_7 command=./middle_lines.pl 43_line_file.txt
+middle_lines_8 command=./middle_lines.pl different_43_line_file.txt
+middle_lines_9 command=./middle_lines.pl file1.txt
+middle_lines_10 command=./middle_lines.pl file2.txt
+middle_lines_11 command=./middle_lines.pl file3.txt
+middle_lines_12 command=./middle_lines.pl file4.txt
+middle_lines_13 command=./middle_lines.pl file5.txt
+
+program=largest_numbered_line.pl
+command=./largest_numbered_line.pl
+largest_numbered_line_1 stdin="I spent $ 15.50 for \n3.3 kg apples yesterday.\n2000 is a leap year.\n"
+largest_numbered_line_2 stdin="two2 four4 eight8 sixteen16\n1 sixteen-and-half 16.5  1\n11 12 13\n"
+largest_numbered_line_3 stdin="the quick brown f42ox\n4 9 42 2 4\n1 2 3 4 42.0\nno forty two\nlast 42\n"
+largest_numbered_line_4 stdin="a 0.01\nb .5\nc -0.9\n"
+largest_numbered_line_5 stdin="a -.5\nb -5\nc --90--\n"
+largest_numbered_line_6 stdin="I love programming in Perl\nbut I like Python better.\n"
+largest_numbered_line_7 stdin="a 1 a\nb 2 b\nc 14 c\nd 2 d\nf 14 f\ne 1 e\n"
+largest_numbered_line_8 stdin="a 1 a\nb 2 b\nc 14 c\nd 2 d\ne 1 e\n"
+largest_numbered_line_9 stdin="1\n2\n14\n2\n1\n"
+largest_numbered_line_10 stdin="1 is the loneliest number\nSome lines have no numbers\nPowers of 10 are: 1 10 100 1000 \n6 * 7 = 42\n"
+largest_numbered_line_11 stdin="3 is a common number\n3 2 1\n1 2 3\nThree3two2one1.\nthree\n"
+largest_numbered_line_12 stdin="1 is the loneliest number\nSome lines have no numbers\nPowers of 10 are: 1 10 100 1000 \nThe answer is 42.\n6 * 7 = 42\n"

@@ -1,0 +1,121 @@
+ignore_case=1
+ignore_white_space=1
+shell=1
+
+max_cpu=3
+program=total_words.pl
+total_words_0 command="./total_words.pl <lyrics/Adele.txt"
+total_words_1 command="./total_words.pl <lyrics/David_Bowie.txt"
+total_words_2 command="./total_words.pl <lyrics/Ed_Sheeran.txt"
+total_words_3 command="./total_words.pl <lyrics/Justin_Bieber.txt"
+total_words_4 command="./total_words.pl <lyrics/Keith_Urban.txt"
+total_words_5 command="./total_words.pl <lyrics/Leonard_Cohen.txt"
+total_words_6 command="./total_words.pl <lyrics/Metallica.txt"
+total_words_7 command="./total_words.pl <lyrics/Rage_Against_The_Machine.txt"
+total_words_8 command="./total_words.pl <lyrics/Rihanna.txt"
+total_words_9 command="./total_words.pl <lyrics/Taylor_Swift.txt"
+
+program=count_word.pl
+count_word_0 command="./count_word.pl death <lyrics/Adele.txt"
+count_word_1 command="./count_word.pl life <lyrics/David_Bowie.txt"
+count_word_2 command="./count_word.pl hello <lyrics/Ed_Sheeran.txt"
+count_word_3 command="./count_word.pl good <lyrics/Justin_Bieber.txt"
+count_word_4 command="./count_word.pl heart <lyrics/Keith_Urban.txt"
+count_word_5 command="./count_word.pl love <lyrics/Leonard_Cohen.txt"
+count_word_6 command="./count_word.pl rage <lyrics/Metallica.txt"
+count_word_7 command="./count_word.pl anger <lyrics/Rage_Against_The_Machine.txt"
+count_word_8 command="./count_word.pl beat <lyrics/Rihanna.txt"
+count_word_9 command="./count_word.pl smile <lyrics/Taylor_Swift.txt"
+
+max_cpu=5
+program=frequency.pl
+frequency_0 command="./frequency.pl snow"
+frequency_1 command="./frequency.pl hello"
+frequency_2 command="./frequency.pl good"
+frequency_3 command="./frequency.pl heart"
+frequency_4 command="./frequency.pl love"
+frequency_5 command="./frequency.pl rage"
+frequency_6 command="./frequency.pl anger"
+frequency_8 command="./frequency.pl beat"
+frequency_9 command="./frequency.pl smile"
+
+max_cpu=10
+program=log_probability.pl
+log_probability_0 command="./log_probability.pl love"
+log_probability_1 command="./log_probability.pl hate"
+log_probability_2 command="./log_probability.pl anger"
+log_probability_3 command="./log_probability.pl fear "
+log_probability_4 command="./log_probability.pl rage"
+log_probability_5 command="./log_probability.pl smile"
+log_probability_6 command="./log_probability.pl heart"
+
+max_cpu=20
+program=identify_artist.pl
+identify_artist_0 command="./identify_artist.pl song0.txt"
+identify_artist_1 command="./identify_artist.pl song1.txt song2.txt song3.txt song4.txt"
+identify_artist_2 command="./identify_artist.pl song5.txt"
+identify_artist_3 command="./identify_artist.pl song6.txt"
+identify_artist_4 command="./identify_artist.pl song7.txt"
+identify_artist_5 command="./identify_artist.pl song8.txt"
+identify_artist_6 command="./identify_artist.pl song9.txt"
+identify_artist_7 command="./identify_artist.pl song10.txt"
+
+max_cpu=3
+program=total_words.py
+challenge_total_words_0 command="./total_words.py <lyrics/Adele.txt"
+challenge_total_words_1 command="./total_words.py <lyrics/David_Bowie.txt"
+challenge_total_words_2 command="./total_words.py <lyrics/Ed_Sheeran.txt"
+challenge_total_words_3 command="./total_words.py <lyrics/Justin_Bieber.txt"
+challenge_total_words_4 command="./total_words.py <lyrics/Keith_Urban.txt"
+challenge_total_words_5 command="./total_words.py <lyrics/Leonard_Cohen.txt"
+challenge_total_words_6 command="./total_words.py <lyrics/Metallica.txt"
+challenge_total_words_7 command="./total_words.py <lyrics/Rage_Against_The_Machine.txt"
+challenge_total_words_8 command="./total_words.py <lyrics/Rihanna.txt"
+challenge_total_words_9 command="./total_words.py <lyrics/Taylor_Swift.txt"
+
+program=count_word.py
+challenge_count_word_0 command="./count_word.py death <lyrics/Adele.txt"
+challenge_count_word_1 command="./count_word.py life <lyrics/David_Bowie.txt"
+challenge_count_word_2 command="./count_word.py hello <lyrics/Ed_Sheeran.txt"
+challenge_count_word_3 command="./count_word.py good <lyrics/Justin_Bieber.txt"
+challenge_count_word_4 command="./count_word.py heart <lyrics/Keith_Urban.txt"
+challenge_count_word_5 command="./count_word.py love <lyrics/Leonard_Cohen.txt"
+challenge_count_word_6 command="./count_word.py rage <lyrics/Metallica.txt"
+challenge_count_word_7 command="./count_word.py anger <lyrics/Rage_Against_The_Machine.txt"
+challenge_count_word_8 command="./count_word.py beat <lyrics/Rihanna.txt"
+challenge_count_word_9 command="./count_word.py smile <lyrics/Taylor_Swift.txt"
+
+max_cpu=5
+program=frequency.py
+challenge_frequency_0 command="./frequency.py snow"
+challenge_frequency_1 command="./frequency.py hello"
+challenge_frequency_2 command="./frequency.py good"
+challenge_frequency_3 command="./frequency.py heart"
+challenge_frequency_4 command="./frequency.py love"
+challenge_frequency_5 command="./frequency.py rage"
+challenge_frequency_6 command="./frequency.py anger"
+challenge_frequency_8 command="./frequency.py beat"
+challenge_frequency_9 command="./frequency.py smile"
+
+max_cpu=10
+program=log_probability.py
+challenge_log_probability_0 command="./log_probability.py love"
+challenge_log_probability_1 command="./log_probability.py hate"
+challenge_log_probability_2 command="./log_probability.py anger"
+challenge_log_probability_3 command="./log_probability.py fear "
+challenge_log_probability_4 command="./log_probability.py rage"
+challenge_log_probability_5 command="./log_probability.py smile"
+challenge_log_probability_6 command="./log_probability.py heart"
+
+max_cpu=20
+program=identify_artist.py
+challenge_identify_artist_0 command="./identify_artist.py song0.txt"
+challenge_identify_artist_1 command="./identify_artist.py song1.txt song2.txt song3.txt song4.txt"
+challenge_identify_artist_2 command="./identify_artist.py song5.txt"
+challenge_identify_artist_3 command="./identify_artist.py song6.txt"
+challenge_identify_artist_4 command="./identify_artist.py song7.txt"
+challenge_identify_artist_5 command="./identify_artist.py song8.txt"
+challenge_identify_artist_6 command="./identify_artist.py song9.txt"
+challenge_identify_artist_7 command="./identify_artist.py song10.txt"
+
+
