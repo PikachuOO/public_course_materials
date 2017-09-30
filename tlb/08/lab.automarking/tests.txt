@@ -1,0 +1,50 @@
+ignore_case=1
+ignore_white_space=1
+max_cpu=30 
+
+courses_0 command=./courses.pl VISN
+courses_1 command=./courses.pl SENG
+courses_2 command=./courses.pl ENGG
+courses_3 command=./courses.pl ACCT
+courses_4 command=./courses.pl BINF
+courses_5 command=./courses.pl CLIM
+
+lectures0_0 command=./lectures0.pl COMP2041
+lectures0_1 command=./lectures0.pl COMP1521
+lectures0_2 command=./lectures0.pl PSYC1011 COMP9024 COMP3231
+lectures0_3 command=./lectures0.pl COMP1911 COMP1511 COMP1531 COMP1521 ENGG1811
+lectures0_4 command=./lectures0.pl CLIM2001
+lectures0_5 command=./lectures0.pl AVEN1920
+lectures0_6 command=./lectures0.pl CLIM2001 AVEN1920
+lectures0_7 command=./lectures0.pl CLIM2001 AVEN1920 MECH4620 SOCW1001.html
+
+lectures1_0 command=./lectures1.pl -d COMP2041
+lectures1_1 command=./lectures1.pl -d COMP1521
+lectures1_2 command=./lectures1.pl -d PSYC1011 COMP9024 COMP3231
+lectures1_3 command=./lectures1.pl -d COMP1911 COMP1511 COMP1531 COMP1521 ENGG1811
+lectures1_4 command=./lectures0.pl -d CLIM2001
+lectures1_5 command=./lectures0.pl -d AVEN1920
+lectures1_6 command=./lectures0.pl -d CLIM2001 AVEN1920
+lectures1_7 command=./lectures0.pl -d CLIM2001 AVEN1920 MECH4620 SOCW1001.html
+
+lectures2_0 command=./lectures2.pl -t COMP2041
+lectures2_1 command=./lectures2.pl -t COMP1521
+lectures2_2 command=./lectures2.pl -t PSYC1011 COMP9024 COMP3231
+lectures2_3 command=./lectures2.pl -t COMP9020 COMP9021 COMP9024
+lectures2_4 command=./lectures2.pl -t COMP1911 COMP1511 COMP1531 COMP1521 ENGG1811
+lectures2_5 command=./lectures2.pl -t COMP1911 COMP2041 COMP2121 COMP3121 COMP3311 COMP3331 COMP4121 COMP3421 COMP9020 COMP9021 COMP9024
+lectures2_6 command=./lectures0.pl -t CLIM2001
+lectures2_7 command=./lectures0.pl -t AVEN1920
+lectures2_8 command=./lectures0.pl -t CLIM2001 AVEN1920
+lectures2_9 command=./lectures0.pl -t CLIM2001 AVEN1920 MECH4620 SOCW1001.html
+
+challenge_tags_0 command=./tags.py http://www.cse.unsw.edu.au/~cs2041/outline.html
+challenge_tags_1 command=./tags.py -f http://www.cse.unsw.edu.au/~cs2041/outline.html
+challenge_tags_2 command=./tags.py http://www.cse.unsw.edu.au/~cs2041/CourseTimetable.html
+challenge_tags_3 command=./tags.py -f http://www.cse.unsw.edu.au/~cs2041/CourseTimetable.html
+
+challenge_shortest_path_0 command=./shortest_path.py Parkes Gilgandra stdin="Bourke Broken-Hill 271\nBourke Dubbo 23\nBourke Gilgandra 62\nBourke Parkes 71\nCanowindra Dubbo 35\nCanowindra Gilgandra 13\nCanowindra Parkes 15\nDubbo Gilgandra 91\nDubbo Parkes 57\n"
+challenge_shortest_path_1 command=./shortest_path.py Dubbo Gilgandra stdin="Bourke Broken-Hill 271\nBourke Dubbo 23\nBourke Gilgandra 62\nBourke Parkes 71\nCanowindra Dubbo 35\nCanowindra Gilgandra 13\nCanowindra Parkes 15\nDubbo Gilgandra 91\nDubbo Parkes 57\n"
+challenge_shortest_path_2 command=./shortest_path.py Canowindra Broken-Hill stdin="Bourke Broken-Hill 271\nBourke Dubbo 23\nBourke Gilgandra 62\nBourke Parkes 71\nCanowindra Dubbo 35\nCanowindra Gilgandra 13\nCanowindra Parkes 15\nDubbo Gilgandra 91\nDubbo Parkes 57\n"
+challenge_shortest_path_3 command=./shortest_path.py Canowindra Broken-Hill stdin="Bourke Broken-Hill 271\nBourke Dubbo 23\nBourke Gilgandra 62\nBourke Parkes 71\nCanowindra Dubbo 35\nCanowindra Gilgandra 13\nCanowindra Parkes 15\nDubbo Gilgandra 91\nDubbo Parkes 57\n"
+challenge_shortest_path_4 command=./shortest_path.py Broken-Hill Gilgandra stdin="Bourke Broken-Hill 271\nBourke Dubbo 23\nBourke Gilgandra 62\nBourke Parkes 71\nCanowindra Dubbo 35\nCanowindra Gilgandra 13\nCanowindra Parkes 15\nDubbo Gilgandra 91\nDubbo Parkes 57\n"
