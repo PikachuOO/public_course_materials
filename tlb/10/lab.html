@@ -1,7 +1,9 @@
 {% set programs = "browser.cgi game.cgi" %}
 {% extends "templates/lab.html" %}
 {% block objectives %}
+<ul>
 <li> Understanding CGI scripts
+</li></ul>
 {% endblock %}
 
 {% block lab_exercises %}
@@ -64,9 +66,9 @@ You should be able to run your CGI script by entering this URL in a browser <cod
 
 
 <b>Hint</b>: you need to produce identical HTML to pass the autotest for this exercise.
-
-<b>Hint</b>: web browser let you view the HTML of a web page (cntl-U is the shortcut for firefox &amp; chrome).
-
+<p>
+<b>Hint</b>: web browsers let you view the HTML of a web page (CTRL+U is the shortcut for firefox &amp; chrome).
+<p>
 <b>Hint</b>: the command "host" will given an IP address print the corresponding hostname
 (if there is one). For example:
 
@@ -76,7 +78,7 @@ You should be able to run your CGI script by entering this URL in a browser <cod
 some debugging info by creating a <code>.htaccess</code> file with these contents:
 <p>
 <pre class="command_line">
-&lt;Files "login.cgi"&gt;
+&lt;Files "browser.cgi"&gt;
 SetHandler application/x-setuid-cgid
 &lt;/Files&gt;
 </pre>
@@ -111,14 +113,14 @@ place in your CSE account.
 <kbd class="shell">chmod 700 game.cgi</kbd>
 </pre>
 
-You should be able to run your CGI scipt by entering this URL in a game <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/game.cgi</code>.
+You should be able to run your CGI scipt by entering this URL in a web browser <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/game.cgi</code>.
 <p>
 
 You will note the CGI script accepts any username and any password.
 <p>
 In the tute you saw a Perl program which read a username and password
 and then checked that the password matches against one stored for the user in the
-file <code>accounts/</code><i>username</i>/<code>password</code>
+file <code>accounts</code>/<i>username</i>/<code>password</code>
 <p>
 
 This <a href="accounts.zip">zip file</a> contains a dataset of
@@ -140,7 +142,7 @@ Add code to <code>game.cgi</code> to check username and password
 against these files.
 <p>
 You should produce suitable message if a username does not exist
-and a different suitable message
+and a different suitable message if the password is incorrect.
 
 <h4>Reference Implementation</h4>
 
@@ -195,4 +197,4 @@ you may demonstrate your work to any COMP[29]041  student before the due date.
 <p></p>
 
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></li>
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>
