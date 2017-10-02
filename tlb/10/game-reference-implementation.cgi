@@ -1,2 +1,3 @@
 #!/bin/sh
-exec ../../../private/tlb/10/solutions/authenticated_game.cgi
+cd ../../../private/tlb/10/solutions/
+exec ./authenticated_game.cgi

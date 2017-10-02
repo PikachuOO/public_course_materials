@@ -1,2 +1,3 @@
 #!/bin/sh
-exec ../../../private/tlb/10/solutions/browser.cgi
+cd ../../../private/tlb/10/solutions/
+exec ./browser.cgi
