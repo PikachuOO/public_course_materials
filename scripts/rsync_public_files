@@ -20,7 +20,7 @@ def extract_file_references_from_jinja(template, include_answers=False):
 			all_refs.update([a['href'] for a in soup.find_all('a', href=True)])
 			all_refs.update([img['src'] for img in soup.find_all('img', src=True)])
 			all_refs.update(re.findall(r'\{\{\s*include_code\s*\(\s*"(.*?)"', str(soup)))
-			all_refs.update(re.findall(r'\{\{\s*show_cgi_example\s*\(\s*"(.*?)"', str(soup)))
+			all_refs.update(re.findall(r'\{\{\s*show_cgi_example\s*\(\s*"(.*?)["?]', str(soup)))
 			relative_refs = set()
 			for ref in all_refs: 
 				ref = re.sub(r'^{{.*?}}', '', ref)
