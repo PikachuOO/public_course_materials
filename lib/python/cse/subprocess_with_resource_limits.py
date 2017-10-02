@@ -13,7 +13,7 @@ def run(command, **kwargs):
         output = loop.run_until_complete(cooroutine)
     except KeyboardInterrupt:
         sys.exit(1)
-    except (PermissionError, FileNotFoundError) as e:
+    except OSError as e:
         return (b'', re.sub(r'^\[.*?\] *', '', str(e)).encode('UTF-8'), 2)
     return output
 

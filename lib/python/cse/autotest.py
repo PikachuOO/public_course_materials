@@ -225,7 +225,7 @@ def get_zid(account = ''):
         m = re.search(r'\bz?(\d{7})\b', output)
         if m:
             return 'z' + m.group(1)
-    except (subprocess.CalledProcessError,FileNotFoundError):
+    except (subprocess.CalledProcessError,OSError):
         pass
     return ''
 
@@ -279,7 +279,7 @@ def zip_files_for_upload(stream, tests, args):
             if bytes_uploaded >args.ssh_upload_max_bytes:
                 break
             zf.write(filename)
-        except (FileNotFoundError, PermissionError):
+        except OSError:
             pass
     zf.close()
 
