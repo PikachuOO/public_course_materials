@@ -229,6 +229,56 @@ div.date_changed {
 	font-size:75%;
 }
 
+.cgi_display {
+    width : 100%;
+	display: inline-block;
+	border-top: 1.5em;
+	border-bottom: 1.5em;
+}
+
+.cgi_display_title {
+    width : 100%;
+	float: left;
+    text-align : center;
+    font-weight : bold;
+}
+
+.cgi_output_panel {
+	float: left;
+    height : 20em;
+    width : 50%;
+}
+
+.cgi_source_display {
+    height: 100%;
+    width: 100%;
+    font-family: "Lucida Console", Courier, "Courier New",monospace;
+    background:#E8E8FF;
+}
+
+.cgi_output_display {
+    height: 100%;
+    width: 100%;
+}
+
+.html_source_panel {
+	float: left;
+    height : 20em;
+    width : 50%;
+    left: 50%;
+}
+
+.html_source_display {
+	padding-left: 2px;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    white-space: pre;
+    background:#F0F0FF;
+    border:thin solid #9999CC;
+}
+
+
 /* color scheme */
 
 a {

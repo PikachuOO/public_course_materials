@@ -117,7 +117,7 @@ def calculate_mark(test_results):
 			1 : 1
 		})
 #	print('min_mark',min_mark, 'mark', mark, 'test_results', test_results, file=sys.stderr)
-	return max(0.1, min_mark, mark)
+	return max(0.2, min_mark, mark)
 	
 def get_test_label_groups(exercise):
 	try:

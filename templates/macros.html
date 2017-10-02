@@ -44,11 +44,15 @@
 {% endif %}
 {%- endmacro %}
 
-{% macro include_code(pathname, function_only='') -%}
+{% macro include_code(pathname, function_only='', height=None) -%}
 {% if not pathname.startswith('/') %}
 {% set pathname = os.path.join(directory_relative_pathname, pathname) %}
 {% endif %}
+{% if height %}
+<pre class="program" style="max-height: {{height}};overflow:  auto;">
+{% else %}
 <pre class="program">
+{% endif %}
 {{ read_code(pathname, function_only=function_only) }}
 </pre>
 
@@ -102,3 +106,22 @@
 
 {%- endmacro %}
 
+{% macro show_cgi_example(url) -%}
+    <p>
+    <hr>
+    <div class="cgi_display">
+    <div class="cgi_display_title">
+    <a target="_blank" href="{{url}}">{{os.path.basename(url)}}</a>
+    </div>
+    <div class="cgi_output_panel">
+        <iframe class="cgi_output_display" src="{{url}}" onLoad="show_html_source(this)">
+        </iframe>
+    </div>
+    <div class="html_source_panel">
+        <div class="html_source_display">
+        </div>
+    </div>
+    </div>
+    <hr>
+    <p>
+{%- endmacro %}

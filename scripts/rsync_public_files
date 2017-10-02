@@ -4,6 +4,7 @@ import glob,os,re,subprocess, sys
 from bs4 import BeautifulSoup
 import config
 
+debug = 1
 def extract_file_references_from_jinja(template, include_answers=False):
 	try:
 		with open(template) as f:
@@ -18,11 +19,13 @@ def extract_file_references_from_jinja(template, include_answers=False):
 			all_refs = set()
 			all_refs.update([a['href'] for a in soup.find_all('a', href=True)])
 			all_refs.update([img['src'] for img in soup.find_all('img', src=True)])
-			all_refs.update(re.findall(r'\{\{\s*include_code\("(.*?)"', str(soup)))
+			all_refs.update(re.findall(r'\{\{\s*include_code\s*\(\s*"(.*?)"', str(soup)))
 			relative_refs = set()
 			for ref in all_refs: 
 				ref = re.sub(r'^{{.*?}}', '', ref)
-				if not ref.startswith('http') and not ref.startswith('/') and not ref.startswith('/'):
+				if not ref.startswith('http') and not ref.startswith('/') :
+					if debug:
+						print(template, 'extracted reference', ref, file=sys.stderr)
 					relative_refs.add(ref)
 			return relative_refs
 	except FileNotFoundError:

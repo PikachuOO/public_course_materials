@@ -7,12 +7,13 @@
 {% endblock %}
 </title>
 
-{% from "templates/macros.html" import execute,include_code,edit_github,autotest_summary with context %}
+{% from "templates/macros.html" import execute,include_code,edit_github,autotest_summary,show_cgi_example with context %}
 
 <link href="{{ unique_static_url_for('bootstrap.min.css') }}" rel="stylesheet">
 <link href="{{ unique_static_url_for('course.css') }}" rel="stylesheet">
 <script type="text/javascript" src="{{ unique_static_url_for('jquery.min.js') }}"></script>
 <script type="text/javascript" src="{{ unique_static_url_for('bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ unique_static_url_for('course.js') }}"></script>
 <link rel="canonical" href="{{ canonical_url }}" />
 </head>
 <body>

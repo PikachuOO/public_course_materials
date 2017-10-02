@@ -1,0 +1,198 @@
+{% set programs = "browser.cgi game.cgi" %}
+{% extends "templates/lab.html" %}
+{% block objectives %}
+<li> Understanding CGI scripts
+{% endblock %}
+
+{% block lab_exercises %}
+
+
+<h3>Exercise: A CGI script in Shell</h3>
+
+Write a shell CGI script <b>browser.cgi</b>  which prints the details of the
+web client  accessing the CGI script. It should print:
+
+<ul>
+<li> the IP address of the web client (browser)
+<li> the  hostname of the machine the browser is running on 
+<li> the <i>user agent</i> string supplied by the browser.
+</li></li></li></ul>
+<h4>Reference Implementation</h4>
+
+
+Match the behaviour of this <a href="browser-reference-implementation.cgi">reference implementation</a> of <b>browser.cgi</b> <b>EXACTLY</b>.
+<p>
+To help you understand what you need to do
+
+<ul>
+<li> the left window below shows the rendered output from <code>browser-reference-implementation.cgi</code>
+<li> and the right window shows the raw HTML
+</li></li></ul>
+
+
+{{  show_cgi_example("browser-reference-implementation.cgi") }}
+
+
+<h4>Starting Code</h4>
+
+To help you get started here is <a href="browser-starting-code.cgi">browser-starting-code.cgi</a>, a CGI script that
+prints the environment variables it is given by the web server.
+
+{{ include_code("browser-starting-code.cgi", height='16em') }}
+
+And here is what it looks like. Again the left window shows the rendered output and the right window
+shows the raw HTML.
+
+{{  show_cgi_example("browser-starting-code.cgi") }}
+
+These commands will copy the starting code into an appropriate
+place in your CSE account.
+
+
+<pre class="command_line">
+<kbd class="shell">cd</kbd>
+<kbd class="shell">chmod 751 .</kbd>
+<kbd class="shell">mkdir -p public_html/{{exercise_name}}</kbd>
+<kbd class="shell">cd public_html/{{exercise_name}}</kbd>
+<kbd class="shell">cp {{directory_absolute_pathname}}/browser-starting-code.cgi browser.cgi</kbd>
+<kbd class="shell">chmod 755 . ..</kbd>
+<kbd class="shell">chmod 700 browser.cgi</kbd>
+</pre>
+
+You should be able to run your CGI script by entering this URL in a browser <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/browser.cgi</code>.
+
+
+
+<b>Hint</b>: you need to produce identical HTML to pass the autotest for this exercise.
+
+<b>Hint</b>: web browser let you view the HTML of a web page (cntl-U is the shortcut for firefox &amp; chrome).
+
+<b>Hint</b>: the command "host" will given an IP address print the corresponding hostname
+(if there is one). For example:
+
+{{execute("host 129.94.242.20")}}
+
+<b>Hint</b>: if your script is producing a 500 error from the webserver you can obtain
+some debugging info by creating a <code>.htaccess</code> file with these contents:
+<p>
+<pre class="command_line">
+&lt;Files "login.cgi"&gt;
+SetHandler application/x-setuid-cgid
+&lt;/Files&gt;
+</pre>
+<p>
+See <a href="http://taggi.cse.unsw.edu.au/FAQ/CGI_scripts/">here</a> for more info.
+
+{{ autotest_reminder("browser.cgi") }}
+
+<p></p>
+<h3>Exercise: Adding Authentication to A CGI Script</h3>
+
+In this exercise and the next exercise you modify a Perl CGI script which allows
+the user to play a simple game.
+<p>
+Here is the CGI script:
+
+{{ include_code("game-starting-code.cgi", height='16em') }}
+
+And here is what it looks like. Again the left window shows the rendered output and the right window
+shows the raw HTML.
+
+{{  show_cgi_example("game-starting-code.cgi") }}
+
+These commands will copy the starting code into an appropriate
+place in your CSE account.
+
+
+<pre class="command_line">
+<kbd class="shell">cd</kbd>
+<kbd class="shell">cd ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">cp {{directory_absolute_pathname}}/game-starting-code.cgi game.cgi</kbd>
+<kbd class="shell">chmod 700 game.cgi</kbd>
+</pre>
+
+You should be able to run your CGI scipt by entering this URL in a game <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/game.cgi</code>.
+<p>
+
+You will note the CGI script accepts any username and any password.
+<p>
+In the tute you saw a Perl program which read a username and password
+and then checked that the password matches against one stored for the user in the
+file <code>accounts/</code><i>username</i>/<code>password</code>
+<p>
+
+This <a href="accounts.zip">zip file</a> contains a dataset of
+sample users and passwords stored in this format.
+<p>
+Add this to the same directory as <code>game.cgi</code>:
+
+<pre class="command_line">
+<kbd class="shell">cd ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">wget -q {{directory_url}}accounts.zip</kbd>
+<kbd class="shell">unzip accounts.zip</kbd>
+   creating: accounts/
+....
+<kbd class="shell">cat accounts/andrewt/password</kbd>
+correct horse battery staple
+</pre>
+
+Add code to <code>game.cgi</code> to check username and password
+against these files.
+<p>
+You should produce suitable message if a username does not exist
+and a different suitable message
+
+<h4>Reference Implementation</h4>
+
+
+Match the behaviour of this <a href="game-reference-implementation.cgi">reference implementation</a> of <b>game.cgi</b>.
+<p>
+
+{{  show_cgi_example("game-reference-implementation.cgi") }}
+
+
+<h4>Hints</h4>
+
+Get a Perl program like the one in your tute working first then cut-and-paste
+the relevant parts of the debugged code into your CGI script.
+
+<h4>Peer Assessment</h4>
+
+There is no autotest and no automarking of this question.
+<p>
+When you have completed demonstrate your work to another COMP[29]041 student in your lab
+and ask them to enter a
+<a href="https://cgi.cse.unsw.edu.au/~cs2041/cgi/peer/assess.py">peer assessment here</a>
+It is prefered you do this during your lab, but if this is not possible
+you may demonstrate your work to any COMP[29]041  student before the due date.
+
+<p></p>
+<h3>Exercise: Preventing Cheating</h3>
+
+You will notice its easy for users to cheat with <code>game.cgi</code>
+because the number they have to guess is hidden in the HTML of the web page.
+<p>
+Modify <code>game.cgi</code> so users can not cheat.
+<p>
+You may take any approach.
+<p>
+You must assume the user can see the source of your CGI script and will know
+how you are hiding or storing the number. 
+<p>
+You may assume a user does not play simultaneous games and store the number
+in their accounts directory.
+
+<h4>Peer Assessment</h4>
+
+There is no autotest and no automarking of this question.
+<p>
+When you have completed demonstrate your work to another COMP[29]041 student in your lab
+and ask them to enter a
+<a href="https://cgi.cse.unsw.edu.au/~cs2041/cgi/peer/assess.py">peer assessment here</a>
+It is prefered you do this during your lab, but if this is not possible
+you may demonstrate your work to any COMP[29]041  student before the due date.
+
+<p></p>
+
+{% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></li>
