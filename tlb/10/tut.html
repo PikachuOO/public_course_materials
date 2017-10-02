@@ -1,0 +1,94 @@
+{% extends "templates/tut.html" %}
+{% block questions %}
+<li>
+<p>
+Write a Perl program which reads from STDIN
+a username then a password (not both simultaneously).
+<p>
+It should then check the password matches one stored for user <i>username</i> in
+the file <code>users/</code><i>username</i><code>.password</code>.
+<p>
+It should print a message indicating the user is unknown  if this file does not exist
+otherwise print an appropiate message indicating whether the password matches.
+<p>
+For example:
+
+<pre class="command_line">
+<kbd class="shell">mkdir users</kbd>
+<kbd class="shell">echo 'correct horse battery staple' &gt;users/andrewt.password</kbd>
+<kbd class="shell">login.pl</kbd>
+username: <kbd>jas</kbd>
+password: <kbd>beer</kbd>
+Unkown username!
+<kbd class="shell">login.pl</kbd>
+username: <kbd>andrewt</kbd>
+password: <kbd>42</kbd>
+Incorrect password!
+<kbd class="shell">login.pl</kbd>
+username: <kbd>andrewt</kbd>
+password: <kbd>correct horse battery staple</kbd>
+You are authenticated.
+</pre>
+<p></p>
+<li>
+
+How are CGI scripts run?
+
+<p></p>
+<li>
+
+Write a shell CGI script which prints details of the context in which it is run.
+Here is an example implementation:
+
+{{ show_cgi_example("show_execution_context.sh.cgi") }}
+
+Discuss how security concerns might have affect CSE's choices
+for configuring how student CGI scripts are run on its web server.
+
+<p></p>
+<li>
+
+Web servers pass some useful information to CGI scripts as environment variables.
+<p>
+Write a shell CGI script which prints details of the environment variables it has been passed.
+Here is an example implementation:
+
+{{ show_cgi_example("show_environment_variables.sh.cgi") }}
+
+Discuss what some of these environment variables might indicate.
+
+<p></p>
+<li>
+
+A HTTP request can pass parameters to a web server.  The web server passes
+these on to the CGI script typically in environment variable(s) for GET request
+and on STDIN for POST requests.
+<p>
+Write a shell CGI script which prints whether it was invoked with a GET request
+or a POST request and prints details of the parameters it has been passed.
+Here is an example implementation:
+
+{{  show_cgi_example("show_input_parameters.sh.cgi?comp2041=best-course-ever") }}
+
+<p></p>
+
+{% endblock %}
+{% block revision_questions %}
+<li>
+
+A HTTP request can pass pararmeters to a web server.  The web server passes
+these on to the CGI script typically in environment variable(s) for GET request
+and on STDIN for POST requests
+<p>
+Write a shell CGI script which (given no parameters) prints a form allowing 2 numbers to be entered.
+The form should run the same CGI script, and the CGI script should
+print the sum of the numbers and a form allowing two more numbers to be entered and the script to
+be run again.
+Here is an example implementation:
+
+{{  show_cgi_example("sum_two_numbers.sh.cgi") }}
+
+
+<p></p>
+{% endblock %}
+</p></li></p></li></p></li></li></li></p></p></p></p></li>

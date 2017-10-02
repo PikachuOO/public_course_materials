@@ -1,1 +1,2 @@
-../../../private/tlb/10/solutions/browser.cgi
+#!/bin/sh
+exec ../../../private/tlb/10/solutions/browser.cgi
