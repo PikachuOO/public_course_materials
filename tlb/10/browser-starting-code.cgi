@@ -32,6 +32,5 @@ sed 's/&/\&amp;/;s/</\&lt;/g;s/>/\&gt;/g'
 cat <<eof
 </pre>
 </body>
-</pre>
 </html>
 eof
