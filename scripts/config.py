@@ -85,6 +85,7 @@ variables = {
     'flask_cache_directory' :  os.path.join(public_html_session_directory, 'flask_cache'),
     'testing_results_file' : os.path.join(public_html_session_directory, 'work', 'testing_results.json'),
     'enrollments_file' : os.path.join(public_html_session_directory, 'work', 'enrollments.json'),
+    'unsw_ldap_password_file' : os.path.join('/web', course_account, '.unsw_ldap_password'),
     'autotest_upload_url' : 'https://cgi.cse.unsw.edu.au/~{}/cgi/autotest_upload.cgi'.format(course_account),
 }
 variables['PATH'] = ':'.join((variables['scripts_directory'], variables['bin_directory'],   os.environ['PATH']))
