@@ -124,7 +124,7 @@ eof
 # HTML placed at the bottom of every page
 #
 sub page_trailer {
-    return "</body>\n</html\n";
+    return "</body>\n</html>\n";
 }
 
 main();

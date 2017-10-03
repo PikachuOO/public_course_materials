@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+
+import json, os, re
+import config
+
+with open('/home/teachadmin/lib/enrollments/'+ config.variables['unsw_session'] + '_COMP', encoding='latin-1') as f:
+	students = []
+	for line in f:
+		fields = re.split(r'\s*\|\s*', line.strip())
+		if fields[0] in config.variables['course_codes']:
+			students.append(fields)
+			
+enrollments_file = config.variables['enrollments_file']
+enrollments_file_tmp = enrollments_file + '.' + str(os.getpid())
+with open(enrollments_file_tmp, 'w') as f:
+	json.dump(students, f)
+	f.flush()
+	os.fsync(f.fileno())
+os.chmod(enrollments_file_tmp, 0o600)
+os.rename(enrollments_file_tmp, enrollments_file)
