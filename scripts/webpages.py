@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, abort, send_file, url_for, Re
 from werkzeug.routing import BaseConverter
 from werkzeug.contrib.cache import FileSystemCache
 from bs4 import BeautifulSoup
-
+from unsw_ldap import authenticate
 
 # config.variables contains appropriate pathnames for this course & session
 import config
@@ -182,34 +182,36 @@ def lecture_code_topic_url(topic):
 
 @app.route('/peer_assess/<exercise>/',methods=['GET'])
 def peer_assess_login(exercise):
-    del session['zid_assessment_dir']
+    if 'zid_assessment_dir' in session:
+        del session['zid_assessment_dir']
     return render_template_with_variables('templates/peer_assess_login.html')
 
 @app.route('/peer_assess/<exercise>/',methods=['POST'])
 def peer_assess_authenticate(exercise):
     try:
         zid = re.sub(r'\D', '', request.form['zid'])
-        zpass = re.sub(r'\D', '', request.form['zpass']).rstrip('\n')
+        zpass = request.form['zpass'].rstrip('\n')
     except KeyError:
         return render_template_with_variables('templates/peer_assess_login.html')
-    if not re.match('^\d{7}$', zid):
-        return render_template_with_variables('templates/peer_assess_login.html', error='bad zid')
-    zpass = request.form['zpass']
-#        if authenticate('z'+zid, zpass):
-    if zpass != 'secret':
-        return render_template_with_variables('templates/peer_assess_login.html', error='Authentication of zid/zpass failed')
-    exercise_dir = os.path.join(exercise)
-    peer_assessment_dir = os.path.join(config.variables['WORK'], exercise_dir, 'peer_assessment')
-    zid_assessment_dir = os.path.join(peer_assessment_dir, zid)
-    session['zid_assessment_dir'] = zid_assessment_dir
+    if not zpass or not re.match('^\d{7}$', zid):
+        return render_template_with_variables('templates/peer_assess_login.html', error='bad zid/zpass')
     try:
+        with open(config.variables['unsw_ldap_password_file']) as f:
+            bind_password = f.read().strip()
+        fail_message = authenticate('z'+zid, zpass, bind_password=bind_password)
+        if fail_message != '':
+            return render_template_with_variables('templates/peer_assess_login.html', error=fail_message)
+        exercise_dir = os.path.join(exercise)
+        peer_assessment_dir = os.path.join(config.variables['WORK'], exercise_dir, 'peer_assessment')
+        zid_assessment_dir = os.path.join(peer_assessment_dir, zid)
+        session['zid_assessment_dir'] = zid_assessment_dir
         if not os.path.exists(zid_assessment_dir):
             os.mkdir(zid_assessment_dir, 0o700)
         assessed = [re.sub(r'\..*', '', a) for a in os.listdir(zid_assessment_dir)]
         with open(config.variables['enrollments_file']) as f:
             enrollments = json.load(f)
         students = [(e[1], e[2]) for e in enrollments]
-    except OSError as e:
+    except (OSError,KeyError) as e:
         abort(500, str(e))
     questions = peer_assessment_questions(zid_assessment_dir)
     grades = peer_assessment_grades(zid_assessment_dir)
@@ -317,7 +319,7 @@ def page_not_found(e):
 
 @app.errorhandler(Exception)
 def handle_error(e):
-    return render_template_with_variables('templates/error.html', error_message='Internal error from %s: %s' % (request.base_url, e), backtrace = traceback.format_exc())
+    return render_template_with_variables('templates/error.html', error_message='Internal error from %s: %s' % (request.base_url, e), backtrace = traceback.format_exc()), 500
 
 def check_send_file(*pathname_components):
     pathname = os.path.join(*pathname_components)
