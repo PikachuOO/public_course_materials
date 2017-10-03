@@ -36,6 +36,7 @@ def after_request(response):
     if (
         'Content-Encoding' in response.headers or   # will be set if before_request return cached response
         not cache or
+        request.path.startswith('/peer_assess') or
         'gzip' not in request.headers.get('Accept-Encoding', '').lower() or
         not (200 <= response.status_code < 300) or
         len(response.data) < 512 or
@@ -179,30 +180,31 @@ def lecture_code_topic_url(topic):
     return render_template_with_variables('templates/lecture_example_code.html', topic=topic, code_files=code_files.keys())
 
 
-@app.route('/peer_assess/<exercise>/',methods=['GET','POST'])
+@app.route('/peer_assess/<exercise>/',methods=['GET'])
 def peer_assess_login(exercise):
-    if 'zid' in session:
-        zid = re.sub(r'\D', '', session['zid'])
-    else:
-        if 'zid' not in request.form or 'zpass' not in request.form:
-            return render_template_with_variables('templates/peer_assess_login.html')
+    del session['zid_assessment_dir']
+    return render_template_with_variables('templates/peer_assess_login.html')
+
+@app.route('/peer_assess/<exercise>/',methods=['POST'])
+def peer_assess_authenticate(exercise):
+    try:
         zid = re.sub(r'\D', '', request.form['zid'])
         zpass = re.sub(r'\D', '', request.form['zpass']).rstrip('\n')
-        if not re.match('^\d{7}$', zid):
-            return render_template_with_variables('templates/peer_assess_login.html', error='bad zid')
-        zpass = request.form['zpass']
+    except KeyError:
+        return render_template_with_variables('templates/peer_assess_login.html')
+    if not re.match('^\d{7}$', zid):
+        return render_template_with_variables('templates/peer_assess_login.html', error='bad zid')
+    zpass = request.form['zpass']
 #        if authenticate('z'+zid, zpass):
-        if zpass == 'secret':
-            session['zid'] = zid
-        else:
-            return render_template_with_variables('templates/peer_assess_login.html', error='Authentication of zid/zpass failed')
+    if zpass != 'secret':
+        return render_template_with_variables('templates/peer_assess_login.html', error='Authentication of zid/zpass failed')
     exercise_dir = os.path.join(exercise)
     peer_assessment_dir = os.path.join(config.variables['WORK'], exercise_dir, 'peer_assessment')
+    zid_assessment_dir = os.path.join(peer_assessment_dir, zid)
+    session['zid_assessment_dir'] = zid_assessment_dir
     try:
-        zid_assessment_dir = os.path.join(peer_assessment_dir, zid)
         if not os.path.exists(zid_assessment_dir):
             os.mkdir(zid_assessment_dir, 0o700)
-        session['zid_assessment_dir'] = zid_assessment_dir
         assessed = [re.sub(r'\..*', '', a) for a in os.listdir(zid_assessment_dir)]
         with open(config.variables['enrollments_file']) as f:
             enrollments = json.load(f)
@@ -246,7 +248,7 @@ def peer_assess_set_grade(assessee,  exercise='', question='', grade=''):
         return 'no zid_assessment_dir'
     try:
         with open(os.path.join(zid_assessment_dir, 'log'), "a") as f:
-            print(time.time(), assessee, question, grade, file=f)
+            print(datetime.datetime.now(), assessee, question, grade, file=f)
     except OSError:
         pass
     mark_file = os.path.join(zid_assessment_dir, assessee + '.' + question)
