@@ -1,13 +1,15 @@
 ignore_case=1
 ignore_white_space=1
 max_cpu=30 
-
 courses_0 command=./courses.pl VISN
 courses_1 command=./courses.pl SENG
 courses_2 command=./courses.pl ENGG
 courses_3 command=./courses.pl ACCT
 courses_4 command=./courses.pl BINF
 courses_5 command=./courses.pl CLIM
+
+setup_command="perl -pi -e s/2017/2018/g lectures*.p?"
+setup_command_shell=1
 
 lectures0_0 command=./lectures0.pl COMP2041
 lectures0_1 command=./lectures0.pl COMP1521

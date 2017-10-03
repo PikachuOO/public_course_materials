@@ -19,6 +19,10 @@ cs[0-9][0-9][0-9][0-9])
 	htaccess_suffix=class_account
 	link_dir=public
 	;;
+cs[0-9][0-9][0-9][0-9]cgi)
+	htaccess_suffix=cgi_account
+	link_dir=public
+	;;
 *)
 	htaccess_suffix=localhost
 	link_dir=private

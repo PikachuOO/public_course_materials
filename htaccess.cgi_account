@@ -20,7 +20,8 @@
     </IfModule>
 </Files>
 
-SetEnvIf Request_URI ^ BASE_URL=https://cgi.cse.unsw.edu.au/~cs2041
+#SetEnvIf Request_URI ^ BASE_URL=https://cgi.cse.unsw.edu.au/~cs2041
+SetEnvIf Request_URI ^ BASE_URL=/~cs2041gi
 
 # the tutors directory and other directories containing .py files which must run as CGI scripts
 # need htaccess files explicitly setting their type
@@ -33,7 +34,7 @@ AddType text/plain c h pbm pl py sh
 RewriteEngine On
 
 # filesystem permissions should prevent these accesses too
-RedirectMatch 404 (/|^)(\.\.|autotest|\.git.*|scripts|work|htaccess\..*)(/|$)
+RedirectMatch 404 (/|^)(\.\.|.*.auto(test|marking)|\.git.*|scripts|work|htaccess\..*)(/|$)
 
 # Skip all remaining rewrites if already going to be served by flask_tutors.cgi
 
@@ -51,9 +52,9 @@ RewriteRule ^flask_tutors\.cgi - [L]
 RewriteCond /web/cs2041/tlb/$3/$2_$4_released !-f
 RewriteRule ((tut|lab|test)/([0-9][0-9])/(questions|answers))$ %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
 
-RewriteRule ^notes/([0-9][0-9])$ %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
+RewriteRule ^(notes/[0-9][0-9])$ %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
 
-RewriteRule ^tutors_only$ %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
+RewriteRule ^tutors_only$ %{ENV:BASE_URL}/flask_tutors.cgi [L]
 
 # Skip all remaining rewrites if already going to be served by flask.cgi
 
@@ -64,6 +65,12 @@ RewriteRule ^flask\.cgi - [L]
 RewriteRule ^(ClassRoll|CourseTimetable)\.html - [L]
 
 RewriteRule ^(cgi|doc|tutors) - [L]
+RewriteRule ^(tut|lab|test|tlb)/[0-9][0-9]/[^/]*\.cgi - [L]
+
+RewriteRule peer_assess.cgi - [L]
+
+RewriteRule ^(peer.*) %{ENV:BASE_URL}/peer_assess.cgi/$1 [L]
+
 
 # for efficiency  serve these file types directly
 RewriteCond %{REQUEST_FILENAME} -f

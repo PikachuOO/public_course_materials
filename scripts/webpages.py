@@ -4,7 +4,7 @@ import datetime, glob, gzip, html, json, os, re, subprocess, traceback
 from collections import defaultdict, OrderedDict
 from io import BytesIO as IO
 
-from flask import Flask, render_template, request, abort, send_file, url_for, Response
+from flask import Flask, render_template, request, abort, send_file, url_for, Response, session
 from werkzeug.routing import BaseConverter
 from werkzeug.contrib.cache import FileSystemCache
 from bs4 import BeautifulSoup
@@ -178,6 +178,126 @@ def lecture_code_topic_url(topic):
         code_files[html.escape(os.path.basename(pathname))] = None
     return render_template_with_variables('templates/lecture_example_code.html', topic=topic, code_files=code_files.keys())
 
+
+@app.route('/peer_assess/<exercise>/',methods=['GET','POST'])
+def peer_assess_login(exercise):
+    if 'zid' in session:
+        zid = re.sub(r'\D', '', session['zid'])
+    else:
+        if 'zid' not in request.form or 'zpass' not in request.form:
+            return render_template_with_variables('templates/peer_assess_login.html')
+        zid = re.sub(r'\D', '', request.form['zid'])
+        zpass = re.sub(r'\D', '', request.form['zpass']).rstrip('\n')
+        if not re.match('^\d{7}$', zid):
+            return render_template_with_variables('templates/peer_assess_login.html', error='bad zid')
+        zpass = request.form['zpass']
+#        if authenticate('z'+zid, zpass):
+        if zpass == 'secret':
+            session['zid'] = zid
+        else:
+            return render_template_with_variables('templates/peer_assess_login.html', error='Authentication of zid/zpass failed')
+    exercise_dir = os.path.join(exercise)
+    peer_assessment_dir = os.path.join(config.variables['WORK'], exercise_dir, 'peer_assessment')
+    try:
+        zid_assessment_dir = os.path.join(peer_assessment_dir, zid)
+        if not os.path.exists(zid_assessment_dir):
+            os.mkdir(zid_assessment_dir, 0o700)
+        session['zid_assessment_dir'] = zid_assessment_dir
+        assessed = [re.sub(r'\..*', '', a) for a in os.listdir(zid_assessment_dir)]
+        with open(config.variables['enrollments_file']) as f:
+            enrollments = json.load(f)
+        students = [(e[1], e[2]) for e in enrollments]
+    except OSError as e:
+        abort(500, str(e))
+    questions = peer_assessment_questions(zid_assessment_dir)
+    grades = peer_assessment_grades(zid_assessment_dir)
+    return render_template_with_variables('templates/peer_assess_assess.html', students=students, assessed=assessed, questions=questions, grades=grades)
+
+@app.route('/peer_assess/<exercise>/<assessee>',methods=['GET'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>',methods=['GET'])
+def peer_assess_get_grade(assessee, exercise='', question=''):
+    # check assessee?
+    try:
+        zid_assessment_dir = session['zid_assessment_dir']
+    except KeyError:
+        return 'no zid_assessment_dir'
+    grade = {}
+    for file in glob.glob(os.path.join(zid_assessment_dir, assessee + '.*')):
+        try:
+            with open(file) as f:
+                grade[re.sub(r'.*\.', '', file)] = f.read().strip()
+        except IOError:
+            pass
+    if question:
+        return grade.get(question, '')
+    else:
+        return json.dumps(grade)
+
+@app.route('/peer_assess/<exercise>/<assessee>',methods=['DELETE'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>',methods=['DELETE'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>/<grade>',methods=['PUT'])
+def peer_assess_set_grade(assessee,  exercise='', question='', grade=''):
+    # check assessee?
+    if not re.match('^\d{7}$', assessee):
+        return 'Bad assessee'
+    try:
+        zid_assessment_dir = session['zid_assessment_dir']
+    except KeyError:
+        return 'no zid_assessment_dir'
+    try:
+        with open(os.path.join(zid_assessment_dir, 'log'), "a") as f:
+            print(time.time(), assessee, question, grade, file=f)
+    except OSError:
+        pass
+    mark_file = os.path.join(zid_assessment_dir, assessee + '.' + question)
+    if not question:
+        for file in glob.glob(os.path.join(zid_assessment_dir, assessee + '.*')):
+            try:
+                os.unlink(file)
+            except OSError:
+                pass
+        return 'Cleared'
+    if question not in [q[0] for q in peer_assessment_questions(zid_assessment_dir)]:
+        return 'Bad question'
+    if grade:
+        if grade not in [re.sub(r' .*', '', g) for g in peer_assessment_grades(zid_assessment_dir)]:
+            return 'Bad grade'
+        try:
+            with open(mark_file, "w") as f:
+                f.write(grade)
+            return 'Saved'
+        except OSError as e:
+            abort(500, str(e))
+    else:
+        try:
+            os.unlink(mark_file)
+        except OSError:
+            pass
+        return 'Cleared'
+
+def peer_assessment_questions(zid_assessment_dir):
+    questions_file =  os.path.join(zid_assessment_dir, '..', 'questions.json')
+    try:
+        with open(questions_file) as f:
+            return json.load(f)
+    except OSError as e:
+        abort(500, str(e))
+
+def peer_assessment_grades(zid_assessment_dir):
+    grades_file =  os.path.join(zid_assessment_dir, '..', 'grades.json')
+    try:
+        with open(grades_file) as f:
+            return json.load(f) + ["Clear mark"]
+    except OSError:
+        return [
+    'A - working correctly',
+    'B - minor problems',
+    'C - major problems but significant part works',
+    'D - any part works',
+    'E - attempted but not working',
+    "Clear mark"]
+
+
 @app.route('/')
 @app.route('/index.html')
 @app.route('/<path:path>')
@@ -187,6 +307,7 @@ def catchall_url(path='index.html'):
     if 'index' not in path and not path.startswith('web'):
         abort(404)
     return render_template_with_variables('templates/index.html')
+
 
 @app.errorhandler(404)
 def page_not_found(e):
