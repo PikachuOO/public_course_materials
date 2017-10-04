@@ -1,0 +1,366 @@
+{% from 'templates/macros.html'  import execute,include_code with context %}
+
+{% set dir = '/web/cs2041/code/cgi/' %}
+{% set url = url_root+'/code/cgi/' %}
+
+<style type="text/css">
+html , body {
+        padding: 0;
+        margin: 0;
+        height:100%;
+        width:100%;
+}
+
+.menu {
+    position:absolute;
+    height:100%;
+    width:10%;
+    overflow: auto;
+}
+
+.title_panel {
+    position:absolute;
+    height : 5%;
+    width : 100%;
+    left: 10%;
+    font-weight:bold;
+    text-align: center;
+}
+
+.title_panel > a {
+    font-weight:normal;
+    font-size:80%;
+}
+
+.cgi_output_panel {
+    position:absolute;
+    height : 50%;
+    width : 45%;
+    top: 5%;
+    left: 10%;
+}
+
+.cgi_source_panel {
+    position:absolute;
+    height : 50%;
+    width : 45%;
+    top: 5%;
+    left: 55%;
+}
+
+.html_source_panel {
+    position:absolute;
+    height : 45%;
+    width : 90%;
+    left: 10%;
+    top: 55%;
+}
+
+.cgi_example {
+    margin-top: 0.5em;
+    font-size:75%;
+    border:thin solid #9999CC;
+    padding: .4em;
+    border-radius:10px;
+}
+
+.cgi_type {
+    margin-top: 0.5em;
+    display: block;
+}
+</style>
+<script>
+$(document).ready(function() {
+    run_cgi(window.location.hash);
+    if ("onhashchange" in window) {
+        window.onhashchange = function () {
+            run_cgi(window.location.hash);
+         }
+    }
+    else {
+        var prevHash = window.location.hash;
+        window.setInterval(function () {
+            if (window.location.hash != prevHash) {
+                prevHash = window.location.hash;
+                run_cgi(window.location.hash);
+            }
+        }, 100);
+    }
+})
+</script>
+
+<div class="menu">
+    <div class="cgi_example">
+        <a name="hello_world.sh.cgi"></a>
+        <a name="hello_world.cgi"></a>
+        <a name="hello_world.cgipm.cgi"></a>
+    Hello World
+        <a href="#hello_world.sh.cgi" class="cgi_type">Shell</a>
+        <a href="#hello_world.cgi" class="cgi_type">Perl</a>
+        <a href="#hello_world.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="show_execution_context.sh.cgi"></a>
+        <a name="show_execution_context.cgi"></a>
+    Show Execution Context
+        <a href="#show_execution_context.sh.cgi" class="cgi_type">Shell</a>
+        <a href="#show_execution_context.cgi" class="cgi_type">Perl</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="show_environment_variables.sh.cgi" ></a>
+        <a name="show_environment_variables.cgi"></a>
+    Show environment
+        <a href="#show_environment_variables.sh.cgi" class="cgi_type">Shell</a>
+        <a href="#show_environment_variables.cgi" class="cgi_type">Perl</a>
+    </div>
+
+    <div class="cgi_example">
+    <a name="show_input_parameters.html"></a>
+        <a name="show_input_parameters.post.sh.cgi"></a>
+        <a name="show_input_parameters.post.cgi" ></a>
+        <a name="show_input_parameters.get.sh.cgi" ></a>
+        <a name="show_input_parameters.get.cgi" ></a>
+        <a name="show_input_parameters.sh.cgi"></a>
+        <a name="show_input_parameters.cgi"></a>
+    Show input parameters from a form
+        <a href="#show_input_parameters.html" class="cgi_type">HTML</a>
+        <a href="#show_input_parameters.post.sh.cgi" class="cgi_type">Shell (POST)</a>
+        <a href="#show_input_parameters.post.cgi" class="cgi_type">Perl (POST)</a>
+        <a href="#show_input_parameters.get.sh.cgi" class="cgi_type">Shell (GET)</a>
+        <a href="#show_input_parameters.get.cgi" class="cgi_type">Perl (GET)</a>
+        <a href="#show_input_parameters.sh.cgi" class="cgi_type">Shell (GET or POST)</a>
+        <a href="#show_input_parameters.cgi" class="cgi_type">Perl (GET or POST)</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="show_input_parameters_table.html"></a>
+        <a name="show_input_parameters_table.cgi"></a>
+        <a name="show_input_parameters_table.cgipm.cgi" ></a>
+    Show input parameters from a form in table
+        <a href="#show_input_parameters_table.html" class="cgi_type">HTML</a>
+        <a href="#show_input_parameters_table.cgi" class="cgi_type">Perl</a>
+        <a href="#show_input_parameters_table.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a name="show_input_parameters_table.php"></a>
+    <a href="#show_input_parameters_table.php" class="cgi_type">PHP</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="warnings.cgipm.cgi"></a>
+    Showing warnings & errors from a CGI Script
+        <a href="#warnings.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="self_replicating_form.sh.cgi"></a>
+        <a name="self_replicating_form.cgi"></a>
+        <a name="self_replicating_form.cgipm.cgi"></a>
+    Self Replicating Form
+        <a href="#self_replicating_form.sh.cgi" class="cgi_type">Shell</a>
+        <a href="#self_replicating_form.cgi" class="cgi_type">Perl</a>
+        <a href="#self_replicating_form.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="simple_parameter_use.cgipm.cgi"></a>
+        <a name="simple_parameter_use.cgipm++.cgi"></a>
+    Using a parameter and generating another form
+        <a href="#simple_parameter_use.cgipm.cgi" class="cgi_type">Perl+some CGI.pm</a>
+        <a href="#simple_parameter_use.cgipm++.cgi" class="cgi_type">Perl+more CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="sum_two_numbers.sh.cgi"></a>
+        <a name="sum_two_numbers.cgipm.cgi"></a>
+    Summing 2 numbers and generating another form
+        <a href="#sum_two_numbers.sh.cgi" class="cgi_type">Shell</a>
+        <a href="#sum_two_numbers.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="creating_initial_form.cgipm.cgi"></a>
+        <a name="creating_initial_form.cgipm++.cgi"></a>
+    Creating an initial form
+        <a href="#creating_initial_form.cgipm.cgi" class="cgi_type">Perl+some CGI.pm</a>
+        <a href="#creating_initial_form.cgipm++.cgi" class="cgi_type">Perl+more CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="hidden_variable.cgipm.cgi"></a>
+        <a name="hidden_variable.cgipm++.cgi"></a>
+    Passing a hidden variable
+        <a href="#hidden_variable.cgipm.cgi" class="cgi_type">Perl+some CGI.pm</a>
+        <a href="#hidden_variable.cgipm++.cgi" class="cgi_type">Perl+more CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="multiple_submit_buttons.cgipm.cgi"></a>
+        <a name="multiple_submit_buttons.cgipm++.cgi"></a>
+    Handling multiple submit buttons
+        <a href="#multiple_submit_buttons.cgipm.cgi" class="cgi_type">Perl+some CGI.pm</a>
+        <a href="#multiple_submit_buttons.cgipm++.cgi" class="cgi_type">Perl+more CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="alternating_state.cgipm.cgi"></a>
+    Using a hidden variable to change state
+        <a href="#alternating_state.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="file_menu.cgi"></a>
+    Create a menu at execution time of files
+        <a href="#file_menu.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="editfile.cgi"></a>
+    Edit a file
+        <a href="#editfile.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="wc.pl.cgi"></a>
+        <a name="wc.pl.cgi.pm.cgi"></a>
+        <a name="wc.py.cgi"></a>
+    Upload a File &amp; WC it
+        <a href="#wc.pl.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#wc.pl.cgi.pm.cgi" class="cgi_type">Perl+ more CGI.pm</a>
+        <a href="#wc.py.cgi" class="cgi_type">Python</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="colour_cycle.cgi"></a>
+    Cycle through colours
+        <a href="#colour_cycle.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+
+       <!--
+     <div class="cgi_example">
+        <a name="guess_number.cgi"></a>
+    Guess a number game
+        <a href="#guess_number.cgi" class="cgi_type">Perl+CGI.pm</a>
+     </div>
+   <div class="cgi_example">
+        <a name="myAddressBook.cgi"></a>
+        <a name="myAddressBookCookie.cgi"></a>
+    maintain an Addressbook
+        <a href="#myAddressBook.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#myAddressBookCookie.cgi" class="cgi_type">Perl+CGI.pm+Cookie to store login</a>
+    </div>
+        -->
+
+    <div class="cgi_example">
+    Select a random image & annotate it
+        <a name="random_image"></a>
+    <a href="#random_image" class="cgi_type">Perl+ImageMagick</a>
+    </div>
+
+    <div class="cgi_example">
+    Set a cookie
+        <a name="simple_cookie.cgi"></a>
+    <a href="#simple_cookie.cgi" class="cgi_type">Perl</a>
+        <a name="simple_cookie.cgipm.cgi"></a>
+    <a href="#simple_cookie.cgipm.cgi" class="cgi_type">Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="insecure_shell.cgi"></a>
+        <a name="insecure_shell.fixed.cgi"></a>
+    Insecure CGI script - passes unchecked input to system (Shell)
+        <a href="#insecure_shell.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#insecure_shell.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+    </div>
+
+    <div class="cgi_example">
+    Insecure CGI script - passes unchecked input to system (Shell)
+        <a name="insecure_mail.cgi"></a>
+    <a href="#insecure_mail.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a name="insecure_mail.fixed.cgi"></a>
+    <a href="#insecure_mail.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+        <a name="insecure_mail.fixed.1.cgi"></a>
+    <a href="#insecure_mail.fixed.1.cgi" class="cgi_type">better Perl+CGI.pm</a>
+    </div>
+
+    <div class="cgi_example">
+    Insecure CGI script - passes unchecked input to open
+        <a name="insecure_open.cgi"></a>
+    <a href="#insecure_open.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a name="insecure_open.fixed.cgi"></a>
+    <a href="#insecure_open.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="admin_script.cgi"></a>
+        <a name="admin_script.fixed.cgi"></a>
+        <a name="admin_script.token.cgi"></a>
+    Insecure CGI script - relies on authentication success recorded in hidden variable.
+        <a href="#admin_script.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#admin_script.fixed.cgi" class="cgi_type">fixed Perl+CGI.pm using hidden fields</a>
+        <a href="#admin_script.token.cgi" class="cgi_type">fixed Perl+CGI.pm using token</a>
+    </div>
+
+    <div class="cgi_example">
+        <a name="insecure_linksys.cgi"></a>
+        <a name="insecure_linksys.fixed.cgi"></a>
+    Insecure CGI script - passes unchecked input to system.
+        <a href="#insecure_linksys.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#insecure_linksys.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+    </div>
+
+    <div class="cgi_example">
+    Insecure CGI script - passes input unchecked to SQL
+        <a name="insecure_sql_injection.cgi"></a>
+    <a href="#insecure_sql_injection.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a name="insecure_sql_injection.fixed.cgi"></a>
+    <a href="#insecure_sql_injection.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+         <a name="http://xkcd.com/327/"></a>
+    <a href="#http://xkcd.com/327/" class="cgi_type">XKCD</a>
+   </div>
+
+    <div class="cgi_example">
+        <a name="xss.cgi"></a>
+        <a name="xss.fixed.cgi"></a>
+    Insecure CGI script - returns input unchecked as HTML  - cross site scripting attack (XSS)
+        <a href="#xss.cgi" class="cgi_type">Perl+CGI.pm</a>
+        <a href="#xss.fixed.cgi" class="cgi_type">Perl+CGI.pm without security hole</a>
+   </div>
+
+    <div class="cgi_example">
+        <a name="javascript_sum_two_numbers.html"></a>
+    Sum two numbers in the browser
+        <a href="#javascript_sum_two_numbers.html" class="cgi_type">HTML+Javascript</a>
+   </div>
+
+    <div class="cgi_example">
+        <a name="paramCheck.cgi"></a>
+    Check input parameters in the browser before submission
+        <a href="#paramCheck.cgi" class="cgi_type">Perl+CGI.pm+Javascript</a>
+   </div>
+
+    <div class="cgi_example">
+        <a name="match.html"></a>
+        <a name="match.cgi"></a>
+    Match a String against a regex via JQuery
+        <a href="#match.html" class="cgi_type">HTML+Javascript</a>
+        <a href="#match.cgi" class="cgi_type">Perl+CGI.pm</a>
+   </div>
+</div>
+
+<div class="title_panel">
+COMP[29]041 Example CGI scripts
+</div>
+<div class="cgi_output_panel">
+    <iframe src="" class="cgi_output_display" onLoad="show_html_source(this)">
+    </iframe>
+</div>
+<div class="cgi_source_panel">
+    <iframe src="" class="cgi_source_display">
+    </iframe>
+</div>
+<div class="html_source_panel">
+    <div class="html_source_display">
+    </div>
+</div>

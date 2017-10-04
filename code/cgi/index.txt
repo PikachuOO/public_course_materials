@@ -1,0 +1,2 @@
+simple_cookie.cgi
+simple_cookie.cgipm.cgi

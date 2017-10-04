@@ -7,3 +7,4 @@ perl_regex
 perl_functions
 python
 web
+cgi

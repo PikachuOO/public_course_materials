@@ -1,0 +1,3 @@
+<Files "*.py">
+SetHandler cgi-script
+</Files>
