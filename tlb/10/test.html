@@ -1,0 +1,60 @@
+{% set programs = 'equi_filter.pl equi_filter.py' %}
+{% set submission_deadline = 'Thursday 12 October 23:59' %}
+{% extends "templates/test.html" %}
+
+{% block questions %}
+
+<h3>Exercise: Equi-Letter Filter</h3>
+
+Write a Perl program <b>equi_filter.pl</b> that reads lines of text from its standard input
+and prints them to its standard output with the words which are not equi-lettered removed.
+<p>
+A word is equi-lettered if every character in the word occurs exactly <b>n</b> times (for some n).
+Case should be ignored when considering whether a word is equi-lettered.
+<p>
+For example: <b>Gaga</b> is equi-lettered because '<b>g</b>' occurs twice and 'a' occurs twice.
+<p>
+For example: <b>gauge</b> is not equi-lettered because '<b>g</b>' occurs twice but '<b>u</b>', '<b>a</b>' and <b>e</b> occur once
+<p>
+Assume that a word is any sequence of non-whitespace characters.
+<p>
+You should print the words separated by a single space character.
+<p>
+For example:
+
+{{execute("./equi_filter.pl", input=
+"""Equi: duck bulbul Gaga tocktocktock wwwwweeeee
+Not-equi: goose baboon bonobo Guage tock-tock wwwwweee
+Equi: xerophytic Deeded sestettes zZz teammate horseshoer happenchance
+Not-equi: elephant decorator agaga teammates horseshoe
+""")}}
+
+{{execute("./equi_filter.pl", input=
+"""I shall be telling this with a sigh
+Somewhere     ages and ages hence
+Two roads diverged in a   wood and I
+I took   the one   less traveled by
+And that has made all the difference
+""")}}
+
+
+{{autotest_reminder("equi_filter.pl")}}
+
+<p></p>
+<h3>Exercise: Equi-Letter Filter in Python</h3>
+
+Write a Python program <b>equi_filter.py</b> which peforms the same task
+as the above question. For example:
+
+{{execute("./equi_filter.py", input=
+"""Equi: duck Gaga tocktocktock wwwwweeeee
+Not-equi: goose decorator agaga wwwwweeee
+""")}}
+
+
+{{autotest_reminder("equi_filter.py")}}
+
+<p></p>
+
+{% endblock %}
+</p></p></p></p></p></p>

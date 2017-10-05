@@ -1,0 +1,32 @@
+max_cpu=3
+max_wall_clock=30
+
+program=equi_filter.pl
+command=./equi_filter.pl
+equi_filter_pl_0 stdin="Equi: duck bulbul Gaga tocktocktock wwwwweeeee\n"
+equi_filter_pl_1 stdin="Not-equi: goose baboon bonobo Guage tock-tock wwwwweee\n"
+equi_filter_pl_2 stdin="Equi: xerophytic Deeded sestettes zZz teammate horseshoer happenchance\n"
+equi_filter_pl_3 stdin="Not-equi: elephant decorator agaga wwwwweeee teammates horseshoe\n"
+equi_filter_pl_4 stdin="Equi:\nduck\nbulbul\nGaga\ntocktocktock\nwwwwweeeee\n"
+equi_filter_pl_5 stdin="Not-equi:\ngoose\nbaboon\nbonobo\nGuage\ntock-tock\nwwwwweee\n"
+equi_filter_pl_6 stdin="Equi:\nxerophytic\nDeeded\nsestettes\nzZz\nteammate\nhorseshoer\nhappenchance\n"
+equi_filter_pl_7 stdin="Not-equi:\nelephant\ndecorator\nagaga\nwwwwweeee\nteammates\nhorseshoe\n"
+equi_filter_pl_8 stdin="bird cow fish\n"
+equi_filter_pl_9 stdin="birdb wcow sfish\n"
+equi_filter_pl_10 stdin="I shall be telling this with a sigh\nSomewhere ages and ages hence\nTwo roads diverged in a wood and I \nI took the one less traveled by\nAnd that has made all the difference\n"
+equi_filter_pl_11 stdin="Write a program that reads lines of text from its standard stdin\nand prints them to its standard output with the words on each line rearranged to be in sorted order\n"
+
+program=equi_filter.py
+command=./equi_filter.py
+equi_filter_py_0 stdin="Equi: duck bulbul Gaga tocktocktock wwwwweeeee\n"
+equi_filter_py_1 stdin="Not-equi: goose baboon bonobo Guage tock-tock wwwwweee\n"
+equi_filter_py_2 stdin="Equi: xerophytic Deeded sestettes zZz teammate horseshoer happenchance\n"
+equi_filter_py_3 stdin="Not-equi: elephant decorator agaga wwwwweeee teammates horseshoe\n"
+equi_filter_py_4 stdin="Equi:\nduck\nbulbul\nGaga\ntocktocktock\nwwwwweeeee\n"
+equi_filter_py_5 stdin="Not-equi:\ngoose\nbaboon\nbonobo\nGuage\ntock-tock\nwwwwweee\n"
+equi_filter_py_6 stdin="Equi:\nxerophytic\nDeeded\nsestettes\nzZz\nteammate\nhorseshoer\nhappenchance\n"
+equi_filter_py_7 stdin="Not-equi:\nelephant\ndecorator\nagaga\nwwwwweeee\nteammates\nhorseshoe\n"
+equi_filter_py_8 stdin="bird cow fish\n"
+equi_filter_py_9 stdin="birdb wcow sfish\n"
+equi_filter_py_10 stdin="I shall be telling this with a sigh\nSomewhere ages and ages hence\nTwo roads diverged in a wood and I \nI took the one less traveled by\nAnd that has made all the difference\n"
+equi_filter_py_11 stdin="Write a program that reads lines of text from its standard stdin\nand prints them to its standard output with the words on each line rearranged to be in sorted order\n"

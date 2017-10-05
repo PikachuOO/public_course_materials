@@ -1,0 +1,48 @@
+max_cpu=3
+max_wall_clock=30
+
+program=uniq_echo.py
+
+uniq_echo_1 command=uniq_echo.py hello world
+uniq_echo_2 command=uniq_echo.py echo echo echo echo echo echo
+uniq_echo_3 command=uniq_echo.py bird bird cow bird cow fish bird cow fish bird
+uniq_echo_4 command=uniq_echo.py The quick brown fox jumps over the lazy dog The quick brown fox jumps over the lazy dog The quick brown fox jumps over the lazy dog 
+uniq_echo_5 command=uniq_echo.py a a a a a a a a a a a a a a a a a a a a a a a a b b b b b b b b b b b a a a a a a a a a a a a a a a a a a a a a a a a
+uniq_echo_6 command=uniq_echo.py a a a a a a a a a a a a a a a a a a a a a a a a b b b b b b b b b b b a a a a a a a a a a a a a a a a a a a a a a a a c
+uniq_echo_7 command=uniq_echo.py c a a a a a a a a a a a a a a a a a a a a a a a a b b b b b b b b b b b a a a a a a a a a a a a a a a a a a a a a a a a
+uniq_echo_8 command=uniq_echo.py c a a a a a a a a a a a a a a a a a a a a a a a a b b b b b b b b b b b a a a a a a a a a a a a a a a a a a a a a a a a
+uniq_echo_9 command=uniq_echo.py c b b b b b b b b b b b a a a a a a a a a a a c c cccca a a a a a a ab a a a a a
+
+program=sort_words.py
+command=./sort_words.py 
+sort_words_1 stdin="bird cow fish\n"
+sort_words_2stdin="cow bird fish\n"
+sort_words_3 stdin="fish cow bird\n"
+sort_words_4 stdin="I shall be telling this with a sigh\nSomewhere ages and ages hence\nTwo roads diverged in a wood and I \nI took the one less traveled by\nAnd that has made all the difference\n"
+sort_words_5 stdin="Write a program that reads lines of text from its standard stdin\nand prints them to its standard output with the words on each line rearranged to be in sorted order\n"
+sort_words_6 stdin="And the first 24 shall become 42 last\n1 is the loneliest number\nSome lines have no numbers\nsomelines23have43numbers567butnospaces\nPowers of 10 are: 1 10 100 1000 \nThe answer is 42.\n6 * 7 = 42\n"
+sort_words_7 stdin="6 * 7 = 42\n"
+sort_words_8 stdin="And the first 24 shall become 42 last\n1 is the loneliest number\nSome lines have no numbers\nsomelines23have43numbers567butnospaces\nPowers of 10 are: 1 10 100 1000 \nThe answer is 42.\n6 * 7 = 42\n"
+sort_words_9 stdin="3 is a common number\n3 2 1\n1 2 3\nThree3two2one1.\nthree\n"
+sort_words_10 stdin="1 19191 1 19191\n"
+sort_words_11 stdin="12345678 87654321\n"
+sort_words_12 stdin=".................................345.................................678.....................\n"
+sort_words_13 stdin="33 3333 33 33 3333 3333 33 3333\n"
+sort_words_14 stdin="3333 33 33 33 3333 3333 3333 33\n"
+sort_words_15 stdin="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa11111aaaaaaa1111aaaaa1111aaaaa11111aaaaa111111aaaaa111111\n"
+
+program=distinct_lines.py
+distinct_lines_0 command=./distinct_lines.py 3 stdin="hi\nhello world\nhi\nhello world\nhello world\nbye\n"
+distinct_lines_1 command=./distinct_lines.py 3 stdin="hi\nhello world\n   hi\nhello        world\n   HELLO  world\nbye\n"
+distinct_lines_2 command=./distinct_lines.py 4 stdin="how\nare\nyou\nare\nhow\nare\nwell\n"
+distinct_lines_3 command=./distinct_lines.py 3 stdin="how\nare\nyou\n"
+distinct_lines_4 command=./distinct_lines.py 7 stdin="hello\nhow\nare\nyou\n"
+distinct_lines_5 command=./distinct_lines.py 2 stdin="hi\nhow\nare\nyou\nhi\n"
+distinct_lines_6 command=./distinct_lines.py 2 stdin="hi\nhow\nare\nyou\nhi\nhello\n"
+distinct_lines_7 command=./distinct_lines.py 2 stdin="line repeated three times\nline repeapted twice\nline repeated 4 times\nline repeated once\nline repeapted twice\nline repeated three times\nline repeated 4 times\nline repeated three times\nline repeated 4 times\nline repeated 4 times\n"
+distinct_lines_8 command=./distinct_lines.py 3 stdin="line repeated three times\nline repeapted twice\nline repeated 4 times\nline repeated once\nline repeapted twice\nline repeated three times\nline repeated 4 times\nline repeated three times\nline repeated 4 times\nline repeated 4 times\n"
+distinct_lines_9 command=./distinct_lines.py 4 stdin="line repeated three times\nline repeapted twice\nline repeated 4 times\nline repeated once\nline repeapted twice\nline repeated three times\nline repeated 4 times\nline repeated three times\nline repeated 4 times\nline repeated 4 times\n"
+distinct_lines_10 command=./distinct_lines.py 5 stdin="line repeated three times\nline repeapted twice\nline repeated 4 times\nline repeated once\nline repeapted twice\nline repeated three times\nline repeated 4 times\nline repeated three times\nline repeated 4 times\nline repeated 4 times\n"
+distinct_lines_11 shell=1 command="./distinct_lines.py 99 <100.txt"
+distinct_lines_12 shell=1 command="./distinct_lines.py 100 <100.txt"
+distinct_lines_13 shell=1 command="./distinct_lines.py 101 <100.txt"
