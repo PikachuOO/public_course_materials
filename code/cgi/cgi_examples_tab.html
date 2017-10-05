@@ -1,14 +1,13 @@
 {% from 'templates/macros.html'  import execute,include_code with context %}
 
-{% set dir = '/web/cs2041/code/cgi/' %}
-{% set url = url_root+'/code/cgi/' %}
+{% set base_url = url_root+'/code/cgi/' %}
 
 <style type="text/css">
-html , body {
-        padding: 0;
-        margin: 0;
-        height:100%;
-        width:100%;
+
+.parent {
+    position:relative;
+    width: 100%;
+    height: 64em;
 }
 
 .menu {
@@ -71,10 +70,10 @@ html , body {
 </style>
 <script>
 $(document).ready(function() {
-    run_cgi(window.location.hash);
+    run_cgi("{{base_url}}", window.location.hash);
     if ("onhashchange" in window) {
         window.onhashchange = function () {
-            run_cgi(window.location.hash);
+            run_cgi("{{base_url}}", window.location.hash);
          }
     }
     else {
@@ -82,13 +81,14 @@ $(document).ready(function() {
         window.setInterval(function () {
             if (window.location.hash != prevHash) {
                 prevHash = window.location.hash;
-                run_cgi(window.location.hash);
+                run_cgi("{{base_url}}", window.location.hash);
             }
         }, 100);
     }
 })
 </script>
-
+<p>
+<div class="parent">
 <div class="menu">
     <div class="cgi_example">
         <a name="hello_world.sh.cgi"></a>
@@ -254,8 +254,8 @@ $(document).ready(function() {
 
     <div class="cgi_example">
     Select a random image & annotate it
-        <a name="random_image"></a>
-    <a href="#random_image" class="cgi_type">Perl+ImageMagick</a>
+        <a name="random_image.cgi"></a>
+    <a href="#random_image.cgi" class="cgi_type">Perl+ImageMagick</a>
     </div>
 
     <div class="cgi_example">
@@ -352,15 +352,20 @@ $(document).ready(function() {
 <div class="title_panel">
 COMP[29]041 Example CGI scripts
 </div>
+
 <div class="cgi_output_panel">
     <iframe src="" class="cgi_output_display" onLoad="show_html_source(this)">
     </iframe>
 </div>
+
 <div class="cgi_source_panel">
     <iframe src="" class="cgi_source_display">
     </iframe>
 </div>
+
 <div class="html_source_panel">
     <div class="html_source_display">
     </div>
+</div>
+
 </div>

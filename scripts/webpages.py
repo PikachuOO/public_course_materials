@@ -34,13 +34,16 @@ def before_request():
 def after_request(response):
     response.direct_passthrough = False
     if (
-        'Content-Encoding' in response.headers or   # will be set if before_request return cached response
         not cache or
-        request.path.startswith('/peer_assess') or
-        'gzip' not in request.headers.get('Accept-Encoding', '').lower() or
+        # Content-Encoding be set if this is a cached response from before_request
+        'Content-Encoding' in response.headers or
+        request.method != 'GET' or
         not (200 <= response.status_code < 300) or
         len(response.data) < 512 or
-        not any(response.mimetype.startswith(r) for r in ['text/', 'application/json', 'application/javascript'])
+        not any(response.mimetype.startswith(r) for r in ['text/', 'application/javascript']) or
+        'gzip' not in request.headers.get('Accept-Encoding', '').lower() or
+        # should do this with decorators
+        request.path.startswith('/peer_assess')
         ):
         #print(request.path, 'not caching', response.status_code, response.mimetype, response.headers)
         return response
@@ -60,8 +63,12 @@ def after_request(response):
             timeout = 365 * 24 * 60 * 60
         else:
             timeout = 12 * 60 * 60
-    else:
+    elif request.path.startswith('/lab/') or request.path.startswith('/assignment/'):
+        # labs and assignments have autotest summaries updated regularly
+        # solimit cache time to 1 hour
         timeout = 60 * 60
+    else:
+        timeout = 3 * 60 * 60
     response.cache_control.public = True
     response.cache_control.max_age = timeout
     cache_key = str(is_tutor()) + str(request.path)
@@ -525,7 +532,11 @@ def get_common_template_variables(static_checking=False):
             for line in f:
                 topic = line.strip()
                 if topic:
-                    tv['lecture_topics'][topic] = html.escape(topic.replace('_', ' ').replace('-', ' - ').title())
+                    if topic == "cgi":
+                        full_name = "CGI"
+                    else:
+                        full_name = html.escape(topic.replace('_', ' ').replace('-', ' - ').title())
+                    tv['lecture_topics'][topic] = full_name
     except IOError:
         pass
 

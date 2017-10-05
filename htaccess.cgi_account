@@ -67,11 +67,14 @@ RewriteRule ^(ClassRoll|CourseTimetable)\.html - [L]
 RewriteRule ^(cgi|doc|tutors) - [L]
 RewriteRule ^(tut|lab|test|tlb)/[0-9][0-9]/[^/]*\.cgi - [L]
 
-RewriteRule ^(cgi/[^/]*\.cgi) - [L]
+# In CGI account (only) run CGI examples directly
+RewriteRule ^(code/cgi/[^/]*\.cgi) - [L]
 
 # for efficiency  serve these file types directly
+# no point compressing them & caching them via flask
+# serving directly avoids CGI overhead
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule \.(jpg|png|pbm|zip|txt|pdf)$ - [L]
+RewriteRule \.(jpg|png|pbm|zip|pdf)$ - [L]
 
 # Send everything else to flask
 

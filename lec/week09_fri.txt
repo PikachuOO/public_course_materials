@@ -1,0 +1,2 @@
+sep 22
+cgi hello_world.sh.cgi hello_world.cgipm.cgi show_execution_context.sh.cgi show_environment_variables.sh.cgi random_image.cgi

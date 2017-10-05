@@ -1,0 +1,2 @@
+oct 04
+cgi self_replicating_form.sh.cgi simple_parameter_use.cgipm.cgi sum_two_numbers.sh.cgi hidden_variable.cgipm.cgi multiple_submit_buttons.cgipm.cgi alternating_state.cgipm.cgi wc.pl.cgi editfile.cgi file_menu.cgi

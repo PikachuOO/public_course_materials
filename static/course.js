@@ -1,5 +1,5 @@
 
-function run_cgi(cgi) {
+function run_cgi(base_url, cgi) {
 	if (!cgi || cgi.length === 0)
 		return;
 	if (cgi.charAt(0) == "#")
@@ -11,7 +11,7 @@ function run_cgi(cgi) {
     if (/insecure/.test(cgi)) {
         cgi_source.src = "";
     } else {
-        cgi_output.src = cgi;
+        cgi_output.src = base_url + cgi;
     }
 
     if (/\.html$/.test(cgi)) {
@@ -20,19 +20,19 @@ function run_cgi(cgi) {
 	    if (/insecure/.test(cgi)) {
 	        cgi_source.src = "";
 	    } else {
-	        cgi_output.src = cgi;
+	        cgi_output.src = base_url + cgi;
 	    }
 	
 	    if (/\.html$/.test(cgi)) {
 	        cgi_source.src = "";
 	    } else {
-	        cgi_source.src = cgi.concat(".txt");
+	        cgi_source.src = base_url + cgi + ".txt";
 	        console.log($('.title_panel'));
 	        $('.title_panel').text(cgi);
 	        $('.title_panel').append(' ');
-	        $('.title_panel').append($('<a>', {text: 'download', target: '_blank', href: cgi.concat(".txt")}));
+	        $('.title_panel').append($('<a>', {text: 'download', target: '_blank', href: base_url + cgi + ".txt"}));
 	        $('.title_panel').append(' ');
-	        $('.title_panel').append($('<a>', {text: 'run in new window', target: '_blank', href: cgi}));
+	        $('.title_panel').append($('<a>', {text: 'run in new window', target: '_blank', href: base_url + cgi}));
 	    }
 	}
 }

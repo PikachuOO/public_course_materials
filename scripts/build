@@ -12,11 +12,11 @@ chmod 750 .
 scripts/rsync_public_files
 
 rm -r $flask_cache_directory
-mkdir -p -m 750  $flask_cache_directory
 
 case `whoami` in
 cs[0-9][0-9][0-9][0-9])
 	htaccess_suffix=class_account
+	mkdir -p -m 750  $flask_cache_directory
 	link_dir=public
 	;;
 cs[0-9][0-9][0-9][0-9]cgi)
@@ -24,6 +24,9 @@ cs[0-9][0-9][0-9][0-9]cgi)
 	link_dir=public
 	;;
 *)
+	#
+	# test environment on private machine
+	#
 	htaccess_suffix=localhost
 	link_dir=private
 	chmod 777 $flask_cache_directory

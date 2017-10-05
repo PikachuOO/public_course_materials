@@ -26,7 +26,7 @@ do
 	*/scripts/*) ;;
 	*/assignments/*/tests/*) ;;
 	*/assignments/*/examples/*) ;;
-	*.c|*.html|*.py|*.pl|*.sh)
+	*.c|*.html|*.py|*.pl|*.sh|*.cgi)
 		if egrep -q '	| $' "$file"
 		then
 			tmpfile=/tmp/check_course_file.expand$$ 
