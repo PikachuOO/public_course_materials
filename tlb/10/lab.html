@@ -6,6 +6,24 @@
 </li></ul>
 {% endblock %}
 
+
+{% block getting_started %}
+Create a new directory for this lab inside your public_html directory
+called <code>{{exercise_name}}</code> by typing:
+
+<pre class="command_line">
+<kbd class="shell">mkdir ~/public-html/{{exercise_name}}</kbd>
+<kbd class="shell">chmod 755 ~/public-html/{{exercise_name}}</kbd>
+</pre>
+
+Change to this directory by typing:
+
+<pre class="command_line">
+<kbd class="shell">cd ~/public-html/{{exercise_name}}</kbd>
+</pre>
+{% endblock %}
+
+
 {% block lab_exercises %}
 
 

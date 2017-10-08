@@ -30,14 +30,14 @@ function run_cgi(base_url, cgi) {
 	        console.log($('.title_panel'));
 	        $('.title_panel').text(cgi);
 	        $('.title_panel').append(' ');
-	        $('.title_panel').append($('<a>', {text: 'download', target: '_blank', href: base_url + cgi + ".txt"}));
+	        $('.title_panel').append($('<a>', {text: ' download', target: '_blank', href: base_url + cgi + ".txt"}));
 	        $('.title_panel').append(' ');
-	        $('.title_panel').append($('<a>', {text: 'run in new window', target: '_blank', href: base_url + cgi}));
+	        $('.title_panel').append($('<a>', {text: ' run in new window', target: '_blank', href: base_url + cgi}));
 	    }
 	}
 }
 
-function show_html_source(iframe, html_source_id) {
+function show_html_source(iframe) {
  	var html_source = $(iframe).parent().parent().find(".html_source_display");
  	if (!html_source.length) {
  		html_source = $("#html_source");

@@ -1,0 +1,242 @@
+{% set programs = "game.py game_success.html peer.cgi peer_assessments.html" %}
+{% extends "templates/lab.html" %}
+{% block objectives %}
+<ul>
+<li> Understanding Webservers built with Python and Flask
+</li></ul>
+{% endblock %}
+
+{% block getting_started %}
+Create a new directory for this lab inside your public_html directory 
+called <code>{{exercise_name}}</code> by typing:
+
+<pre class="command_line">
+<kbd class="shell">mkdir ~/public-html/{{exercise_name}}</kbd>
+<kbd class="shell">chmod 755 ~/public-html/{{exercise_name}}</kbd>
+</pre>
+
+Change to this directory by typing:
+
+<pre class="command_line">
+<kbd class="shell">cd ~/public-html/{{exercise_name}}</kbd>
+</pre>
+
+{% endblock %}
+
+{% block lab_exercises %}
+
+
+<h3>Exercise: A Flask Guessing Game</h3>
+
+In this exercise you will finish  a Python program <b>game.py</b>
+which uses a Flask to provide a web server which allows users to
+play the simple number guessing game from last week.
+
+<h4>Reference Implementation</h4>
+
+
+Match the behaviour of this <a href="game.cgi/start">reference implementation</a>
+<p>
+To help you understand what you need to do
+
+<ul>
+<li> the left window below shows the rendered output from <code>game.cgi</code>
+<li> and the right window shows the raw HTML
+</li></li></ul>
+
+
+{{  show_cgi_example("game.cgi/start") }}
+
+
+<h4>Starting Code</h4>
+
+To help you get started here is <a href="game.zip">zip file</a> containining most of the application.
+
+
+These commands will copy the starting code into an appropriate
+place in your CSE account.
+
+
+<pre class="command_line">
+<kbd class="shell">mkdir -p ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">cd ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">chmod 755 . ..</kbd>
+<kbd class="shell">wget {{directory_url}}/game.zip</kbd>
+<kbd class="shell">unzip game.zip</kbd>
+Archive:  game.zip
+  inflating: game.cgi                
+  inflating: game.py                 
+  inflating: game_base.html          
+  inflating: game_guess.html         
+  inflating: game_start.html         
+<kbd class="shell">chmod 700 *.py *.cgi</kbd>
+<kbd class="shell">chmod 700 *.html</kbd>
+</pre>
+
+Now start <b>game.py</b> as a webserver (you will need to do this on a lab machine not a CSE login server):
+
+<pre class="command_line">
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 204-542-564
+</pre>
+
+If you visit <a href="http://127.0.0.1:5000/start">http://127.0.0.1:5000/start<a></a>
+you should be able to play the HTML guessing game.
+<p>
+However you will note that the code you have been given is missing code to finish the game.
+<p>
+Your task is to fix this.
+<p>
+Add a little code to <code>game.py</code> and create a new template file.
+Call this template file <b>game_success.html</b>
+<p>
+Don't change<code> game.cgi</code>, <code>game_base.html</code>,  <code>game_guess.html</code> or  <code>game_start.html </code>.
+
+<h4>Running game.py as a CGI Script</h4>
+<b>game.cgi</b> allows you to also run <b>game.py</b> as a CGI script by entering this URL in a browser <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/game.cgi/start</code>.
+<p>
+You don't need to use <b>game.cgi</b> for this exercise - you can just run <code>game.py</code> as a webserver.
+
+<h4>Peer Assessment</h4>
+
+There is no autotest and no automarking of this question.
+<p>
+When you have completed demonstrate your work to another COMP[29]041 student in your lab
+and ask them to enter a
+<a href="{{canonical_url}}/peer_assess/{{exercise_name}}">peer assessment here</a>
+It is prefered you do this during your lab, but if this is not possible
+you may demonstrate your work to any COMP[29]041  student before the due date.
+
+
+
+<p></p>
+<h3>Exercise: Peer Assessment Flask Guessing Game</h3>
+
+In this exercise you will finish  a Python program <b>peer.py</b>
+which uses a Flask to provide a web server which allows COMP[29]041 students to
+assess each others work.
+</p></p></p></p></p></p></a></p>
+<h4>Reference Implementation</h4>
+
+
+Match the behaviour of this <a href="peer.cgi/">reference implementation</a>
+<p>
+To help you understand what you need to do
+
+<ul>
+<li> the left window below shows the rendered output from <code>peer.cgi</code>
+<li> and the right window shows the raw HTML
+</li></li></ul>
+
+
+{{  show_cgi_example("peer.cgi/") }}
+
+
+<h4>Starting Code</h4>
+
+To help you get started here is <a href="peer.zip">zip file</a> containining most of the application.
+
+
+These commands will copy the starting code into an appropriate
+place in your CSE account.
+
+
+<pre class="command_line">
+<kbd class="shell">mkdir -p ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">cd ~/public_html/{{exercise_name}}</kbd>
+<kbd class="shell">chmod 755 . ..</kbd>
+<kbd class="shell">wget {{directory_url}}/peer.zip</kbd>
+<kbd class="shell">unzip peer.zip</kbd>
+unzip peer.zip
+Archive:  peer.zip
+  inflating: peer.cgi                
+  inflating: peer.py                 
+  inflating: peer_base.html          
+  inflating: peer_enter_grade.html   
+  inflating: peer_login.html         
+  inflating: peer_select_student.html  
+   creating: assessments/
+ extracting: assessments/5013618.5029865  
+....
+<kbd class="shell">chmod 700 *.py *.cgi</kbd>
+<kbd class="shell">chmod 700 *.html</kbd>
+<kbd class="shell">head students.txt</kbd>
+5077990:Deng, Angela Linda:hunter
+5013618:Bai, Sean Adam:crystal
+5013181:Zhou, Amanda:bulldog
+5091184:Zheng, Qian:alexis
+5023198:Cheng, Xinyi:heather
+5052818:Luong, Yao Gordon:iceman
+5091036:Xiao, Ka Xinyi Ka:123456
+5009429:Park, Harry:redsox
+5002779:Zhu, Helen:5150
+5042480:Kaur, Ying Ka:tiger
+</pre>
+
+Now start <b>peer.py</b> as a webserver (you will need to do this on a lab machine not a CSE login server):
+
+<pre class="command_line">
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 204-542-564
+</pre>
+
+If you visit <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/<a></a>
+you should be able to assess students..
+
+<h4>Adding Authentication</h4>
+
+However you will note that the code you have been given is missing code to
+authenticate the user.
+<p>
+It will let you login in with any zid or password.
+<p>
+Your need  to fix this by adding some code to <b>peer.py</b>
+<p>
+You will note  <b>peer.py</b> already contains code which reads the zids
+and passwords in <a href="students.txt">students.txt</a> into a dict.
+<p>
+MORE EXPLANATION TO BE ADDDED
+
+<h4>Showing Students How They have Been Assesed</h4>
+
+The reference implementation has a button "See Other Students Assessment of Your Work"
+which shows a summary of how they have been assessed.
+<p>
+The code you have been given is missing this.  Your final task is to add this code.
+<p>
+You will need to add code  to <code>peer.py</code> and create a new template file.
+Call this template file <b>peer_assessment.html</b>
+<p>
+Don't change<code> peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_guess.html</code> or  <code>peer_start.html </code>.
+<p>
+MORE EXPLANATION TO BE ADDDED
+
+
+<h4>Running peer.py as a CGI Script</h4>
+<b>peer.cgi</b> allows you to also run <b>peer.py</b> as a CGI script by entering this URL in a browser <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/peer.cgi/start</code>.
+<p>
+You don't need to use <b>peer.cgi</b> for this exercise - you can just run <code>peer.py</code> as a webserver.
+
+<h4>Peer Assessment</h4>
+
+There is no autotest and no automarking of this question.
+<p>
+When you have completed demonstrate your work to another COMP[29]041 student in your lab
+and ask them to enter a
+<a href="{{canonical_url}}/peer_assess/{{exercise_name}}">peer assessment here</a>
+It is prefered you do this during your lab, but if this is not possible
+you may demonstrate your work to any COMP[29]041  student before the due date.
+
+<p></p>
+<h3>Challenge Exercise: Cheating in the Guessing Game</h3>
+
+Can you figure out how to extract the number from the session cookie for the guessing game? 
+<p>
+Sorry no marks but you'll learn a lot figuring it out.,
+
+{% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p></a></p>

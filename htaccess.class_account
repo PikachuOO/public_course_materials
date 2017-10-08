@@ -74,11 +74,9 @@ RewriteRule ^flask\.cgi - [L]
 RewriteRule ^(ClassRoll|CourseTimetable)\.html - [L]
 
 RewriteRule ^(cgi|doc|tutors) - [L]
-RewriteRule ^(tut|lab|test|tlb)/[0-9][0-9]/[^/]*\.cgi - [L]
 
-#  run CGI examples ijn CGI account to reduce damage from exploits
-
-RewriteRule ^(code/cgi/[^/]*\.cgi) https://cgi.cse.unsw.edu.au/~cs2041cgi/$1 [L]
+#  run CGI examples in CGI account to reduce damage from exploits
+RewriteRule  ^((code|tlb|tut|lab|test)/.*\.cgi) https://cgi.cse.unsw.edu.au/~cs2041cgi/$1 [L]
 
 # for efficiency  serve these file types directly
 # no point compressing them & caching them via flask,
