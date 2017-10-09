@@ -14,6 +14,68 @@ Need data from the web - you want Perl
 {% block questions %}
 <ol>
 <li>
+What is Flask?
+<p>
+Why is Flask good for COMP[29]041?
+<p>
+Can it also be used for large real applications?
+
+<p></p>
+<li>
+Discuss the lines in this "hello world" Flask app:
+
+{{ include_code("hello_word_flask.py") }}
+
+<p></p>
+<li>
+
+How do you the run the Flask  "hello world" Flask app
+
+<p></p>
+<li>
+
+Discuss this code from game.py which you are given for the lab.
+
+<pre class="program">
+@app.route('/', methods=['GET','POST'])
+@app.route('/start', methods=['GET','POST'])
+def start():
+    session['number_to_guess'] = random.randint(1, MAX_NUMBER_TO_GUESS)
+    return render_template('game_start.html', max_number_to_guess=MAX_NUMBER_TO_GUESS)
+</pre>
+<p></p>
+<li>
+
+What is Jinja?
+
+<p></p>
+<li>
+
+Discuss the contents of <code>game_start.html</code>:
+
+{{ include_code("game_start.html") }}
+
+<p></p>
+<li>
+
+Discuss what you need to do for the first lab exercise including which files you change or create.
+<li>
+
+Discuss the contents of <code>students.txt</code>.
+<li>
+
+Discuss what you need to do for the second lab exercise including which files you change or create.
+
+<li>
+
+Discuss the contents of the <code>assessments</code> directory for the peer assessment exercise.
+<li>
+
+Discuss what you need to do for the first lab exercise .
+
+{% endblock %}
+{% block revision_questions %}
+<li>
 A CGI script contains the following Perl:
 <p>
 <pre>
@@ -28,7 +90,6 @@ Indicate a bug and why it creates a security hole.
 <p>
 Rewrite the code, fixing the bug.
 
-<p></p>
 <p></p>
 <li>
 
@@ -121,24 +182,18 @@ which causes Perl to not even execute your
 script if you haven't taken enough precautions to avoid
 (many) potential problems.
 </p></div>
-</p></li></p></p></p></p></p></li></ol>
-<script src="2041.js"></script>
-</div>
-</body></html>
-{% endblock %}
-{% block revision_questions %}
 <li>
 The validation algorithm
  used for credit cards is an old one devised by
 <a href="http://en.wikipedia.org/wiki/Hans_Peter_Luhn">Hans-Peter Luhn</a>
 (1896-1964), a mathematician at IBM.
 <p>
-The <a href="https://en.wikipedia.org/wiki/Luhn_algorithm">Luhn formula</a> sums all the digits, 
-with weights of 1 for odd positions and 2 for even positions (so every even digit is 
+The <a href="https://en.wikipedia.org/wiki/Luhn_algorithm">Luhn formula</a> sums all the digits,
+with weights of 1 for odd positions and 2 for even positions (so every even digit is
 doubled before adding it to the sum). Odd and even is worked out by counting from the right, as usual.
-However, if any doubled digit exceeds 9, the two digits of the result are added together, 
+However, if any doubled digit exceeds 9, the two digits of the result are added together,
 creating a "reduced sum". This reduced sum is added to the total (not the double digit number).
-For example, a digit 7 in an even position is doubled to make 14, 
+For example, a digit 7 in an even position is doubled to make 14,
 so its contribution to the total is
 1+4=5.
 The credit card number is valid if the total is a multiple of 10.
@@ -176,5 +231,6 @@ Also discuss the use of <code>sys.argv</code> and  <code>__name__</code>
 <li>
 Discuss how the features of this program can be translated to Perl.
 </li></li></li></li></ol>
+<p></p>
 {% endblock %}
-</p></p></p></li>
+</p></p></p></li></p></li></p></p></p></p></p></li></li></li></li></li></li></li></li></li></li></li></p></p></li></ol></div></body></html>
