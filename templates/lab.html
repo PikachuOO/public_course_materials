@@ -3,6 +3,23 @@
 {% block body_contents %}
 <div class="tutlab lab">
 
+
+{% block deadline %}
+<h3>Submission Summary</h3>
+Due
+{% if submission_deadline %}
+<b>{{submission_deadline}}</b>
+{% else %}
+Sunday midnight
+{% endif %}
+
+<pre class="command_line">
+<kbd class="shell">give {{course_account}} {{exercise_name}} {{programs}}</kbd>
+</pre>
+
+{% endblock %}
+
+
 <h3>Objectives</h3>
 
 {% block objectives %}
@@ -53,7 +70,14 @@ If you are working at home, you may find it more convenient
 to upload your work via
  <a href="https://cgi.cse.unsw.edu.au/~give/code/login.php?app=/~give/Student/give.php&amp;debug=get_authuser">give's web interface</a>.
 <p>
-Remember you have until Sunday midnight to submit the work.
+Remember you have until
+{% if submission_deadline %}
+<b>{{submission_deadline}}</b>
+{% else %}
+Sunday midnight
+{% endif %}
+
+to submit your work.
 {% endblock %}
 
 {% block assessment %}
