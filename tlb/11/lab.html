@@ -204,31 +204,41 @@ you should be able to assess students.
 
 <h4>Jinja files</h4>
 
-Look at the contents of <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
+Look at the contents of <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
 <p>
-Hopefully the discussion in the tute  has helped you understand their contents.
+Hopefully the discussion in the tute has helped you understand their contents.
 <p>
 Don't panic if there are parts you don't understand.
-You can figure  out as much as you need to know.
+You can figure out as much as you need to know.
 <p>
 You don't need to change these files.
 <p>
-You do need to add a similar file (call it  <b>peer_assessments.html</b>) for the page which shows
-a student's assessments.
-
+The reference implementation has a button "See Other Students Assessment of Your Work"
+which shows a student a summary of how they have been assessed by other students including a median grade.
+<p>
+Your task is to add this missing page. Note: calculating the median grade will be a challenge excercise.
+<p>
+You will need to add code to <code>peer.py</code> and create a new template file.
+Call this template file <b>peer_assessment.html</b>
+<p>
+Don't change <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
+<p>
+<b>Hint</b>: check out how assessments are stored in files in the sub-directory <code>assessments</code>.
+<b>peer.zip</b> already contains some pre-entered assessments - and you can enter more.
+<p>
+<b>Hint</b>: look at the other Jinja files for the syntax you need to use in <b>peer_assessment.html</b>
 <h3>Exercise: Adding Authentication</h3>
 
-
-However you will note that the code you have been given is missing code to
+You will note that the code you have been given is missing code to
 authenticate the user.
 <p>
 It will let you login in with any zid or password.
 <p>
 Change this to behave the same as the reference implementation.
 <p>
-You need  to fix this by adding some lines of code to <b>peer.py</b>
+You need to fix this by adding some lines of code to <b>peer.py</b>
 <p>
-Don't change<code> peer.cgi</code>, <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
+Don't change <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
 <p>
 <b>Hint:</b> check out how how the reference implementation behaves when given
 the wrong password and how it behaves when given a zid that doesn't exist.
@@ -238,23 +248,16 @@ the wrong password and how it behaves when given a zid that doesn't exist.
 and passwords in <a href="students.txt">students.txt</a> into a dict.
 
 
-<h3>Challenge Exercise: Showing Students How They have Been Assesed</h3>
+<h3>Challenge Exercise: Showing Students How They Have Been Assesed</h3>
 
 The reference implementation has a button "See Other Students Assessment of Your Work"
-which shows a student a summary of how they have been assessed by other students including
-a median grade.
+which shows a student a summary of how they have been assessed by other students including a median grade.
 <p>
-The code you have been given is missing this.  Your  task is to add this code.
+Your task is to calculate and display the median grade.
 <p>
-You will need to add code  to <code>peer.py</code> and create a new template file.
-Call this template file <b>peer_assessment.html</b>
+You will need to add code to <code>peer.py</code> and update the template file <b>peer_assessment.html</b>
 <p>
 Don't change <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
-<p>
-<b>Hint</b>: check out how assessments are stored in files in the sub-directory assessments.
-<b>peer.zip</b> already contains some pre-entered assessments - and you can enter more.
-<p>
-<b>Hint</b>: look at the other Jinja files for the syntax you need to use in <b>peer_assessment.html</b>
 <p>
 <b>Hint</b> calculating a median grade can be awkward when there is an even number
 number of assessments.  Check out what the reference implementation does.
@@ -287,4 +290,4 @@ Sorry no marks for this exercise but you'll learn a lot figuring it out.
 <!-- yuk -->
 <a href="game.cgi"></a><a href="peer.cgi"></a>
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>
