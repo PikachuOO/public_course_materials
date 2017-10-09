@@ -35,7 +35,7 @@ play the simple number guessing game from last week.
 <h4>Reference Implementation</h4>
 
 
-Match the behaviour of this <a href="game.cgi/start">reference implementation</a>
+Your finished <b>game.py</b> should match the behaviour of this <a href="game.cgi/start">reference implementation</a>
 <p>
 To help you understand what you need to do
 
@@ -50,7 +50,7 @@ To help you understand what you need to do
 
 <h4>Starting Code</h4>
 
-To help you get started here is <a href="game.zip">zip file</a> containining most of the application.
+To help you get started here is <a href="game.zip">zip file</a> containing most of the application.
 
 
 These commands will copy the starting code into an appropriate
@@ -86,19 +86,31 @@ Now start <b>game.py</b> as a webserver (you will need to do this on a lab machi
 If you visit <a href="http://127.0.0.1:5000/start">http://127.0.0.1:5000/start<a></a>
 you should be able to play the HTML guessing game.
 <p>
-However you will note that the code you have been given is missing code to finish the game.
-<p>
-Your task is to fix this.
-<p>
-Add a little code to <code>game.py</code> and create a new template file.
-Call this template file <b>game_success.html</b>
-<p>
-Don't change<code> game.cgi</code>, <code>game_base.html</code>,  <code>game_guess.html</code> or  <code>game_start.html </code>.
+But note that when you play the game it doesn't stop when you
+guess the number - <b>your task is to fix this</b>.
 
+<h4>Jinja files</h4>
+
+Look at the contents of <code>game_base.html</code>,  <code>game_guess.html</code> and  <code>game_start.html</code>
+<p>
+Hopefully the discussion in the tute  has helped you understand their contents.
+<p>
+You don't need to changes these files.
+<p>
+You do need to add a similar file (call it  <b>game_success.html</b>) for the page to show
+at the finish of the game.
+
+<h4>Hints</h4>
+<b>DO NOT</b>: change the the files <code> game.cgi</code>, <code>game_base.html</code>,  <code>game_guess.html</code> or  <code>game_start.html</code>.
+<p>
+<b>Hint:</b> you need to add a few lines of code to <code>game.py</code>.
+<p>
+<b>Hint:</b> you need to create a new template file (<b>game_success.html</b>) for the page to show when the game is over.
+<p>
 <h4>Running game.py as a CGI Script</h4>
 <b>game.cgi</b> allows you to also run <b>game.py</b> as a CGI script by entering this URL in a browser <code>http://cgi.cse.unsw.edu.au/~<i>z5555555</i>/{{exercise_name}}/game.cgi/start</code>.
 <p>
-You don't need to use <b>game.cgi</b> for this exercise - you can just run <code>game.py</code> as a webserver.
+You don't need to use <b>game.cgi</b> for this exercise - you can just run <code>game.py</code> as a webserver - so you can ignore it.
 
 <h4>Peer Assessment</h4>
 
@@ -118,7 +130,7 @@ you may demonstrate your work to any COMP[29]041  student before the due date.
 In this exercise you will finish  a Python program <b>peer.py</b>
 which uses a Flask to provide a web server which allows COMP[29]041 students to
 assess each others work.
-</p></p></p></p></p></p></a></p>
+</p></p></p></p></p></p></p></p></p></a></p>
 <h4>Reference Implementation</h4>
 
 
@@ -137,7 +149,7 @@ To help you understand what you need to do
 
 <h4>Starting Code</h4>
 
-To help you get started here is <a href="peer.zip">zip file</a> containining most of the application.
+To help you get started here is <a href="peer.zip">zip file</a> containing most of the application.
 
 
 These commands will copy the starting code into an appropriate
@@ -187,35 +199,68 @@ Now start <b>peer.py</b> as a webserver (you will need to do this on a lab machi
 </pre>
 
 If you visit <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/<a></a>
-you should be able to assess students..
+you should be able to assess students.
 
-<h4>Adding Authentication</h4>
+<h4>Jinja files</h4>
+
+Look at the contents of <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
+<p>
+Hopefully the discussion in the tute  has helped you understand their contents.
+<p>
+Don't panic if there are parts you don't understand.
+You can figure  out as much as you need to know.
+<p>
+You don't need to changes these files.
+<p>
+You do need to add a similar file (call it  <b>peer_assessments.html</b>) for the page which shows
+a student's assessments.
+
+<h3>Exercise: Adding Authentication</h3>
+
 
 However you will note that the code you have been given is missing code to
 authenticate the user.
 <p>
 It will let you login in with any zid or password.
 <p>
-Your need  to fix this by adding some code to <b>peer.py</b>
+Change to behave the same as the reference implementation
 <p>
-You will note  <b>peer.py</b> already contains code which reads the zids
-and passwords in <a href="students.txt">students.txt</a> into a dict.
+Your need  to fix this by adding some lines of code to <b>peer.py</b>
 <p>
-MORE EXPLANATION TO BE ADDDED
+Don't change<code> peer.cgi</code>, <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
+<p>
+<b>Hint:</b> check out how how the reference implementation behaves when given
+the wrong password and how it behaves when given a zid that doesn't exist.
 
-<h4>Showing Students How They have Been Assesed</h4>
+
+<b>Hint:</b> <b>peer.py</b> already contains code which reads the zids
+and passwords in <a href="students.txt">students.txt</a> into a dict.
+
+
+<h3>Challenge Exercise: Showing Students How They have Been Assesed</h3></p></p></p></p></p></p></p></p></p></a></p>
 
 The reference implementation has a button "See Other Students Assessment of Your Work"
-which shows a summary of how they have been assessed.
+which shows a student a summary of how they have been assessed by other students including
+a median grade,
 <p>
-The code you have been given is missing this.  Your final task is to add this code.
+The code you have been given is missing this.  Your  task is to add this code.
 <p>
 You will need to add code  to <code>peer.py</code> and create a new template file.
 Call this template file <b>peer_assessment.html</b>
 <p>
-Don't change<code> peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_guess.html</code> or  <code>peer_start.html </code>.
+Don't change <code>peer.cgi</code>, <code>peer_base.html</code>,  <code>peer_login.html</code>,  <code>peer_select_student.html </code> or <code>peer_enter_grade.html</code>
 <p>
-MORE EXPLANATION TO BE ADDDED
+<b>Hint</b>: check out how assessments are stored in files in the sub-directory assessments.
+<b>peer.zip</b> already contains some pre-entered assessments - and you can enter more.
+<p>
+<b>Hint</b>: look at the other Jinja files for the syntax you need to use in <b>peer_assessment.html</b>
+<p>
+<b>Hint</b> calculating a median grade can be awkward when then is an even number
+number of assessments.  Check out what the reference implementation does.
+does.
+<p>
+Side note: for the lab exercises we have had just one assessor, for assignment 2 you will
+have ~5 assessors and you will get the median of their grades for each part of the assignment 2 assessment.
 
 
 <h4>Running peer.py as a CGI Script</h4>
@@ -238,8 +283,8 @@ you may demonstrate your work to any COMP[29]041  student before the due date.
 
 Can you figure out how to extract the number from the session cookie for the guessing game?
 <p>
-Sorry no marks but you'll learn a lot figuring it out.,
+Sorry no marks for this exercise but you'll learn a lot figuring it out.,
 <!-- yuk -->
 <a href="game.cgi"></a><a href="peer.cgi"></a>
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></a></p>
+</p></p></p></p></p></p></p></p></p></p>
