@@ -15,7 +15,7 @@ For example:
 
 <pre class="command_line">
 <kbd class="shell">mkdir users</kbd>
-<kbd class="shell">echo 'correct horse battery staple' &gt;users/andrewt.password</kbd>
+<kbd class="shell">echo 'correct horse battery staple' >users/andrewt.password</kbd>
 <kbd class="shell">login.pl</kbd>
 username: <kbd>jas</kbd>
 password: <kbd>beer</kbd>
@@ -29,12 +29,24 @@ username: <kbd>andrewt</kbd>
 password: <kbd>correct horse battery staple</kbd>
 You are authenticated.
 </pre>
-<p></p>
+
+<div class="answer">
+Sample Perl solution
+
+{{include_code("solutions/login.pl")}}
+</div>
+
 <li>
 
 How are CGI scripts run?
 
-<p></p>
+<div class="answer">
+CGI script are run when a web server receives a request for a particular URL.
+<p>
+Web servers can be configured to run CGI scripts in response to
+any or all URLs.
+</div>
+
 <li>
 
 Write a shell CGI script which prints details of the context in which it is run.
@@ -45,7 +57,21 @@ Here is an example implementation:
 Discuss how security concerns might have affected CSE's choices
 for configuring how student CGI scripts are run on its web server.
 
-<p></p>
+<div class="answer">
+CSE web server includes a mechanism to runs student CGI scripts as the student's uid.
+<p>
+Otherwise students could gain privileges by constructing appropriate CGI scripts.
+<p>
+As CGI scripts are prone to externally accessible security holes.
+CGI script are run with only some files accessible - only as user's <code>public_html</code>
+is visible - mounted as <code>/web/<i>user</i></code>
+<p>
+CGI scripts are also run on separate servers.
+
+{{ include_code("solutions/show_execution_context.sh.cgi") }}
+
+</div>
+
 <li>
 
 Web servers pass some useful information to CGI scripts as environment variables.
@@ -57,7 +83,12 @@ Here is an example implementation:
 
 Discuss what some of these environment variables might indicate.
 
-<p></p>
+<div class="answer">
+Sample solution
+
+{{ include_code("solutions/show_environment_variables.sh.cgi") }}
+</div>
+
 <li>
 
 A HTTP request can pass parameters to a web server.  The web server passes
@@ -70,7 +101,12 @@ Here is an example implementation:
 
 {{  show_cgi_example("show_input_parameters.sh.cgi?comp2041=best-course-ever") }}
 
-<p></p>
+<div class="answer">
+Sample solution
+
+{{ include_code("solutions/show_input_parameters.sh.cgi") }}
+
+</div>
 
 {% endblock %}
 {% block revision_questions %}
@@ -89,6 +125,10 @@ Here is an example implementation:
 {{  show_cgi_example("sum_two_numbers.sh.cgi") }}
 
 
-<p></p>
+<div class="answer">
+Sample solution
+
+{{ include_code("solutions/sum_two_numbers.sh.cgi") }}
+
+</div>
 {% endblock %}
-</p></li></p></li></p></li></li></li></p></p></p></p></li>
