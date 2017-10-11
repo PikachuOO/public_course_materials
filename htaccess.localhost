@@ -58,7 +58,7 @@ RewriteRule ^flask\.cgi - [L]
 RewriteRule ^(ClassRoll|CourseTimetable)\.html - [L]
 RewriteRule ^(cgi|doc|tutors)/ - [L]
 
-RewriteRule ^((code|tlb|tut|lab|test)/.*\.cgi) - [L]
+RewriteRule ^((assignments|code|tlb|tut|lab|test)/.*\.cgi) - [L]
 
 # for efficiency serve these file types directly
 RewriteCond %{REQUEST_FILENAME} -f

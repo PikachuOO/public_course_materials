@@ -100,7 +100,7 @@ def html_url(**kwargs):
 # to serve code - perhaps it should check for public read to distinguish?
 
 @app.route("/assignments/<string:assignment>/examples/<regex(r'\d+'):subset>/<string:filename>")
-@app.route("/<regex(r'assignments|code|exam|home_computing'):top_level_dir>/<path:subpath><regex(r'.*\.(jpg|png|pbm|zip|txt)$'):filename>")
+@app.route("/<regex(r'assignments|code|exam|home_computing'):top_level_dir>/<path:subpath><regex(r'.*\.(jpg|png|pbm|zip|txt|css)$'):filename>")
 def plain_files(**kwargs):
     return check_send_file(config.variables['public_html_session_directory'] + request.path)
 
