@@ -104,10 +104,15 @@ for d in exam lec assignments/* tlb/*
 do
 # FIXME This doesn't work
 #	git diff --quiet $last_two_commits -- . && continue
+	
 	cd $public_html_session_directory/private/$d
 	test -x build.sh && </dev/null ./build.sh
 	cd $public_html_session_directory/public/$d || continue
-	test -x build.sh && </dev/null ./build.sh
+	if test -x build.sh
+	then
+		echo $public_html_session_directory/public/$d/build.sh
+		</dev/null ./build.sh
+	fi
 	cd $public_html_session_directory/private/$d || continue
 	test -e Makefile && </dev/null make -j10 -s 
 	cd $public_html_session_directory/public/$d

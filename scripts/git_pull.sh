@@ -17,7 +17,7 @@ else
             then
                 $scripts_directory/build
             else
-                git pull 2>&1 |mail -s 'pull failed' andrewt
+                git pull origin master 2>&1 |mail -s 'pull failed' andrewt
                 exit 1
             fi
         fi

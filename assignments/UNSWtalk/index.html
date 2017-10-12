@@ -368,14 +368,13 @@ Here is the <a href="UNSWtalk.cgi.txt">source</a> to a Perl script
 with crude partial implementation of Level 0.
 You may choose to use this script as a starting point for your assignment.
 <p>
-A Flask Python version of the same code is also available as a <a href="flask.zip">zip file</a>.
-You may choose to start with this code if you prefer to do the assignment in Python.
-<p>
-However you start the assignment, make sure you name your script <code>UNSWtalk.cgi</code>.
-<p>
-All the above CGI scripts refer to a CSS file named <a href="UNSWtalk.css">UNSWtalk.css</a>.
+This CGI scripts refers to a CSS file named <a href="UNSWtalk.css">UNSWtalk.css</a>.
 It contains some simple CSS you can use as a starting point, but don't spend  too much time on CSS - almost all
 the marks are for coding!
+<p>
+A Flask Python version of the same code is also available as a <a href="flask.zip">zip file</a>.
+You may choose to start with this code if you prefer to do the assignment in Python.
+The zip file includes <a href="UNSWtalk.css">UNSWtalk.css</a>.
 <p>
 You should first clone the  gitlab.cse.unsw.edu.au repository for this assignment (NOT AVAILABLE YET - SOON)
 <pre class="command_line">
@@ -385,13 +384,40 @@ You should first clone the  gitlab.cse.unsw.edu.au repository for this assignmen
 <kbd class="shell">cd public_html/ass2</kbd>
 <kbd class="shell">git clone gitlab@gitlab.cse.unsw.EDU.AU:z5555555/17s2-comp2041-ass2 .</kbd>
 Cloning into '.'...
-<kbd class="shell">unzip /home/cs2041/public_html/assignments/UNSWtalk/dataset-medium.zip</kbd>
+<kbd class="shell">chmod 644 .htaccess</kbd>
+<kbd class="shell">unzip {{current_directory}}/dataset-medium.zip</kbd>
 ....
-<kbd class="shell">chmod 700 UNSWtalk.cgi</kbd>
+</pre>
+
+Then if you want to use the starting code Python and Flask do this:
+
+<pre class="command_line">
+<kbd class="shell">unzip {{current_directory}}/flask.zip</kbd>
+...
+<kbd class="shell">git add static templates UNSWtalk.cgi UNSWtalk.py</kbd>
+</pre>
+
+
+If instead you want to use the starting code for Perl do this:
+
+<pre class="command_line">
+<kbd class="shell">cp {{current_directory}}/UNSWtalk.cgi .</kbd>
+<kbd class="shell">cp {{current_directory}}/UNSWtalk.css .</kbd>
 <kbd class="shell">chmod 644 UNSWtalk.css</kbd>
+<kbd class="shell">chmod 700 UNSWtalk.cgi</kbd>
 <kbd class="shell">git add UNSWtalk.cgi UNSWtalk.css</kbd>
-....
+</pre>
+
+In both cases should be able to run the starting code as a CGI script
+by replacing z5555555 in the url below with your zid:
+
+<pre class="command_line">
 <kbd class="shell">firefox http://cgi.cse.unsw.edu.au/~z5555555/ass2/UNSWtalk.cgi &amp;</kbd>
+</pre>
+
+Every time you work on the assignment you must push work to gitlab
+
+<pre class="command_line">
 <kbd class="shell">vi UNSWtalk.cgi</kbd>
 <kbd class="shell">vi diary.txt</kbd>
 <kbd class="shell">git add diary.txt</kbd>
@@ -399,10 +425,11 @@ Cloning into '.'...
 <kbd class="shell">git push</kbd>
 ....
 <kbd class="shell">git commit -a -m 'tidied up assignment for submission'</kbd>
-<kbd class="shell">give cs2041 ass2 UNSWtalk.cgi diary.txt</kbd>
 <kbd class="shell">git push</kbd>
+<kbd class="shell">give cs2041 ass2 UNSWtalk.cgi diary.txt</kbd>
 ....
 </pre>
+
 
 I expect most students will just work in their CSE account and push work to gitlab.cse.unsw.edu.au
 from CSE, but you can try setting up a git repository on your home machine
