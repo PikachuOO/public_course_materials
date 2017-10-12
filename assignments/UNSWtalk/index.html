@@ -364,18 +364,8 @@ Marks will be available for extra features.
 
 <h2>Getting Started</h2>
 
-Here is the <a href="UNSWtalk.cgi.txt">source</a> to a Perl script
-with crude partial implementation of Level 0.
-You may choose to use this script as a starting point for your assignment.
-<p>
-This CGI scripts refers to a CSS file named <a href="UNSWtalk.css">UNSWtalk.css</a>.
-It contains some simple CSS you can use as a starting point, but don't spend  too much time on CSS - almost all
-the marks are for coding!
-<p>
-A Flask Python version of the same code is also available as a <a href="flask.zip">zip file</a>.
-You may choose to start with this code if you prefer to do the assignment in Python.
-The zip file includes <a href="UNSWtalk.css">UNSWtalk.css</a>.
-<p>
+<h3>Setting Up Your Git Repository</h3>
+
 You should first clone the  gitlab.cse.unsw.edu.au repository for this assignment (NOT AVAILABLE YET - SOON)
 <pre class="command_line">
 <kbd class="shell">cd</kbd>
@@ -389,6 +379,34 @@ Cloning into '.'...
 ....
 </pre>
 
+If the git clone above fails - redo the instructions in assignment 1 for adding your
+ssh key to gitlab.
+<p>
+And if that fail try with a https url instead (again replacing 5555555 with your zid) -
+and supplying your zid/zpass when requested:
+
+<pre class="command_line">
+<kbd class="shell">git clone https://gitlab.cse.unsw.edu.au/z5555555/17s2-comp2041-ass2 .</kbd>
+Username for 'https://gitlab.cse.unsw.edu.au': <kbd>z5555555</kbd>
+Password for 'https://z5080336@gitlab.cse.unsw.edu.au':
+</pre>
+
+
+<h3>Starting Code</h3>
+
+
+Here is the <a href="UNSWtalk.cgi.txt">source</a> to a Perl script
+with crude partial implementation of Level 0.
+You may choose to use this script as a starting point for your assignment.
+<p>
+This CGI scripts refers to a CSS file named <a href="UNSWtalk.css">UNSWtalk.css</a>.
+It contains some simple CSS you can use as a starting point, but don't spend  too much time on CSS - almost all
+the marks are for coding!
+<p>
+A Flask Python version of the same code is also available as a <a href="flask.zip">zip file</a>.
+You may choose to start with this code if you prefer to do the assignment in Python.
+The zip file includes <a href="UNSWtalk.css">UNSWtalk.css</a>.
+<p>
 Then if you want to use the starting code Python and Flask do this:
 
 <pre class="command_line">
@@ -408,12 +426,30 @@ If instead you want to use the starting code for Perl do this:
 <kbd class="shell">git add UNSWtalk.cgi UNSWtalk.css</kbd>
 </pre>
 
+
 In both cases should be able to run the starting code as a CGI script
 by replacing z5555555 in the url below with your zid:
 
 <pre class="command_line">
 <kbd class="shell">firefox http://cgi.cse.unsw.edu.au/~z5555555/ass2/UNSWtalk.cgi &amp;</kbd>
 </pre>
+
+If you are using Flask you run the starting code directly on a CSE lab machine:
+
+<pre class="command_line">
+<kbd class="shell">./UNSWtalk.py</kbd>
+ * Running on http://127.0.0.1:5000/
+ * Restarting with reloader
+</pre>
+
+<pre class="command_line">
+<kbd class="shell">firefox  http://127.0.0.1:5000/ &amp;</kbd>
+</pre>
+
+This won't work on  a CSE login server or Vlab.
+
+
+<h3>Pushing to Gitlab</h3>
 
 Every time you work on the assignment you must push work to gitlab
 
@@ -434,6 +470,8 @@ Every time you work on the assignment you must push work to gitlab
 I expect most students will just work in their CSE account and push work to gitlab.cse.unsw.edu.au
 from CSE, but you can try setting up a git repository on your home machine
 and pushing work to gitlab.cse.unsw.edu.au from there.
+<p>
+You wiull need to use a CSE vpn to access gitlab from outside UNSW.
 <p>
 If you do this you'll want to
 use git's pull command to update the repository in your CSE account.
