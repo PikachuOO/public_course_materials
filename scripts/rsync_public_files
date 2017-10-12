@@ -55,6 +55,7 @@ def get_public_files_jinja(template, include_answers=False):
 			refs =	[a['href'] for a in soup.find_all('a', href=True)] 
 			refs += [img['src'] for img in soup.find_all('img', src=True)]
 			refs += re.findall(r'\{\{\s*show_cgi_example\s*\(\s*"(.*?)"', str(soup))
+			refs += re.findall(r'\{\{\s*include_code\s*\(\s*"(.*?)"', str(soup))
 			relative_refs = set()
 			for ref in refs: 
 				ref = re.sub(r'^{{.*?}}', '', ref)
@@ -62,7 +63,7 @@ def get_public_files_jinja(template, include_answers=False):
 				if not ref.startswith('http') and not ref.startswith('/'):
 					relative_refs.add(ref)
 			if debug:
-				print(template, 'implicit public files', relative_refs)
+				print(template, 'implicit public files', include_answers, relative_refs)
 			return relative_refs
 	except FileNotFoundError:
 		return []
