@@ -47,13 +47,7 @@ ul 25
 
 Note the  counts in the above example will not be current - the CSE pages change almost daily.
 
-<div class="answer">
-Sample solution for tags.pl
-
-{{include_code("solutions/tags0.pl")}}
-
-</div>
-
+<p></p>
 <li>
 
 Add an -f option to tags.pl which indicates the tags are to printed
@@ -89,29 +83,18 @@ li 99
 a 141
 div 161
 </pre>
-<div class="answer">
-Sample solution for tags.pl
-
-{{include_code("solutions/tags.pl")}}
-
-</div>
+<p></p>
 <li>
 
 Write a Perl function which takes an integer argument <b>n</b>
 and reads the next <b>n</b> lines of input and returns them
 as a string.
 
-<div class="answer">
-
-Two sample solutions with extra code to run the function:
-
-{{include_code("solutions/n_lines.pl")}}
-
-</div>
+<p></p>
 <li>
 Write a Perl program which given the name of a C function
 searches the C source files (*.c) in the current directory
-for calls of the function, declarations & definitons of the function
+for calls of the function, declarations &amp; definitons of the function
 and prints a summary indicating the file and line number, in the format below.
 <p>
 You can assume functions are defined with the type, name and paramaters on a single
@@ -123,22 +106,12 @@ For example:
 
 {{execute("cat half.c;cat main.c;./print_function_uses.pl half", cwd="solutions")}}
 
-<div class="answer">
-
-Perl sample solution
-
-{{include_code("solutions/print_function_uses.pl")}}
-
-Python sample solution
-
-{{include_code("solutions/print_function_uses.py")}}
-</div>
-
+<p></p>
 <li>
 
 Write a Perl program which  given a  C program as input
 finds the definitions of single parameter functions and prints
-separately the function's type, name and the parameters name & type.
+separately the function's type, name and the parameters name &amp; type.
 Assume all these occur on a single non-indented line in the C source code.
 You can assume function bodies are always indented.
 Allow for white space occuring anywhere in the function header.
@@ -147,12 +120,7 @@ For example:
 
 {{execute("cat a.c;./print_function_types.pl a.c", cwd="solutions")}}
 
-<div class="answer">
-Perl sample solution
-
-{{include_code("solutions/print_function_types.pl")}}
-
-</div>
+<p></p>
 <li>
 Write a Perl script C_include.pl which given the name of a C source file
 prints the file replacing any '#include' lines with the contents
@@ -164,14 +132,7 @@ which contain the files's actual path name. For example:
 
 {{execute("cat f.c;cat true.h;cat false.h;./C_include.pl f.c", cwd="solutions")}}
 
-<div class="answer">
-
-Perl sample solution
-
-{{include_code("solutions/C_include.v1.pl")}}
-
-</div>
-
+<p></p>
 <li>
 Modify C_include.pl so that it handles both <code>""</code> and <code>&lt;&gt;</code> directives.
 It should search the directories <code>/usr/include/</code>, <code>/usr/local/include</code>
@@ -181,13 +142,7 @@ and for files specified in <code>""</code> directives which do not exist locally
 {{execute("cat g.c;./C_include.pl g.c|head", cwd="solutions")}}
 
 
-<div class="answer">
-
-Perl sample solution
-
-{{include_code("solutions/C_include.pl")}}
-
-</div>
+<p></p>
 {% endblock %}
 {% block revision_questions %}
 <li>
@@ -199,16 +154,7 @@ the columns to be printed. For example:
 
 {{execute("./times.pl 4 5 3", cwd="solutions")}}
 
-<div class="answer">
-Sample Perl solution
-
-{{include_code("solutions/times.pl")}}
-
-Sample Python solution
-
-{{include_code("solutions/times.py")}}
-
-</div>
+<p></p>
 <li>
 <p>
 Write a Perl program which deletes blank lines from each
@@ -223,31 +169,7 @@ your program should delete any blank lines in <code>file1</code>,
 Note that this program <em>changes</em> the files, it doesn't
 just write the "de-blanked" versions to standard output.
 
-<div class="answer">
-
-Perl sample solution
-
-{{include_code("solutions/deblank0.pl")}}
-
-Perl sample solution using -i switch
-
-{{include_code("solutions/deblank1.pl")}}
-
-Perl sample solution using -i and -p switch
-
-{{include_code("solutions/deblank2.pl")}}
-
-Or from the command line:
-
-<pre class="command_line">
-<kbd class="shell">perl -ip -e 's/^\s*$//' file1 file2 file3</kbd>
-</pre>
-
-Python sample solution - based on Perl
-
-{{include_code("solutions/deblank0.py")}}
-
-</div>
+<p></p>
 <li>
 
 Write a Perl function <code>listToHTML()</code> that given a list of values
@@ -276,20 +198,14 @@ As part of an HTML page, this would display as:
 <li>Quick
 <li>Brown
 <li>Fox
-</ul>
+</li></li></li></li></ul>
 
 P.S. A Perl syntactic short cut can be used to construct the list above:
 
 <pre class="program">
 $out = listToHTML(qw/The Quick Brown Fox/);
 </pre>
-
-<div class="answer">
-Sample solution for listToHTML
-
-{{include_code("solutions/listToHTML.pl")}}
-</div>
-
+<p></p>
 <li>
 
 Write a Perl function <code>hashToHTML()</code> that returns a string
@@ -298,7 +214,7 @@ of HTML code that could be used to display a Perl associative array
 
 <pre class="program">
 # the hash table ...
-%colours = ("John"=>"blue", "Anne"=>"red", "Andrew"=>"green");
+%colours = ("John"=&gt;"blue", "Anne"=&gt;"red", "Andrew"=&gt;"green");
 # and the function call ...
 $out = hashToHTML(%colours);
 </pre>
@@ -315,7 +231,7 @@ would result in <code>$out</code> having the value ...
 </pre>
 As part of an HTML page, this would display as:
 
-<table border=1 cellpadding=5>
+<table border="1" cellpadding="5">
 <tr><th> Key </th><th> Value </th></tr>
 <tr><td> Andrew </td><td> green </td></tr>
 <tr><td> Anne </td><td> red </td></tr>
@@ -325,25 +241,12 @@ As part of an HTML page, this would display as:
 Note that the hash should be displayed in ascending alphabetical order
 on key values.
 
-<div class="answer">
-This gives the function as well as some code to test it out:
-
-{{include_code("solutions/hashToHTML.pl")}}
-
-</div>
-
+<p></p>
 <li>
 
 Write a Perl program that will read in a HTML document and output a new HTML document that contains a table with two cells (in one row). In the left cell should be a copy of the complete original HTML document inside &lt;pre&gt; tags so we can see the raw HTML. You will need to replace all "&lt;" characters with the sequence "&amp;lt;" and all "&gt;" characters with the sequence "&amp;gt;", otherwise the browser will think they are HTML tags (and we want to see the tags in the left cell). In the right cell just include the HTML body of the document, so we can see what it will look like when rendered by a browser.
 <!-- courtesy http://www.cs.rpi.edu/~hollingd/eiw.old/5-Perl/ex6.htm -->
-
-
-<div class="answer">
-Sample solution for show_html.pl
-
-{{include_code("solutions/show_html.pl")}}
-
-</div>
+<p></p>
 <li>
 
 Write a Perl program that reads in data about student performance in a
@@ -373,7 +276,7 @@ The <i>totalMark</i> value is computed as follows:
 <li> if there are <em>any</em> warnings on an exercise, the mark is reduced by 2
 <li> the minimum mark for a given exercise is zero
 <li> the <i>totalMark</i> is the sum of the marks for the individual exercises
-</ul>
+</li></li></li></li></li></ul>
 
 The <i>totalMark</i> value should be display using the <code>printf</code>
 format <code>"%4.1f"</code>.
@@ -382,10 +285,10 @@ A student is awarded a <code>PASS</code> if they have 2 or 3 <em>correct</em>
 exercises and is awarded a <code>FAIL</code> otherwise.
 Note that warnings do not cause an exercise to be treated as incorrect.
 <p>
-<table border=1 cellpadding=6>
+<table border="1" cellpadding="6">
 <tr><th>Sample Marks File</th><th>Corresponding Output</th></tr>
-<tr><td colspan=2>Command line argument: <code>marks1</code></td></tr>
-<tr valign=top>
+<tr><td colspan="2">Command line argument: <code>marks1</code></td></tr>
+<tr valign="top">
 <td>
 <pre>
 2121211 ex1 5 0
@@ -408,44 +311,19 @@ Note that warnings do not cause an exercise to be treated as incorrect.
 2277688  3.5 FAIL
 2277689 20.0 PASS
 </pre>
-</table>
-
-<div class="answer">
-Sample Perl solution
-
-{{include_code("solutions/prac.pl")}}
-
-Sample Python solution
-
-{{include_code("solutions/prac.py")}}
-
-</div>
+</td></td></tr></table>
+<p></p>
 <li>
 
 What does this Perl print and why?
 
 <pre class="program">
 @a = (1..5);
-@b = grep { $_ = $_ - 3; $_ > 0} @a;
+@b = grep { $_ = $_ - 3; $_ &gt; 0} @a;
 print "@a\n";
 print "@b\n";
 </pre>
-
-<div class="answer">
-It prints:
-<p>
-<pre class="program">
--2 -1 0 1 2
-1 2
-</pre>
-<p>
-The <code>grep</code> function aliases $_ to each list element in turn
-an executes the code in the block.  It returns a list ofthe element for which the
-last expressione evaluated is true.
-<p>
-<code>{ $_ = $_ - 3 }</code> subtracts 3 from each element in <code>@a</code>.
-The <code>$_ > 0</code> expression selects positive elements.
-</div>
+<p></p>
 <li>
 
 What does this Perl print?
@@ -454,19 +332,6 @@ What does this Perl print?
 @vec = map { $_ ** 2 } (1,2,3,4,5);
 print "@vec\n";
 </pre>
-
-<div class="answer">
-It prints:
-
-<pre class="program">
-1 4 9 16 25
-</pre>
-
-The <code>map</code> function applies the code in the block
-<code>{ $_ ** 2 }</code> to each element in the list, and
-returns a list containing the tranformed values.
-The <code>**</code> operator does exponentiation; and
-<code>$_</code> refers to the "current" element
-in the list.
-</div>
+<p></p>
 {% endblock %}
+</li></li></p></li></li></li></li></p></li></p></li></li></p></li></li></p></p></li></li></p></li></p></p></p></p></li>

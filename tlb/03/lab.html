@@ -9,10 +9,9 @@ Understanding how to program in Shell.
 The file <a href="counting_classes.txt">counting_classes.txt</a> contains a template which you must use
 to enter the answers for this exercise.  You can copy &amp; edit the file like this:
 <p>
-
 <pre class="command_line">
 <kbd class="shell">cp {{directory_absolute_pathname}}/counting_classes.txt .</kbd>
-<kbd class="shell">gedit counting_classes.txt &</kbd>
+<kbd class="shell">gedit counting_classes.txt &amp;</kbd>
 </pre>
 
 The autotest script depends on the format of this file so just add your answers
@@ -24,7 +23,6 @@ The file <a href="classes.txt">{{directory_absolute_pathname}}/classes.txt</a> c
 list of  CSE classes downloaded from MyUNSW.
 
 <ol>
-
 <li>
 Write a shell pipeline to print how many classes there are.
 <p>
@@ -33,13 +31,7 @@ Write a shell pipeline to print how many classes there are.
 {{execute("wc -l <classes.txt", show_command=False)}}
 
 
-<div class="answer">
-Each line in the file represents a class. Therefore, the number
-of classes is equal to the number of lines in the file.
-<p>
-<pre>wc -l &lt;classes.txt</pre>
-</div>
-
+<p></p>
 <li>
 Write a shell pipeline to print how many different courses have classes?
 <p>
@@ -49,15 +41,7 @@ Write a shell pipeline to print how many different courses have classes?
 
 {{execute("cut -f1 classes.txt | sort | uniq | wc -l", show_command=False)}}
 
-<div class="answer">
-Approach: extract just the course codes, then sort them into groups
-of identical course codes, then compress each group to size one,
-giving one line for each group (i.e. each course). Then count the
-number of lines.
-
-<pre>cut -f1 classes.txt | sort | uniq | wc -l</pre>
-</div>
-
+<p></p>
 <li>
 
 Write a shell pipeline which will print the course with the most classes (and no
@@ -67,10 +51,7 @@ other courses) and how many classes are in this course? <p>
 {{execute("cut -f1 classes.txt | sort | uniq -c|sort -n|tail -1", show_command=False)}}
 
 
-<div class="answer">
-<pre>cut -f1 classes.txt | sort | uniq -c|sort -n|tail -1</pre>
-</div>
-
+<p></p>
 <li>
 Write a shell pipeline that prints the room most frequently-used room by CSE classes how often it is used?
 <p>
@@ -81,17 +62,7 @@ Don't include the CSE lab rooms.
 {{execute("egrep -v 'LAB' classes.txt|cut -f5|sort|uniq -c|sort -n|tail -1", show_command=False)}}
 
 
-<div class="answer">
-Approach: extract the non-lab classes, cut out the room names, then sort them into groups,
-then count the number of entries in each group, then sort numerically
-and grab the last line.
-<p>
-<pre>egrep -v 'LAB' classes.txt|cut -f5|sort|uniq -c|sort -n|tail -1</pre>
-<p>
-The last two steps in the above pipelines could be changed
-to <code>sort -nr | head -1</code>
-</div>
-
+<p></p>
 <li>
 
 Write a shell pipeline  that prints the most popular time-of-day for classes to
@@ -104,14 +75,7 @@ start and how many classes start at that time?
 {{execute("cut -f4 classes.txt|cut -d- -f1|sort|uniq -c|sort -n|tail -1", show_command=False)}}
 
 
-<div class="answer">
-<p>
-<pre>cut -f4 classes.txt|cut -d- -f1|sort|uniq -c|sort -n|tail -1</pre>
-<p>
-The last two steps in the above pipelines could be changed
-to <code>sort -nr | head -1</code>
-</div>
-
+<p></p>
 <li>
 <b>Challenge:</b> write a shell pipeline that prints a list of the course codes (only) of COMP courses that
 run 2 or more  classes of the same type starting at the same time on the same day? (e.g. three tut-labs starting Monday at 10:00)
@@ -120,18 +84,8 @@ run 2 or more  classes of the same type starting at the same time on the same da
 
 {{execute("grep '^COMP' classes.txt|cut -f1,3,4 |uniq -d|cut -f1|sort|uniq", show_command=False)}}
 
-<div class="answer">
-This question needs a little thinking. The idea is that we're
-interested in any course where two classes are running on the same
-day at the same time. The info we want is contained in fields 1, 3
-and 4 of each line. If we cut these lines out, then sort the file,
-then count the size of each group, we could extract the final result
-by picking out groups whose size was different to '1'. The following
-pipeline uses this approach:
-
-<pre>grep '^COMP' classes.txt|cut -f1,3,4 |uniq -d|cut -f1|sort|uniq</pre>
-</div>
-</ol>
+<p></p>
+</p></li></p></p></li></p></p></li></p></li></p></p></li></p></li></ol>
 
 {{autotest_reminder("counting_classes.txt")}}
 
@@ -143,9 +97,9 @@ less than 5 into the character '<code>&lt;</code>' and all digit characters
 whose values are greater than 5 into the character '<code>&gt;</code>'.
 The digit character '5' should be left unchanged.
 <p>
-<table border=1 cellpadding=6>
+<table border="1" cellpadding="6">
 <tr><th>Sample Input Data</th><th>Corresponding Output</th></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 1 234 5 678 9
 </pre>
@@ -153,7 +107,7 @@ The digit character '5' should be left unchanged.
 <pre>
 &lt; &lt;&lt;&lt; 5 &gt;&gt;&gt; &gt;
 </pre>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 I can think of 100's
 of other things I'd rather
@@ -166,7 +120,7 @@ of other things I'd rather
 be doing than these &lt; questions
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 A line with lots of numbers:
 123456789123456789123456789
@@ -185,7 +139,7 @@ A line with blanks at the end
 &lt; &lt; &lt;
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 Input with absolutely 0 digits in it
 Well ... apart from that one ...
@@ -196,7 +150,7 @@ Input with absolutely &lt; digits in it
 Well ... apart from that one ...
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 1 2 4 8 16 32 64 128 256 512 1024
 2048 4096 8192 16384 32768 65536
@@ -207,18 +161,12 @@ Well ... apart from that one ...
 &lt;&lt;&lt;&gt; &lt;&lt;&gt;&gt; &gt;&lt;&gt;&lt; &lt;&gt;&lt;&gt;&lt; &lt;&lt;&gt;&gt;&gt; &gt;55&lt;&gt;
 </pre>
 </td></tr>
-</table>
-
+</td></tr></table>
 <b>Hint:</b> <code>tr</code> can be used.
 
 {{autotest_reminder("digits.sh")}}
 
-<div class="answer">
-Sample solution for digits.sh
-
-{{include_code("solutions/digits.sh")}}
-</div>
-
+<p></p>
 <h3>Exercise 2: Repeated Echo</h3>
 
 Write a shell script  a program <code>echon.sh</code> which given exactly two arguments, an integer <i>n</i>
@@ -263,28 +211,11 @@ its OK to print your error messages to stdout for this exercise.
 <b>Hint</b>: you'll need to use the shell <code>if</code>, <code>while</code> and <code>exit</code> statements,
 shell arithmetic and the <code>test</code> command.
 
-<div class="answer">
-<b>Discussion:</b>
-Straight-forward shell programming except for checking that
-the first argument is an integer
-<p>
-We could use the shell <code>case</code> to check the number of command-line args
-and also to check that the first argument is a non-negative integer.
-<p>
-Note the display of a usage message, which gives useful feedback
-to the user about they should have done.
-Note also the use of <code>exit</code> to terminate the script if
-an error is discovered in the command line arguments.
-</div>
+<p></p>
 
 {{autotest_reminder("echon.sh")}}
 
-<div class="answer">
-Sample solution for echon.sh
-
-{{include_code("solutions/echon.sh")}}
-</div>
-
+<p></p>
 <h3>Exercise 3: Files Sizes</h3>
 
 Write a shell script <code>file_sizes.sh</code> which prints the names of the files
@@ -303,12 +234,12 @@ You could also produce test files manually using an editor.
 <pre class="command_line">
 <kbd class="shell">mkdir test</kbd>
 <kbd class="shell">cd test</kbd>
-<kbd class="shell">../echon.sh 5 text >a</kbd>
-<kbd class="shell">../echon.sh 505 text >bbb</kbd>
-<kbd class="shell">../echon.sh 17 text >cc</kbd>
-<kbd class="shell">../echon.sh 10 text >d</kbd>
-<kbd class="shell">../echon.sh 1000 text >e</kbd>
-<kbd class="shell">../echon.sh 0 text >empty</kbd>
+<kbd class="shell">../echon.sh 5 text &gt;a</kbd>
+<kbd class="shell">../echon.sh 505 text &gt;bbb</kbd>
+<kbd class="shell">../echon.sh 17 text &gt;cc</kbd>
+<kbd class="shell">../echon.sh 10 text &gt;d</kbd>
+<kbd class="shell">../echon.sh 1000 text &gt;e</kbd>
+<kbd class="shell">../echon.sh 0 text &gt;empty</kbd>
 <kbd class="shell">ls -l</kbd>
 total 24
 -rw-r--r-- 1 andrewt andrewt   25 Mar 24 10:37 a
@@ -322,7 +253,7 @@ Small files: a empty
 Medium-sized files: cc d
 Large files: bbb e
 <kbd class="shell">rm cc d</kbd>
-<kbd class="shell">../echon.sh 10000 . >lots_of_dots</kbd>
+<kbd class="shell">../echon.sh 10000 . &gt;lots_of_dots</kbd>
 <kbd class="shell">ls -l</kbd>
 total 36
 -rw-r--r-- 1 andrewt andrewt    25 Mar 24 10:37 a
@@ -345,15 +276,7 @@ the <code>test</code> command .
 
 {{autotest_reminder("file_sizes.sh")}}
 
-<div class="answer">
-
-A nice example of accumulating a results in variables.
-<p>
-Sample solution for file_sizes.sh
-
-{{include_code("solutions/file_sizes.sh")}}
-</div>
-
+<p></p>
 <h3>Challenge Exercise: Scraping Courses</h3>
 
 Write a shell script <code>courses.sh</code> which prints a list of UNSW courses with
@@ -371,7 +294,7 @@ OPTM3105 Disease Processes of the Eye 1
 OPTM3111 Optometry 3A
 OPTM3131 Ocular Disease 3A
 OPTM3133 Vision Science in the Consulting Room
-OPTM3201 Ocular Imaging & Applied Vision Science
+OPTM3201 Ocular Imaging &amp; Applied Vision Science
 OPTM3205 Disease Processes of the Eye 2
 OPTM3211 Optometry 3B
 OPTM3231 Ocular Disease 3B
@@ -383,7 +306,7 @@ OPTM4211 Optometry 4B
 OPTM4231 Clinical Optometry 4B
 OPTM4251 Ocular Therapeutics 4B
 OPTM4271 Professional Optometry
-OPTM4291 Optometry, Medicine & Patient Management
+OPTM4291 Optometry, Medicine &amp; Patient Management
 OPTM5111 Clinical Optometry 5A
 OPTM5131 Specialist Clinical Optometry 5A
 OPTM5151 Clinical Ocular Therapeutics 5A
@@ -401,7 +324,7 @@ OPTM6422 Clinical Optometry 4B
 OPTM6423 Therapeutics and the Posterior Eye
 OPTM6424 Professional Optometry
 OPTM7001 Introduction to Community Eye Health
-OPTM7002 Epidemiology & Biostatistics for Needs Assessment
+OPTM7002 Epidemiology &amp; Biostatistics for Needs Assessment
 OPTM7003 Epidemiology of Blinding Eye Diseases
 OPTM7004 Advocacy and Education in Community Eye Health
 OPTM7005 Eye Health Economics and Sustainability
@@ -454,7 +377,7 @@ Your script must download the handbook web pages and extract the information fro
 
 <h4>Hints</h4>
 
-This task can be done using the usual tools of grep, sed, sort & uniq but the regular expressions take some thought.
+This task can be done using the usual tools of grep, sed, sort &amp; uniq but the regular expressions take some thought.
 <p>
 The UNSW handbook uses seperate web pages for  undergraduate and postgraduate courses.
 These two web pages would need to be downloaded for the above example (JAPN):
@@ -462,7 +385,7 @@ These two web pages would need to be downloaded for the above example (JAPN):
 and
 <a href="http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Postgraduate&amp;descr=O"><code>http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Postgraduate&amp;descr=O</code></a>.
 <p>
-Make sure courses which occur in both postgraduate & undergraduate handbooks aren't repeated.
+Make sure courses which occur in both postgraduate &amp; undergraduate handbooks aren't repeated.
 <p>
 <code>cat -A</code> can be useful to check for non-printing characters.
 <p>
@@ -470,27 +393,22 @@ The command <code>wget</code> can be used to download a web page and has option 
 allow it to be used in shell pipelines. For example:
 <pre class="command_line">
 <kbd class="shell">wget -q -O- "http://www.handbook.unsw.edu.au/vbook2017/brCoursesByAtoZ.jsp?StudyLevel=Undergraduate&amp;descr=O"|grep OPTM</kbd>
-                                &lt;TD class="" align="left">OPTM2111&lt;/TD>
-                                &lt;TD class="">&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2111.html">Optometry 2A&lt;/A>&lt;/TD>
-                                &lt;TD class="evenTableCell" align="left">OPTM2133&lt;/TD>
-                                &lt;TD class="evenTableCell">&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2133.html">The Clinical Environment &lt;/A>&lt;/TD>
-                                &lt;TD class="" align="left">OPTM2190&lt;/TD>
-                                &lt;TD class="">&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2190.html">Introduction to Clinical Optometry &lt;/A>&lt;/TD>
-                                &lt;TD class="evenTableCell" align="left">OPTM2211&lt;/TD>
-                                &lt;TD class="evenTableCell">&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2211.html">Optometry 2B&lt;/A>&lt;/TD>
-                                &lt;TD class="" align="left">OPTM2233&lt;/TD>
-                                &lt;TD class="">&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2233.html">Optical Dispensing &lt;/A>&lt;/TD>
+                                &lt;TD class="" align="left"&gt;OPTM2111&lt;/TD&gt;
+                                &lt;TD class=""&gt;&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2111.html"&gt;Optometry 2A&lt;/A&gt;&lt;/TD&gt;
+                                &lt;TD class="evenTableCell" align="left"&gt;OPTM2133&lt;/TD&gt;
+                                &lt;TD class="evenTableCell"&gt;&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2133.html"&gt;The Clinical Environment &lt;/A&gt;&lt;/TD&gt;
+                                &lt;TD class="" align="left"&gt;OPTM2190&lt;/TD&gt;
+                                &lt;TD class=""&gt;&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2190.html"&gt;Introduction to Clinical Optometry &lt;/A&gt;&lt;/TD&gt;
+                                &lt;TD class="evenTableCell" align="left"&gt;OPTM2211&lt;/TD&gt;
+                                &lt;TD class="evenTableCell"&gt;&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2211.html"&gt;Optometry 2B&lt;/A&gt;&lt;/TD&gt;
+                                &lt;TD class="" align="left"&gt;OPTM2233&lt;/TD&gt;
+                                &lt;TD class=""&gt;&lt;A href="http://www.handbook.unsw.edu.au/undergraduate/courses/2017/OPTM2233.html"&gt;Optical Dispensing &lt;/A&gt;&lt;/TD&gt;
 </pre>
 
 {{autotest_reminder("courses.sh")}}
 
 
-<div class="answer">
-<div class="program_description">
-Sample solution for courses.sh
-</div>
-
-{{include_code("solutions/courses.sh")}}
-</div>
+<p></p>
 
 {% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>

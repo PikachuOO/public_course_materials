@@ -8,7 +8,7 @@ Proficiency at text processing in Perl.
 Understanding multi-dimensional hashes.
 <li>
 Explore a simple learning algorithm.
-</ul>
+</li></li></li></ul>
 {% endblock %}
 
 {% block lab_exercises %}
@@ -19,15 +19,14 @@ We have covered only a small amount of Perl in lectures. In fact, to
 cover the whole language in detail would take a whole semester, so
 we're going to rely on you finding out about the language yourself
 in tutes, labs and assignments. A good place to start is
-the Perl documentation & tutorial links on the class home page
+the Perl documentation &amp; tutorial links on the class home page
 For example you might find these useful:
 
 <ul>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsyn.pod">Perl language syntax</a>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsub.pod">Perl functions</a>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlop.pod">Perl operators</a>
-</ul>
-
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlsyn.pod" target="doc">Perl language syntax</a>
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlsub.pod" target="doc">Perl functions</a>
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlop.pod" target="doc">Perl operators</a>
+</li></li></li></ul>
 <h3>Introduction</h3>
 
 In this lab you will write a Perl program which given the lyrics of a song, prints who the artist is.
@@ -85,28 +84,12 @@ So for example the phrase "<code>The soul's desire</code>" contains 4 words: <co
 <p>
 For example:
 
-{{execute("./total_words.pl <lyrics/Justin_Bieber.txt;./total_words.pl <lyrics/Metallica.txt;./total_words.pl <lyrics/Rihanna.txt", cwd="solutions")}}
-
-<b>Hint</b>: if your word counts are out a little you might be counting empty strings (split can return these).
+{{execute("./total_words.pl <lyrics/Justin_Bieber.txt;./total_words.pl <lyrics )}}="" <b="" <lyrics="" cwd="solutions" metallica.txt;.="" rihanna.txt",="" total_words.pl="">Hint</lyrics></p></p></p></p></p>: if your word counts are out a little you might be counting empty strings (split can return these).
 As usual:
 
 {{autotest_reminder("total_words.pl")}}
 
-<div class="answer">
-Straight-forward solution using split for total_words.pl
-
-{{include_code("solutions/total_words.v1.pl")}}
-
-More concise solution for total_words.pl
-
-{{include_code("solutions/total_words.v2.pl")}}
-
-</div>
-
-
-
-
-
+<p></p>
 <h3>Exercise: Count Word</h3>
 
 Write a Perl script <code>count_word.pl</code> which counts the number of times
@@ -120,23 +103,14 @@ You program should ignore the case of words.
 <p>
 For example:
 
-{{execute("./count_word.pl death <lyrics/Metallica.txt;./count_word.pl death <lyrics/Justin_Bieber.txt;./count_word.pl love <lyrics/Ed_Sheeran.txt;./count_word.pl love <lyrics/Rage_Against_The_Machine.txt", cwd="solutions")}}
-
-<b>Hint</b>: modify the code from the last exercise.
+{{execute("./count_word.pl death <lyrics/Metallica.txt;./count_word.pl death <lyrics )}}="" <b="" <lyrics="" count_word.pl="" cwd="solutions" ed_sheeran.txt;.="" justin_bieber.txt;.="" love="" rage_against_the_machine.txt",="">Hint</lyrics></p></p></p></p>: modify the code from the last exercise.
 <p>
-<b>Hint</b>: the Perl functions <code>uc</code> & <code>lc</code> convert strings to lowercase & uppercase respectively.
+<b>Hint</b>: the Perl functions <code>uc</code> &amp; <code>lc</code> convert strings to lowercase &amp; uppercase respectively.
 <p>
 
 {{autotest_reminder("count_word.pl")}}
 
-<div class="answer">
-Sample solution for count_word.pl
-
-{{include_code("solutions/count_word.pl")}}
-
-</div>
-
-
+<p></p>
 <h3>Exercise: Word Frequency</h3>
 
 Write a Perl script <code>frequency.pl</code>
@@ -174,14 +148,7 @@ You should treat non-alphabetic characters (characters other than a-z) as spaces
 
 {{autotest_reminder("frequency.pl")}}
 
-<div class="answer">
-
-Sample solution for frequency.pl
-
-{{include_code("solutions/frequency.pl")}}
-
-</div>
-
+<p></p>
 <h3>Exercise: Word Log Probability</h3>
 
 Now suppose we have the song line <b>"truth is beauty"</b>. If David Bowie uses the
@@ -239,13 +206,7 @@ Make sure your output matches the above exactly (the printf format is <code>"log
 
 {{autotest_reminder("log_probability.pl")}}
 
-<div class="answer">
-Sample solution for log_probability.pl
-
-{{include_code("solutions/log_probability.pl")}}
-
-</div>
-
+<p></p>
 <h3>Exercise: Identifying the Artist</h3>
 
 Write a Perl script <code>identify_artist.pl</code> that given 1 or more files, each containing   part of song),
@@ -288,14 +249,7 @@ for example:
 
 {{autotest_reminder("identify_artist.pl")}}
 
-<div class="answer">
-Sample solution for identify_artist.pl
-
-{{include_code("solutions/identify_artist.pl")}}
-
-</div>
-
-
+<p></p>
 <h3>Challenge Exercise: Introduction</h3>
 
 Re-implement the above exercises in Python.
@@ -315,10 +269,10 @@ for line in sys.stdin:
 
 The function <code>re.split</code> or the function <code>re.findall</code> could be used to separate words.
 <p>
-<b>Hints</b> for <code>frequency.py</code>, <code>log_probability.py</code> & <code>identify_artist.py</code>:
+<b>Hints</b> for <code>frequency.py</code>, <code>log_probability.py</code> &amp; <code>identify_artist.py</code>:
 <p>
 Beware Python dicts need a slightly different approach to Perl hashes, and also
-Perl & Python division have different semantics.
+Perl &amp; Python division have different semantics.
 <p>
 This loop executes once for each <code>.txt</code> file in the directory <code>artists</code>.
 
@@ -327,7 +281,6 @@ import glob
 for file in glob.glob("lyrics/*.txt"):
     print file
 </pre>
-
 <p>
 You might find <code>math.log</code>, <code>sorted</code>, <code>re.sub</code> and  <code>collections.defaultdict</code> useful.
 
@@ -335,75 +288,28 @@ You might find <code>math.log</code>, <code>sorted</code>, <code>re.sub</code> a
 
 {{autotest_reminder("total_words.py")}}
 
-<div class="answer">
-Solution for total_words.py using re.split
-
-{{include_code("solutions/total_words.v1.py")}}
-
-Solution for total_words.py using re.findall
-
-{{include_code("solutions/total_words.v2.py")}}
-
-More Pythonic solution for total_words.py using re.findall
-
-{{include_code("solutions/total_words.v3.py")}}
-</div>
+<p></p>
 <h3>Challenge Exercise: Count Word in Python</h3>
 
 {{autotest_reminder("count_word.py")}}
 
-<div class="answer">
-Sample solution for count_word.py
-
-{{include_code("solutions/count_word.v0.py")}}
-
-More Pythonic solution for count_word.py using re.findall
-
-{{include_code("solutions/count_word.v1.py")}}
-</div>
+<p></p>
 <h3>Challenge Exercise: Word Frequency in Python</h3>
 
 {{autotest_reminder("frequency.py")}}
 
-<div class="answer">
-Sample solution for frequency.py
-
-{{include_code("solutions/frequency.v0.py")}}
-
-More Pythonic solution for frequency.py
-
-{{include_code("solutions/frequency.v1.py")}}
-
-</div>
-
+<p></p>
 <h3>Challenge Exercise: Word Log Probability in Python</h3>
 
 
 {{autotest_reminder("log_probability.py")}}
 
-<div class="answer">
-Sample solution for log_probability.py
-
-{{include_code("solutions/log_probability.v0.py")}}
-
-More Pythonic solution for log_probability.py
-
-{{include_code("solutions/log_probability.v1.py")}}
-</div>
-
+<p></p>
 <h3>Challenge Exercise: Identifying the Artist in Python</h3>
 
 {{autotest_reminder("identify_artist.py")}}
 
-<div class="answer">
-
-Sample solution for identify_artist.py
-
-{{include_code("solutions/identify_artist.v0.py")}}
-
-More Pythonic solution for identify_artist.py
-
-{{include_code("solutions/identify_artist.v1.py")}}
-</div>
+<p></p>
 
 {% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>

@@ -12,14 +12,13 @@ We have covered only a small amount of Perl in lectures. In fact, to
 cover the whole language in detail would take a whole semester, so
 we're going to rely on you finding out about the language yourself
 in tutes, labs and assignments. A good place to start is
-the Perl documentation & tutorial links on the class home page
+the Perl documentation &amp; tutorial links on the class home page
 For example you might find these useful:
 <ul>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsyn.pod">Perl language syntax</a>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsub.pod">Perl functions</a>
-<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlop.pod">Perl operators</a>
-</ul>
-
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlsyn.pod" target="doc">Perl language syntax</a>
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlsub.pod" target="doc">Perl functions</a>
+<li> <a href="http://search.cpan.org/dist/perl/pod/perlop.pod" target="doc">Perl operators</a>
+</li></li></li></ul>
 <h3>Input Data</h3>
 
 A biologist needs your help counting migrating whales.
@@ -40,7 +39,6 @@ Here is an example of the input the biologist will provide:
 7 humpback
 1 orca</kbd>
 </pre>
-
 <h3>Exercise: Counting One Whale Species</h3>
 
 Write a Perl script <code>whale.pl</code> which given a whale name as a command line argument,
@@ -85,18 +83,7 @@ For example:
 
 {{autotest_reminder("whale.pl")}}
 
-<div class="answer">
-
-Sample Perl solution
-
-{{include_code("solutions/whale.pl")}}
-
-Sample Python solution
-
-{{include_code("solutions/whale.py")}}
-
-</div>
-
+<p></p>
 <h3>Exercise: Counting All Whale Species</h3>
 
 Write a Perl script <code>all_whales.pl</code> that
@@ -154,19 +141,7 @@ No mention of particular whale names can appear in your program.
 
 
 
-<div class="answer">
-
-Sample Perl solution
-
-{{include_code("solutions/all_whales.pl")}}
-
-Sample Python solution
-
-{{include_code("solutions/all_whales.py")}}
-
-</div>
-
-
+<p></p>
 <h3>Exercise: Prerequisites</h3>
 
 Write a Perl script which prints courses which can be used to meet prerequisite
@@ -202,7 +177,7 @@ A simple way (but not the best way) to access a web page from Perl is like this:
 <pre class="command_line">
 $url = "http://www.handbook.unsw.edu.au/postgraduate/courses/2017/COMP9041.html";
 open F, "wget -q -O- $url|" or die;
-while ($line = &lt;F>) {
+while ($line = &lt;F&gt;) {
     print $line;
 }
 </pre>
@@ -217,16 +192,7 @@ It's easy in Perl to remove HTML tags.
 {{autotest_reminder("prereq.pl")}}
 
 
-<div class="answer">
-Sample solution for prereq.pl
-
-{{include_code("solutions/prereq.v0.pl")}}
-
-Sample Python solution for prereq.pl
-
-{{include_code("solutions/prereq.v0.py")}}
-</div>
-
+<p></p>
 <h3>Challenge Exercise: Recursive Prerequisites</h3>
 
 Add a -r (for recursive ) flag to <code>prereq.pl</code> so it also lists all courses which can be used
@@ -268,17 +234,7 @@ don't need to find their prerequisites (don't look up old handbooks).
 Beware infinite loops!
 {{autotest_reminder("recursive_prereq.pl")}}
 
-<div class="answer">
-Sample solution for recursive_prereq.pl
-
-{{include_code("solutions/recursive_prereq.v0.pl")}}
-
-Sample Python solution for recursive_prereq.py
-
-{{include_code("solutions/recursive_prereq.v0.py")}}
-
-</div>
-
+<p></p>
 <h3>Python Challenge Questions</h3>
 
 Python will be introduced later in the course for students who haven't learnt it previously,
@@ -299,10 +255,9 @@ less than 5 into the character '<code>&lt;</code>' and all digit characters
 whose values are greater than 5 into the character '<code>&gt;</code>'.
 The digit character '5' should be left unchanged.
 <p>
-
-<table border=1 cellpadding=6>
+<table border="1" cellpadding="6">
 <tr><th>Sample Input Data</th><th>Corresponding Output</th></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 1 234 5 678 9
 </pre>
@@ -310,7 +265,7 @@ The digit character '5' should be left unchanged.
 <pre>
 &lt; &lt;&lt;&lt; 5 &gt;&gt;&gt; &gt;
 </pre>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 I can think of 100's
 of other things I'd rather
@@ -323,7 +278,7 @@ of other things I'd rather
 be doing than these &lt; questions
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 A line with lots of numbers:
 123456789123456789123456789
@@ -342,7 +297,7 @@ A line with blanks at the end
 &lt; &lt; &lt;
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 Input with absolutely 0 digits in it
 Well ... apart from that one ...
@@ -353,7 +308,7 @@ Input with absolutely &lt; digits in it
 Well ... apart from that one ...
 </pre>
 </td></tr>
-<tr valign=top><td>
+<tr valign="top"><td>
 <pre>
 1 2 4 8 16 32 64 128 256 512 1024
 2048 4096 8192 16384 32768 65536
@@ -364,24 +319,14 @@ Well ... apart from that one ...
 &lt;&lt;&lt;&gt; &lt;&lt;&gt;&gt; &gt;&lt;&gt;&lt; &lt;&gt;&lt;&gt;&lt; &lt;&lt;&gt;&gt;&gt; &gt;55&lt;&gt;
 </pre>
 </td></tr>
-</table>
+</td></tr></table>
 
 
 {{autotest_reminder("digits.py")}}
 
 
-<div class="answer">
-Sample solution
-
-{{include_code("solutions/digits.v0.py")}}
-</div>
-
-<div class="answer">
-Sample solution using tr-like approach
-
-{{include_code("solutions/digits.v0.py")}}
-</div>
-
+<p></p>
+<p></p>
 <h3>Challenge Exercise:  Repeated Echo in Python</h3>
 
 Write a Python script <code>echon.py</code> which given exactly two arguments, an integer <i>n</i>
@@ -423,21 +368,7 @@ its first argument isn't a non-negative integer:
 {{autotest_reminder("echon.py")}}
 
 
-<div class="answer">
-Sample solution #0 for echon.py
-
-{{include_code("solutions/echon.v0.py")}}
-
-Sample solution #1 for echon.py
-
-{{include_code("solutions/echon.v1.py")}}
-
-Sample solution #2 for echon.py
-
-{{include_code("solutions/echon.v2.py")}}
-
-</div>
-
+<p></p>
 <h3>Challenge Exercise:  Tail in Python</h3>
 
 Write a Python script <code>simple_tail.py</code> to implement the Unix <code>tail</code> command.
@@ -452,24 +383,13 @@ files: <a href="t1.txt">t1.txt</a>, <a href="t2.txt">t2.txt</a>, and
 <pre class="command_line">
 <kbd class="shell">cp /home/cs2041/public_html/tlb/06/t?.txt .</kbd>
 </pre>
-
 <pre class="command_line">
 <kbd class="shell">./simple_tail.py t1.txt t2.txt t3.txt</kbd>
 </pre>
 
 {{autotest_reminder("simple_tail.py")}}
 
-<div class="answer">
-Sample solution
-
-{{include_code("solutions/simple_tail.v0.py")}}
-
-More concise solution
-
-{{include_code("solutions/simple_tail.v1.py")}}
-
-</div>
-
+<p></p>
 <h3>Challenge Exercise:  Whales in Python</h3>
 
 Implement Python scripts <code>whale.py</code> and <code>all_whales.py</code> which count whales as described in the first two lab questions.
@@ -479,18 +399,7 @@ Implement Python scripts <code>whale.py</code> and <code>all_whales.py</code> wh
 
 {{autotest_reminder("all_whales.py")}}
 
-<div class="answer">
-Sample solution for whale.py
-
-{{include_code("solutions/whale.py")}}
-
-Sample solution for all_whales.py
-
-{{include_code("solutions/all_whales.v0.py")}}
-
-More concise solution using collections.Counter
-
-{{include_code("solutions/all_whales.v1.py")}}
-</div>
+<p></p>
 
 {% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>

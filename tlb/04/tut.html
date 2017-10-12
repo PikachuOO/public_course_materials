@@ -26,87 +26,28 @@ But when he ran his script, it didn't seem to work:
 <p>
 Why not, and can you fix Cletus' shell script?
 </p>
-<div class="answer">
-A shell script is executed by a separate shell so
-changes to its working directory don't affect its parent shell.
-<p>
-Similarly the shell script 'set_var.sh' contains this:
-<p>
-<pre class="command_line answer">
-#!/bin/sh
-variable=42
-</pre>
-<p>
-It won't change the variable in the parent shell, for example:
-<p>
-<pre class="command_line answer">
-<kbd class="shell">variable=21</kbd>
-<kbd class="shell">./set_var.sh</kbd>
-<kbd class="shell">echo $variable</kbd>
-21
-</pre>
-<p>
-You can indicate that the commands in a shell script are
-to be run by the parent shell, like this:
-<p>
-<pre class="command_line answer">
-<kbd class="shell">variable=21</kbd>
-<kbd class="shell">. ./set_var.sh</kbd>
-<kbd class="shell">echo $variable</kbd>
-42
-</pre>
-<p>
-</div>
+<p></p>
 <li>
 The course code for COMP2041 has been changed to COMP2042 and
 the course code for COMP9041 has been changed to COMP9042.
 Write a shell script, <code>update_course_code.sh</code> which
 appropriately changes the course_code in all the files it is given as argument.
-<div class="answer">
-Sample solution for update_course_code.sh
-
-{{include_code("solutions/update_course_code.0.sh")}}
-Alternatively a single line Perl solution:
-
-<pre class="command_line">
-<kbd class="shell">perl -pi -e 's/(COMP[29]04)1/${1}2/ig'</kbd> <i>file1 file2 ...</i>
-</pre>
-</div>
+<p></p>
 <li>
 Modify  <code>update_course_code.sh</code> so if given a directory as
 argument it updates the course codes in files found in that directory and  its sub-directories.
 
-<div class="answer">
-
-Sample solution for update_course_code.sh
-
-{{include_code("solutions/update_course_code.1.sh")}}
-
-Sample solution for update_course_code.sh
-
-{{include_code("solutions/update_course_code.2.sh")}}
-
-</div>
+<p></p>
 <li>
 Write a shell script, <code>is_business_hours</code> which exits with a status of 0
-if the current time is between 9am & 5pm, and otherwise  exits with a status of 1.
+if the current time is between 9am &amp; 5pm, and otherwise  exits with a status of 1.
 <p>
 Hint: the date command prints the current time in a format like this:
 <pre class="command_line">
 <kbd class="shell">date</kbd>
 Sun Mar 18 12:57:08 EST 2012
 </pre>
-<div class="answer">
-<div class="program_description">
-Sample solution for is_business_hours.sh
-</div>
-
-{{include_code("solutions/is_business_hours.0.sh")}}
-
-Another sample solution for is_business_hours.sh
-
-{{include_code("solutions/is_business_hours.1.sh")}}
-</div>
+<p></p>
 <!-- Questions below courtesy Michael Zhou -->
 <li>
 CSE systems have a command, <code>mlalias</code>, which
@@ -138,11 +79,7 @@ sngx602
 andrewt
 </pre>
 <p>
-<div class="answer">
-<pre class="answer">
-mlalias COMP2041-list|grep -v :|sed 's/^ *//'
-</pre>
-</div>
+<p></p>
 <li>
 CSE system have a command, <code>acc</code>, which
 prints information about a specified user.  For example:
@@ -181,11 +118,7 @@ COMP3901
 </pre>
 <p>
 <p>
-<div class="answer">
-<pre class="answer">
-acc mzhou | tr -s ', ' '\n' | grep '[A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]_Student' | cut -c1-8
-</pre>
-</div>
+<p></p>
 <li><p>
 Use the pipeines from the above 2 questions to write shell commands which
 print a list of courses taken by COMP2041 students with counts of how
@@ -199,22 +132,7 @@ many COMP2041 students take each, like this:
       9 COMP3331
       ..........
 </pre>
-<div class="answer">
-<pre class="answer">
-mlalias COMP2041-list|
-grep -v :|
-sed 's/^ *//'|
-while read cseusername
-do
-    acc $cseusername|
-    tr -s ', ' '\n' |
-    grep '[A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]_Student'|
-    cut -c1-8
-done|
-sort|
-uniq -c|sort -rn
-</pre>
-</div>
+<p></p>
 <li>
 <!-- question courtesy Nelson Rigby  -->
 COMP2041 student Shruti has a 'friends' subdirectory in her home directory
@@ -233,44 +151,21 @@ done
 The links created by Shruti's script are broken.
 Why? How can she fix her script?
 <p>
-<div class="answer">
-The shell does not replace tilde (~) with the user's home directory
-inside double-quotes, and does not handle spaces in filenames correctly. For example:
-<p>
-<pre class="command_line answer">
-<kbd class="shell">echo ~</kbd>
-/home/shruti
-<kbd class="shell">echo "~"</kbd>
-~
-<kbd class="shell">touch a\ b</kbd>
-<kbd class="shell">for f in `ls`; do echo $f; done</kbd>
-a
-b
-</pre>
-<p>
-This should work for Shruti:
-<p>
-<pre class="command_line answer">
-for image_file in ~/friends/*
-do
-    ln -s "$image_file" .
-done
-</pre>
-</div>
+<p></p>
 <li>
 Implement a shell script called <code>iseq</code> for writing sequences
 of integers onto its standard output, with one integer per line.
 The script can take up to three arguments, and behaves as follows:
 <ul>
 <li> <code>iseq <i>n</i></code>
-    &nbsp; writes all numbers from 1 up to <code><i>n</i></code>, inclusive
+      writes all numbers from 1 up to <code><i>n</i></code>, inclusive
 <li> <code>iseq <i>m n</i></code>
-    &nbsp; writes all numbers from <code><i>m</i></code> up to <code><i>n</i></code> inclusive
+      writes all numbers from <code><i>m</i></code> up to <code><i>n</i></code> inclusive
 <li> <code>iseq <i>k m n</i></code>
-    &nbsp; writes the sequence <code><i>k</i></code>, <code><i>m</i></code>, <code><i>m+(m-k)</i></code>, <code><i>m+2(m-k)</i></code> up to <code><i>p</i></code> <br>
+      writes the sequence <code><i>k</i></code>, <code><i>m</i></code>, <code><i>m+(m-k)</i></code>, <code><i>m+2(m-k)</i></code> up to <code><i>p</i></code> <br>
     (where <code><i>p</i></code> is the largest integer in this sequence
          that is less than or equal to <code><i>n</i></code>)
-</ul>
+</br></li></li></li></ul>
 <p>
 Examples of output:
 <pre class="command_line">
@@ -281,20 +176,9 @@ Examples of output:
     4                  5                   12
     5                  6                   15
 </pre>
-<div class="answer">
-<div class="program_description">
-Sample solution for iseq.sh
-</div>
-
-{{include_code("solutions/iseq.0.sh")}}
-</div>
+<p></p>
 <p>
-<div class="answer">
-
-Another sample solution for iseq.sh
-
-{{include_code("solutions/iseq.1.sh")}}
-</div>
+<p></p>
 <li>
 Write a shell script named <code>isprime</code>
 which given an integer as argment, tests whether
@@ -326,19 +210,7 @@ script to print all primes less than a specified value, e.g:
 89
 97
 </pre>
-<div class="answer">
-Another sample solution for isprime.sh
-
-{{include_code("solutions/isprime.sh")}}
-
-Yet another solution for isprime.sh
-
-{{include_code("solutions/isprime.1.sh")}}
-
-Sample solution for primes.sh
-
-{{include_code("solutions/primes.sh")}}
-</div>
+<p></p>
 <li>
 Write a shell script, <code>list_include_files</code>, which given a list of C source files (<code>.c</code> files)
 as arguments, prints the names of the files they include  (<code>.h</code> files),
@@ -353,13 +225,7 @@ stdio.h
 stdlib.h
 time.h
 </pre>
-<div class="answer">
-<div class="program_description">
-Sample solution for list_include_files.sh
-</div>
-
-{{include_code("solutions/include_files.sh")}}
-</div>
+<p></p>
 {% endblock %}
 {% block revision_questions %}
 <li>
@@ -381,20 +247,6 @@ What does the script print?
 <p>
 Will the girl go out with  Big Bad Barry?
 <p>
-<div class="answer">
-The script will do this:
-<pre class="command_line answer">
-<kbd class="shell">./script.sh mount inside</kbd>
-mountainside
-</pre>
-<p>
-This is because <code>IFS</code> is a special internal shell variable which
-indicates the argument separators.  The first character from IFS is uses to separate
-the argument when expanding $*.
-<p>
-Big Bad Barry won't get a date.  No one is impressed by knowledge of hacky&amp;obscure
-shell features.  Good programmers avoid quirky little-known language features.
-<p>
-</div>
-</ol>
+<p></p>
+</p></p></p></p></p></li></p></li></p></p></li></p></p></li></p></p></p></li></p></p></li></p></p></p></p></p></li></p></p></p></li></p></li></li></li></p></p></p></li></ol>
 {% endblock %}

@@ -5,11 +5,47 @@ from bs4 import BeautifulSoup
 import config
 
 debug = 1
-def extract_file_references_from_jinja(template, include_answers=False):
+
+# return a list of all public files for a tut-lab
+
+def get_public_files_tlb(tlb_path):
+	released = glob.glob(os.path.join(tlb_path, '*released'))
+	if not released:
+		return []
+	public = ["build.sh"]
+	for tut_or_lab_or_test in ['tut', 'lab', 'test']:
+		path_prefix = os.path.join(tlb_path, tut_or_lab_or_test)
+		if os.path.exists(path_prefix+'_answers_released'):
+			public += [tut_or_lab_or_test + '.html', tut_or_lab_or_test + '.autotest', tut_or_lab_or_test + '.automarking']
+			public += get_public_files_jinja(path_prefix + '.html', include_answers=True)
+		elif os.path.exists(path_prefix + '_questions_released'):
+			public += [tut_or_lab_or_test + '.html', tut_or_lab_or_test + '.autotest', tut_or_lab_or_test + '.automarking']
+			public += get_public_files_jinja(path_prefix + '.html')
+	return [os.path.join(tlb_path, p) for p in public] + get_public_files_txt(tlb_path) + released
+	
+# return a list of all public files for an assignment
+def get_public_files_asssignment(assignment_path):
+	released = glob.glob(os.path.join(assignment_path, '*released'))
+	if not released:
+		return []
+	if not os.path.isdir(assignment_path):
+		return []
+	if not os.path.exists(os.path.join(assignment_path, 'assignment_questions_released')):
+		return []
+	public	= ["index.html", "build.sh", "autotest"]
+	public += get_public_files_jinja(os.path.join(assignment_path, "index.html"))
+	if os.path.exists(os.path.join(assignment_path, 'assignment_answers_released')):
+		public += ["automarking"]
+	return [os.path.join(assignment_path, p) for p in public] + get_public_files_txt(assignment_path) + released
+
+# extract any files apparently refered to in a Jinja (html) tut/lab/assignment ...
+# so they can be copied to the public_directoru
+
+def get_public_files_jinja(template, include_answers=False):
 	try:
 		with open(template) as f:
 			page = f.read()
-			# < characters in Jinja  break Beautiful Soup, e.g in Python betwee {{ }}
+			# < characters in Jinja	 break Beautiful Soup, e.g in Python betwee {{ }}
 			# The fragile workaround is to replace any < without a following > on the sameline 
 			page = re.sub('<([^>]*\n)', r'__ESCAPE_JINJA_LT__\1', page,flags=re.M)
 			soup = BeautifulSoup(page, 'html5lib')
@@ -32,7 +68,41 @@ def extract_file_references_from_jinja(template, include_answers=False):
 	except FileNotFoundError:
 		return []
 
+# glob	files specified in a public_files.txt file
+# to be copied to the public_directoru
 
+def get_public_files_txt(directory):
+	public_relative_paths = []
+	try:
+		with open(os.path.join(directory, "public_files.txt")) as f:
+			for path in f:
+				path = path.strip()
+				if path:
+					public_relative_paths.append(path)
+	except FileNotFoundError:
+		return []
+	public_absolute_paths = []
+	for p in public_relative_paths:
+		public_absolute_paths += glob.glob(os.path.join(directory, p))
+	return public_absolute_paths
+
+#
+# delete sample solutions from html source when solutions have not been released
+#
+def copy_without_solutions(censored_file, public_dir):
+	with open(censored_file) as f:
+		page = f.read()
+		# < characters in Jinja	 break Beautiful Soup, e.g in Python betwee {{ }}
+		# The fragile workaround is to replace any < without a following > on the sameline 
+		page = re.sub('<([^>]*\n)', r'__ESCAPE_JINJA_LT__\1', page,flags=re.M)
+		soup = BeautifulSoup(page, 'html.parser')
+		for tag in soup.findAll({'div':True,'span':True,'pre':True}, { "class" : re.compile(r'\banswer\b')}):
+			tag.replaceWith(soup.new_tag('p'))
+		page = str(soup)
+		page = re.sub('__ESCAPE_JINJA_LT__', '<', page)
+	with open(os.path.join(public_dir, censored_file),"w") as f:
+		f.write(page)
+	
 private_dir = os.path.join(config.variables['public_html_session_directory'], 'private')
 public_dir = os.path.join(config.variables['public_html_session_directory'], 'public')
 os.chdir(private_dir)
@@ -40,35 +110,19 @@ os.chdir(private_dir)
 last_commit_message = subprocess.run(['git', 'log', '-1', '--pretty=%B'], stdout=subprocess.PIPE, universal_newlines=True).stdout
 public_prefixes = set("exam home_computing lec lib scripts static templates code".split())
 
-# FIXME need to be able to make assignments and files in 
-# assignment directories selectively public
-
-
-public_prefixes.add("assignments/pypl")
+# symlinks for assignments
 public_prefixes.update(glob.glob('assignments/ass?'))
 
-for path in glob.glob('*.*') + glob.glob('cgi/*.*')	 + ['.gitignore']:
-	if not os.path.isdir(path):
-		public_prefixes.add(path)
-
+for assignment_path in sorted(glob.glob(os.path.join('assignments', '*'))):
+	public_prefixes.update(get_public_files_asssignment(assignment_path))
+										
 censored_files = set()
 for tlb_path in sorted(glob.glob(os.path.join('tlb', '[0-9][0-9]'))):
+	public_prefixes.update(get_public_files_tlb(tlb_path))
 	for tut_or_lab_or_test in ['tut', 'lab', 'test']:
 		path_prefix = os.path.join(tlb_path, tut_or_lab_or_test)
-		file_references = []
-		if os.path.exists(path_prefix+'_answers_released'):
-			public_prefixes.update([path_prefix + '.html', path_prefix + '.autotest', path_prefix + '.automarking'])
-			file_references = extract_file_references_from_jinja(path_prefix + '.html', include_answers=True)
-		elif os.path.exists(path_prefix + '_questions_released'):
+		if os.path.exists(path_prefix + '_questions_released'):
 			censored_files.add(path_prefix + '.html')
-			public_prefixes.add(path_prefix + '.autotest')
-			file_references = extract_file_references_from_jinja(path_prefix + '.html')
-		public_prefixes.update([os.path.join(tlb_path, fr) for fr in file_references])
-	public_prefixes.update(glob.glob(os.path.join(tlb_path, '*released')))
-#	if glob.glob(os.path.join(tlb_path, '*released')):
-#		for path in glob.glob(os.path.join(tlb_path, '*')):
-#			if not os.path.isdir(path) and not path.endswith('.html'):
-#				public_prefixes.add(path)
 
 p = subprocess.run(['git','ls-tree', '-r', 'HEAD', '--name-only'], stdout=subprocess.PIPE, universal_newlines=True)
 public_files = set()
@@ -80,22 +134,8 @@ for pathname in p.stdout.splitlines():
 			
 subprocess.run(['rsync', '-a', '--chmod=Du=rwx,Dgo=rx,Fu=rwX,Fgo=rX', '--files-from=-', '.', public_dir], input='\n'.join(public_files).encode('utf-8'))
 
-#
-# delete sample solutions from html source when solutions have not been released
-#
 for censored_file in censored_files:
-	with open(censored_file) as f:
-		page = f.read()
-		# < characters in Jinja  break Beautiful Soup, e.g in Python betwee {{ }}
-		# The fragile workaround is to replace any < without a following > on the sameline 
-		page = re.sub('<([^>]*\n)', r'__ESCAPE_JINJA_LT__\1', page,flags=re.M)
-		soup = BeautifulSoup(page, 'html.parser')
-		for tag in soup.findAll({'div':True,'span':True,'pre':True}, { "class" : re.compile(r'\banswer\b')}):
-			tag.replaceWith(soup.new_tag('p'))
-		page = str(soup)
-		page = re.sub('__ESCAPE_JINJA_LT__', '<', page)
-	with open(os.path.join(public_dir, censored_file),"w") as f:
-		f.write(page)
+	copy_without_solutions(censored_file, public_dir)
 		
 public_files.update(censored_files)
 

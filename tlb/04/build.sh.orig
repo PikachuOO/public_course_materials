@@ -1,0 +1,31 @@
+#!/bin/sh
+
+rm -rf *music/ *.zip
+zip -qr images.zip 'Johannes Vermeer - The Girl With The Pearl Earring.jpg' nautilus.jpg panic.jpg penguins.jpg shell.jpg stingray.jpg treefrog.jpg
+i=0
+for image in *.jpg
+do
+    cp "$image" "$i".jpg
+    i=$((i + 1))
+done
+zip -qr images1.zip [0-9]*.jpg
+rm [0-9]*.jpg
+mkdir tiny_music
+mkdir tiny_music/album1  tiny_music/album2
+for f in \
+    'tiny_music/Album1, 2015/2 - Little Talks - Of Monsters and Men.mp3' \
+    'tiny_music/Album1, 2015/1 - Riptide - Vance Joy.mp3' \
+    'tiny_music/Album2, 2016/2 - Royals - Lorde.mp3' \
+    'tiny_music/Album2, 2016/1 - Hoops - The Rubens.mp3'
+do
+    dirname "$f"|xargs -d '\n' mkdir -p
+    cp sample.mp3 "$f"
+done
+
+zip -qr tiny_music.zip  tiny_music/
+solutions/create_music.sh sample.mp3 music/
+zip -qr music.zip  music/
+rm -rf tiny_music  music
+cd lab.autotest || exit 1
+generate_autotest_expected_output
+rm -rf *music/ *.zip *.jpg

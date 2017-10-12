@@ -40,12 +40,7 @@ No error checking is necessary.
 <p>
 {{autotest_reminder("first_name.sh")}}
 
-<div class="answer">
-Sample solution for first_name.sh
-
-{{include_code("solutions/first_name.sh")}}
-</div>
-
+<p></p>
 <h3>Exercise: converting .htm to .html</h3>
 
 Our new web server requires all HTML files have the suffix <code>.html</code>.
@@ -79,12 +74,7 @@ No error checking other then described above is necessary.
 
 {{autotest_reminder("htm2html.sh")}}
 
-<div class="answer">
-Sample solution for htm2html.sh
-
-{{include_code("solutions/htm2html.sh")}}
-</div>
-
+<p></p>
 <h3>Exercise: Missing Include Files</h3>
 
 We need check a large number of C programs for missing include files.
@@ -108,7 +98,7 @@ For example:
 <kbd class="shell">ls *.[ch]</kbd>
 a.c  a.h  b.c  c.h
 <kbd class="shell">cat a.c</kbd>
-#include &lt;stdio.h>
+#include &lt;stdio.h&gt;
 
 #include "a.h"
 #include "b.h"
@@ -118,12 +108,12 @@ int a(void){
     return 42;
 }
 <kbd class="shell">cat b.c</kbd>
-#include &lt;stdio.h>
+#include &lt;stdio.h&gt;
 
 #include "b.h"
 #include "c.h"
 #include "d.h"
-#include &lt;string.h>
+#include &lt;string.h&gt;
 
 int b(void){
     return b.c;
@@ -144,11 +134,11 @@ d.h included into b.c does not exist
 
 You can assume filenames do not contain spaces.
 <p>
-You do not have to check files for the C library with angle brackets (&lt;>).
+You do not have to check files for the C library with angle brackets (&lt;&gt;).
 For example you do not have to check this line:
 
 <pre>
-#include &lt;stdio.h>
+#include &lt;stdio.h&gt;
 </pre>
 
 No error checking is necessary.
@@ -156,10 +146,7 @@ No error checking is necessary.
 
 {{autotest_reminder("missing_include.sh")}}
 
-<div class="answer">
-Sample solution for missing_include.sh
-
-{{include_code("solutions/missing_include.sh")}}
-</div>
+<p></p>
 
 {% endblock %}
+</p></p></p></p></p></p></p></p></p></p></p>

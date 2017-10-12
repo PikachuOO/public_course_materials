@@ -3,79 +3,23 @@
 <li>
 What is <code>gitlab.cse.unsw.edu.au</code> and why do I want use it?
 <p>
-<div class="answer">
-Its a server   run by CSE to host git repositories of student programs for some CSE courses.
-<p>
-It is required for COMP[29]041 assignment 1!
-<p>
-Its  easy to use.
-<p>
-
-Using it ensures you have a complete backup of all work on your program
-and can return to its state at any stage.
-
-<p>
-It will also allow your tutor to check you are progressing on the lab as they can access your gitlab repository
-
-<p>
-Similar servers such <i>github</i> as <i>bitbucket</i>) are heavily used in software development so you want the learn how to use them.
-</div>
-
+<p></p>
 <li>
 What (basically)  does <code> git add <i>file</i></code> do?
 
-<div class="answer">
-Tells git you want to keep track of versions of <i>file</i>
-</div>
-
+<p></p>
 <li>
 What (basically)  does <code> git commit -a</code> do?
 
-<div class="answer">
-Tells git to save the current version of all the files it is tracking.
-<p>
-You do this when development your program is at a  stage you might want to return to, perhaps when you add a feature.
-</div>
-
+<p></p>
 <li>
 What (basically)  does <code> git push</code> do?
 
-<div class="answer">
-It tells git to update another repository with all the commits in this repository.
-</div>
+<p></p>
 <li>
 What is bash arithmetic?  What are its advantages and disadvantages.
 
-<div class="answer">
-Arithmetic was originally provide in shell scripts by external programs <b>test</b> and <b>expr</b>.
-<p>
-For example:
-
-<pre class="program">
-number=1
-while test $number -le 42
-do
-    echo $number
-    number=`expr $number + 1`
-done
-</pre>
-
-Bash added an arithmetic syntax and most other  commonly-used eventually added the same syntax.
-
-
-<pre class="program">
-number=1
-while ((number &lt;= 42))
-do
-    echo $number
-    number=$((number + 1))
-done
-</pre>
-
-Bash arithmetic is more readable and faster but you may encountered Shell, e.g. one embedded devices
-which don't support bash arithmetic.
-</div>
-
+<p></p>
 <li>
 
 Discuss what has to be done to transform
@@ -83,21 +27,7 @@ this Python to equivalent Perl.
 
 {{ include_code("solutions/even_odd.py") }}
 
-<div class="answer">
-
-<ul> change #! line
-<li> remove import
-<li> add semi-colons
-<li> put $ in front of variables
-<li> add braces ({}) where indenting indicates
-<li> add brackets to if & while statments
-<li> add chomp
-<li> add &#92;n to print statements
-</ul>
-
-{{ include_code("solutions/even_odd.pl") }}
-</div>
-
+<p></p>
 <li>
 
 Discuss what has to be done to transform
@@ -106,20 +36,7 @@ for the arithmetic statements.
 
 {{ include_code("solutions/even_odd.py") }}
 
-<div class="answer">
-
-<ul> change #! line
-<li> remove import
-<li> put $ in front of variables on right hand of
-<li> add do/done keywords to while loop where indenting indicates body
-<li> add then/fi keywords to if statements loop  where indenting indicates body
-<li> change print statements to echo
-<li> change arithmetic to expr and test
-</ul>
-
-{{ include_code("solutions/even_odd.sh") }}
-</div>
-
+<p></p>
 <li>
 
 Discuss what has to be done to transform
@@ -128,17 +45,7 @@ to bash arithmetic
 
 {{ include_code("solutions/even_odd.py") }}
 
-<div class="answer">
-
-<ul> change test to (( ))
-<li> change expr to $(( ))
-<li> remove $ from variables in both
-</ul>
-
-{{ include_code("solutions/even_odd_bash_arithmetic.sh") }}
-
-</div>
-
+<p></p>
 <li>
 
 We are translating a Python program to Perl
@@ -152,37 +59,7 @@ what is difficult about translating this line?
 <p>
 What can we do about this?
 
-<div class="answer">
-
-<b>a</b> might contain a list in which case the equivalent Python is:
-
-<pre class="program">
-$a[$x] = $y;
-</pre>
-
-<b>a</b> might contain a dict in which case the equivalent Python is:
-
-<pre class="program">
-$a{$x} = $y;
-</pre>
-
-<b>a</b> might even be another  type of Python object which support indexing []
-via the __setitem__ magic method.
-<p>
-There is now way to completelysolve this problem but in real programs the
-preceding lines will often indicate how the code should be translated.
-
-<pre class="program">
-a = {}
-...
-a[x] = y;
-</pre>
-
-
-
-
-</div>
-
+<p></p>
 <li>
 
 Discuss what  this  Shell script does then translate it directly to Perl
@@ -192,25 +69,10 @@ Then translate it to  Perl than doesn't use <b>system</b>.
 
 {{include_code("solutions/important_file.sh")}}
 
-<div class="answer">
-
-The shell script every second checks to see if a particular file exists.
-<p>
-If it doesn't the script exists prints a message and exits.
-<p>
-Here is a translation using <b>system</b>.
-<p>
-Note an exit code of 0 from ls indicates success.
-But 0 is false in Perl (and C and Python and ...)
-
-{{include_code("solutions/important_file.v1.pl")}}
-
-Here is more natural Perl code using the equivalent Perl buitlin functions.questions
-
-{{include_code("solutions/important_file.v2.pl")}}
-</div>
+<p></p>
 
 {% endblock %}
 
 {% block revision_questions %}
 {% endblock %}
+</p></li></p></li></li></li></li></li></li></li></li></p></li>

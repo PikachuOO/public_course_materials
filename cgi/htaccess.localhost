@@ -1,3 +1,0 @@
-<Files "*.cgi">
-	SetHandler cgi-script
-</Files>
