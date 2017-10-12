@@ -126,7 +126,7 @@ for tlb_path in sorted(glob.glob(os.path.join('tlb', '[0-9][0-9]'))):
 	public_prefixes.update(get_public_files_tlb(tlb_path))
 	for tut_or_lab_or_test in ['tut', 'lab', 'test']:
 		path_prefix = os.path.join(tlb_path, tut_or_lab_or_test)
-		if os.path.exists(path_prefix + '_questions_released'):
+		if os.path.exists(path_prefix + '_questions_released') and not  os.path.exists(path_prefix + '_answers_released'):
 			censored_files.add(path_prefix + '.html')
 
 p = subprocess.run(['git','ls-tree', '-r', 'HEAD', '--name-only'], stdout=subprocess.PIPE, universal_newlines=True)

@@ -3,7 +3,7 @@
 <ul>
 <li> Practice writing shell scripts for real tasks
 <li> Practice processing collections of files with shell scripts.
-</li></li></ul>
+</ul>
 {% endblock %}
 
 {% block lab_exercises %}
@@ -41,6 +41,7 @@ nautilus.png
 <kbd class="shell">./jpg2png.sh</kbd>
 penguins.png already exists
 </pre>
+
 <h4>Hints</h4>
 <p>
 You may find sed and back quotes useful.
@@ -53,7 +54,12 @@ The tool <code>convert</code> will convert between many image formats, for examp
 
 {{autotest_reminder("jpg2png.sh")}}
 
-<p></p>
+<div class="answer">
+Sample solution for jpg2png.sh
+
+{{include_code("solutions/jpg2png.sh")}}
+</div>
+
 <h3>Exercise: Emailing Images</h3>
 Write a shell script <code>email_image.sh</code> which given a list of image
 files as arguments  displays them one-by-one.  After the user has viewed each image
@@ -80,6 +86,7 @@ The program  <code>mutt</code> can be used to send mail from the command line in
 <pre class="command_line">
 <kbd class="shell">echo 'Penguins are cool.'|mutt -s 'penguins!' -e 'set copy=no' -a penguins.png -- nobody@nowhere.com</kbd>
 </pre>
+
 <p>
 There is no autotest and no automarking of this question.
 <p>
@@ -89,7 +96,18 @@ and ask them to enter a
 It is prefered you do this during your lab, but if this is not possible
 you may demonstrate your work to any COMP[29]041  student before Sunday midnight.
 <p>
-<p></p>
+<div class="answer">
+Sample solution for email_image.sh
+
+{{include_code("solutions/email_image.sh")}}
+
+Python solution
+
+{{include_code("solutions/email_image.py")}}
+
+
+</div>
+
 <h3>Exercise: Annotating Images</h3>
 Write a shell script <code>date_image.sh</code> which, given a list of image
 files as arguments, changes each file so it has a label added to the image
@@ -131,7 +149,13 @@ and ask them to enter a
 It is prefered you do this during your lab, but if this is not possible
 you may demonstrate your work to any COMP[29]041  student before Sunday midnight.
 
-<p></p>
+<div class="answer">
+Sample solution for date_image.sh
+
+{{include_code("solutions/date_image.sh")}}
+
+</div>
+
 <h3>Challenge Question: preserving file modification times</h3>
 
 Modify <code>date_image.sh</code> so it doesn't affect the
@@ -229,10 +253,12 @@ Your script should not change the <i>Genre</i> or <i>Comment</i> fields.
 Your script should determine <i>Title</i>, <i>Artist</i>, <i>Track</i>, <i>Album</i> &amp; <i>Year</i> from the directory &amp; filename.
 
 <h4>Hints</h4>
+
 <pre class="command_line">
 <kbd class="shell">man id3</kbd>
 <i>...</i>
 </pre>
+
 <code>cut</code> almost works for extracting  <i>Title</i> and <i>Album</i>  from the filename.
 <p>
 Handling the few MP3 files correctly where using <code>cut</code> doesn't work will be considered a <b>challenge exercise</b>.
@@ -290,7 +316,12 @@ Title  : Royals                          Artist: Lorde
 Album  : Album2, 2016                    Year: 2016, Genre: Unknown (255)
 Comment:                                 Track: 2
 </pre>
-<p></p>
+
+<div class="answer">
+Sample solution for fix_id3_tags.sh
+
+{{include_code("solutions/fix_id3_tags.sh")}}
+</div>
 
 You can run some tests on your script like this:
 
@@ -334,7 +365,7 @@ Triple J Hottest 100, 1995  Triple J Hottest 100, 2000  Triple J Hottest 100, 20
 Triple J Hottest 100, 1996  Triple J Hottest 100, 2001  Triple J Hottest 100, 2006  Triple J Hottest 100, 2011
 Triple J Hottest 100, 1997  Triple J Hottest 100, 2002  Triple J Hottest 100, 2007  Triple J Hottest 100, 2012
 <kbd class="shell">ls 'created_music/Triple J Hottest 100, 2012'</kbd>
-1 - Thrift Shop - Macklemore and Ryan Lewis featuring Wanz.mp3  5 - I Will Wait - Mumford &amp; Sons.mp3
+1 - Thrift Shop - Macklemore and Ryan Lewis featuring Wanz.mp3  5 - I Will Wait - Mumford & Sons.mp3
 10 - My Gun - The Rubens.mp3                                    6 - Get Free - Major Lazer featuring Amber Coffman.mp3
 2 - Little Talks - Of Monsters and Men.mp3                      7 - Elephant - Tame Impala.mp3
 3 - Breezeblocks - Alt-J.mp3                                    8 - Lost - Frank Ocean.mp3
@@ -342,7 +373,9 @@ Triple J Hottest 100, 1997  Triple J Hottest 100, 2002  Triple J Hottest 100, 20
 <kbd class="shell">diff -r music created_music/</kbd>
 <kbd class="shell"></kbd>
 </pre>
+
 <h4>Hints</h4>
+
 <pre class="command_line">
 <kbd class="shell">wget -q -O- 'https://en.wikipedia.org/wiki/Triple_J_Hottest_100?action=raw'</kbd>
 <i>...</i>
@@ -351,9 +384,13 @@ Triple J Hottest 100, 1997  Triple J Hottest 100, 2002  Triple J Hottest 100, 20
 You may find <a href="https://r12a.github.io/apps/conversion/">this</a>
 useful for dealing with unicode characters such as "en dash".
 </p>
-<p></p>
+
+<div class="answer">
+Sample solution for create_music.sh
+
+{{include_code("solutions/create_music.sh")}}
+</div>
 
 {{autotest_reminder("create_music.sh")}}
 
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></img></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>

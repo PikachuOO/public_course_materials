@@ -6,21 +6,41 @@
 What is the difference in value/type of the following Perl expressions:
 <p>
 <ol type="a">
-<li> <code>"a"</code>   <small>vs</small>   <code>'a'</code>
-<p></p>
-<li> <code>"A"</code>   <small>vs</small>   <code>A</code>
-<p></p>
-<li> <code>"abc"</code>   <small>vs</small>   <code>'abc'</code>
-<p></p>
-<li> <code>"it\'s"</code>   <small>vs</small>   <code>'it\'s'</code>
-<p></p>
-<li> <code>42</code>   <small>vs</small>   <code>"42"</code>
-<p></p>
-<li> <code>3</code>   <small>vs</small>   <code>3.0</code>
-<p></p>
-<li> <code>"$2.50"</code>   <small>vs</small>   <code>'$2.50'</code>
-<p></p>
-</li></li></li></li></li></li></li></ol>
+<li> <code>"a"</code> &nbsp; <small>vs</small> &nbsp; <code>'a'</code>
+<div class="answer">
+no difference - both are strings containing a single 'a' character
+</div>
+<li> <code>"A"</code> &nbsp; <small>vs</small> &nbsp; <code>A</code>
+<div class="answer">
+no difference - both are strings containing a single 'A' character
+</div>
+<li> <code>"abc"</code> &nbsp; <small>vs</small> &nbsp; <code>'abc'</code>
+<div class="answer">
+no difference - both are strings containing the three characters 'a','b','c'
+</div>
+<li> <code>"it\'s"</code> &nbsp; <small>vs</small> &nbsp; <code>'it\'s'</code>
+<div class="answer">
+no difference - both are strings containing the four characters 'i','t',apostrophe,'s'
+</div>
+<li> <code>42</code> &nbsp; <small>vs</small> &nbsp; <code>"42"</code>
+<div class="answer">
+no difference - both are strings containing two characters, '4' and '2'
+</div>
+<li> <code>3</code> &nbsp; <small>vs</small> &nbsp; <code>3.0</code>
+<div class="answer">
+the first is a string containing one character and the second contains three characters,
+if evaluated in a numeric context they are the same: <code>3 ne 3.0</code> but <code>3 == 3.0</code>
+</div>
+<li> <code>"$2.50"</code> &nbsp; <small>vs</small> &nbsp; <code>'$2.50'</code>
+<div class="answer">
+in the first case, the value of the Perl internal variable <code>$2</code>
+    is interpolated into the string; since most likely this will be the
+    empty string, the resulting string will be the three-character
+    string ".50" <br>
+    in the second case, the <code>$</code> is not treated specially
+    and so the result is the literal five-character string "$2.50"
+</div>
+</ol>
 <li>
 
 Write a Perl program, <code>nargs.pl</code> which prints how many arguments it has been
@@ -28,7 +48,15 @@ given. For example:
 
 {{execute("./nargs.pl the quick brown fox", cwd="solutions")}}
 
-<p></p>
+<div class="answer">
+Sample Perl solution
+
+{{include_code("solutions/nargs.pl")}}
+
+Sample Python solution
+
+{{include_code("solutions/nargs.py")}}
+</div>
 <li>
 
 Write a Perl program, <code>devowel.pl</code> which filters any
@@ -36,7 +64,33 @@ vowels from its input. For example:
 
 {{execute("./devowel.pl", cwd="solutions", input="The quick brown fox\njumped over the lazy dog.\n")}}
 
-<p></p>
+<div class="answer">
+Sample Perl solution - simple code
+
+{{include_code("solutions/devowel.pl")}}
+
+Sample Perl solution - using $_
+
+{{include_code("solutions/devowel1.pl")}}
+
+Sample Perl solution - using $_ and -p switch
+
+{{include_code("solutions/devowel2.pl")}}
+
+Perl also makes it convenient to perform operations like this from the command line,
+for example:
+
+<pre class="command_line">
+<kbd class="shell">perl -p -e 's/[aeiou]//gi'</kbd>
+</pre>
+
+Note that the <code>gi</code> above means <b>g</b>lobally (i.e. all occurrences)
+and case-<b>i</b>nsensitive.
+<p>
+Sample Python solution
+
+{{include_code("solutions/devowel.py")}}
+</div>
 <li>
 Write a simple version of the <code>head</code> command in Perl, that
 accepts an optional command line argument in the form
@@ -55,13 +109,39 @@ Examples of use:
 <kbd class="shell">perl head.pl -5 &lt;file2</kbd>      # display first five lines of file2
 ...
 </pre>
-<p></p>
+
+<div class="answer">
+Perl solution with while loop
+
+{{include_code("solutions/simple_head0.pl")}}
+
+Perl solution reading all input into an array
+
+{{include_code("solutions/simple_head1.pl")}}
+
+Cryptic  One-line Perl solution
+
+{{include_code("solutions/simple_head2.pl")}}
+
+Python solution with while loop
+
+{{include_code("solutions/simple_head0.py")}}
+
+Python solution reading all input into an array
+
+{{include_code("solutions/simple_head1.py")}}
+
+Python solution using an iterator
+
+{{include_code("solutions/simple_head2.py")}}
+</div>
+
 <li>
 Modify the <code>head</code> program from the previous question so that,
 as well as handling an optional <code>-<i>n</i></code> argument to
 specify how many lines, it also handles multiple files on the command
 line and displays the first <code><i>n</i></code> lines from each file,
-separating them by a line of the form <code>==&gt; <i>FileName</i> &lt;===</code>.
+separating them by a line of the form <code>==> <i>FileName</i> &lt;===</code>.
 <p>
 Examples of use:
 <pre class="command_line">
@@ -71,7 +151,16 @@ Examples of use:
 ...
 </pre>
 <p>
-<p></p>
+
+<div class="answer">
+Sample Perl solution
+
+{{include_code("solutions/head0.pl")}}
+
+Sample Python solution
+
+{{include_code("solutions/head0.py")}}
+</div>
 <li>
 
 Write a simple version of the <code>grep</code> command, that takes a
@@ -89,7 +178,25 @@ Examples of use:
 <kbd class="shell">perl mygrep.pl '^The' &lt;file1</kbd>          # all lines starting with "The"
 ...
 </pre>
-<p></p>
+
+<div class="answer">
+Sample Perl solution using a while loop
+
+{{include_code("solutions/grep0.pl")}}
+
+Sample Perl solution using an array
+
+{{include_code("solutions/grep1.pl")}}
+
+Sample Python solution using a for loop
+
+{{include_code("solutions/grep0.py")}}
+
+More  Python-ish (functional) solution
+
+{{include_code("solutions/grep1.py")}}
+</div>
+
 <li>
 Modify the <code>grep</code> command from the previous question so that
 accepts a <code>-v</code> command line option to reverse the sense of
@@ -97,7 +204,23 @@ the test (i.e. display only lines that do <em>not</em> match the pattern).
 It should continue with its original behaviour if no <code>-v</code> is
 specified.
 
-<p></p>
+<div class="answer">
+Sample Perl solution using a while loop
+
+{{include_code("solutions/grep2.pl")}}
+
+Sample Perl solution  using an array and xor
+
+{{include_code("solutions/grep3.pl")}}
+
+Sample Python using a for loop
+
+{{include_code("solutions/grep2.py")}}
+
+Functional python solution
+
+{{include_code("solutions/grep3.py")}}
+</div>
 {% endblock %}
 {% block revision_questions %}
 <li>
@@ -153,7 +276,16 @@ Example of output:
          ...
   1000  This is the thousandth line of my file
 </pre>
-<p></p>
+
+<div class="answer">
+{{include_code("solutions/catn.v0.pl")}}
+
+
+Note that the <code>shift</code> is important. It removes the option
+from the argument list so that <code>&lt;&gt;</code> is left with the
+correct command-line arguments to process (i.e. just the file names).
+</div>
+
 <li>
 Modify the <code>cat</code> program from the previous question so that
 it also accepts a <code>-v</code> command line option to display <em>all</em>
@@ -164,7 +296,7 @@ shown as <code>^<i>X</i></code> (where <code><i>X</i></code> is the
 printable character obtained by adding the code for
 'A' to the control character code).
 So, for example, tabs (ascii code 9) should display as <code>^I</code>.
-<br><i>Hint:</i> the <code>chr</code> and <code>ord</code> functions might be useful.
+<br><I>Hint:</I> the <code>chr</code> and <code>ord</code> functions might be useful.
 Try
 <pre class="command_line">
 <kbd class="shell">perldoc -f ord</kbd>
@@ -181,12 +313,37 @@ This file contains a tabbed list:$
 And this line has trailing spaces   $
 which would otherwise be invisible.$
 </pre>
-<p></p>
+
+<div class="answer">
+{{include_code("solutions/catn.v1.pl")}}
+</div>
+
 <li>
 <p>
 Write a version of the <code>tac</code> command in Perl, that accepts
 a list of filenames and displays the lines from each file in reverse order.
-<p></p>
-</p></li></p></br></li></p></p></li></li></p></li></p></p></li></p></li></li></li></p></p></li></ol>
+<div class="answer">
+
+Sample Perl solution
+
+{{include_code("solutions/tac.pl")}}
+
+The following might look attractive, but treats all files as a
+single input, and reverses that. It doesn't do it file by file
+like the real <code>tac</code>.
+
+<pre class="program">
+#!/usr/bin/perl -w
+print reverse &lt;&gt;;
+# same as ... cat f1 f2 f3 .. | tac
+# not the same as ... tac f1 f2 f3
+</pre>
+
+Sample Python solution
+
+
+{{include_code("solutions/tac.py")}}
+</div>
+</ol>
 
 {% endblock %}

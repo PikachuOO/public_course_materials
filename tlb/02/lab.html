@@ -12,9 +12,10 @@ Understanding regular expressions and their use with Unix filters.
 The file <a href="lab02.txt">lab02.txt</a> contains a template which you must use
 to enter the answers for this weeks lab.  You can copy &amp; edit the file like this:
 <p>
+
 <pre class="command_line">
 <kbd class="shell">cp {{directory_absolute_pathname}}/lab02.txt .</kbd>
-<kbd class="shell">gedit lab02.txt &amp;</kbd>
+<kbd class="shell">gedit lab02.txt &</kbd>
 </pre>
 
 The autotest scripts depend on the format of this file so just add your answers
@@ -36,6 +37,7 @@ make a symbolic link to the file with this command:
 This creates a link to the file in the current directory pointing to
 the original file, without taking up the space of a complete copy.
 <p>
+
 <ol>
 <li>
 
@@ -46,7 +48,10 @@ which contain in characters "lmn" consecutively.
 
 {{execute("egrep 'lmn' words.txt", show_command=False)}}
 <p>
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep 'lmn' words.txt</pre>
+</div>
 
 The {{course_code}} class account contains a script named <b>autotest</b>
 that automatically runs 1 or more tests on your lab exercises.
@@ -72,7 +77,11 @@ Write a shell pipeline  that prints the words that contain "zz", but do not end 
 {{execute("egrep 'zz' words.txt | egrep -v \"'s$\"", height="12em", show_command=False)}}
 
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep 'zz' words.txt | egrep -v \"'s$\"</pre>
+</div>
+
 <li>
 
 Write an egrep command that prints the words that contain four consecutive vowels?
@@ -81,7 +90,18 @@ Write an egrep command that prints the words that contain four consecutive vowel
 
 {{execute("egrep '[aeiouAEIOU][aeiouAEIOU][aeiouAEIOU][aeiouAEIOU]' words.txt", height="12em", show_command=False)}}
 
-<p></p>
+<div class="answer">
+
+<br>
+Sample answer:
+<pre>egrep '[aeiouAEIOU][aeiouAEIOU][aeiouAEIOU][aeiouAEIOU]' words.txt</pre>
+<p>
+or using egrep's -i option to ignore case and {} for repetition:
+<p>
+<pre>egrep -i '[aeiou]{4}' words.txt</pre>
+</div>
+
+
 <li>
 Write an egrep command that prints words which contain all 5 vowels "aeiou" in that order?
 <p>
@@ -91,7 +111,12 @@ The words may contain more than 5 vowels but they must contain "aeiou" in that o
 
 {{execute("egrep -i 'a.*e.*i.*o.*u' words.txt", height="12em", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep -i 'a.*e.*i.*o.*u' words.txt</pre>
+</div>
+
+
 <li> <b>Challenge</b>
 
 Write an egrep command that prints which contain the vowels "aeiou" in that order
@@ -101,7 +126,11 @@ and no other vowels.
 
 {{execute("egrep -i '^[^aeiou]*a[^aeiou]*e[^aeiou]*i[^aeiou]*o[^aeiou]*u[^aeiou]*$' words.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep -i '^[^aeiou]*a[^aeiou]*e[^aeiou]*i[^aeiou]*o[^aeiou]*u[^aeiou]*$' words.txt</pre>
+</div>
+
 <h3>Analyzing Parliament with egrep &amp; Regular Expressions</h3>
 
 The file <a href="parliament.txt">parliament.txt</a>
@@ -117,6 +146,8 @@ Create a link to file in your current directory:
 <pre class="command_line">
 <kbd class="shell">ln -s {{directory_absolute_pathname}}/parliament.txt</kbd>
 </pre>
+
+
 <li>
 Write an egrep command that will print all the lines in the file where the electorate begins with W.
 <p>
@@ -124,7 +155,11 @@ Write an egrep command that will print all the lines in the file where the elect
 
 {{execute("egrep 'Member for W' parliament.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep 'Member for W' parliament.txt</pre>
+</div>
+
 <li>
 Write an egrep command that will list all the lines in the file where the MP's
 first name is Andrew.
@@ -133,7 +168,12 @@ first name is Andrew.
 
 {{execute("egrep ' Andrew ' parliament.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep ' Andrew ' parliament.txt</pre>
+</div>
+
+
 <li>
 Write an egrep command that will print all the lines in the file where the MP's
 surname (last name) ends in the letter 'y'.
@@ -142,7 +182,16 @@ surname (last name) ends in the letter 'y'.
 
 {{execute("egrep 'y( [A-Z]*)?:' parliament.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep 'y( [A-Z]*)?:' parliament.txt</pre>
+<p>
+Note this more obvious answer does not handle the MP having an Order of Australia:
+<p>
+<pre>egrep 'y:' parliament.txt</pre>
+
+</div>
+
 <li>
 Write an egrep command that will print all the lines in the file where the MP's name <b>and</b> the electorate
 ends in the letter 'y'.
@@ -151,7 +200,15 @@ ends in the letter 'y'.
 
 {{execute("egrep 'y( [A-Z]*)?:.*y,' parliament.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep 'y( [A-Z]*)?:.*y,' parliament.txt</pre>
+
+Note this more obvious answer does not handle the MP having an Order of Australia:
+
+<pre>egrep 'y:.*y,' parliament.txt</pre>
+</div>
+
 <li>
 Write an egrep command that will print all the lines in the file where the MP's name <b>or</b> the electorate
 ends in the letter 'y'.
@@ -161,13 +218,26 @@ ends in the letter 'y'.
 {{execute("egrep 'y( [A-Z]*)?:|y,' parliament.txt", show_command=False)}}
 
 
-<p></p>
+<div class="answer">
+
+Sample answer:
+<pre>egrep 'y( [A-Z]*)?:|y,' parliament.txt</pre>
+<p>
+Note this more obvious answer does not handle the MP having an Order of Australia:
+<pre>egrep 'y[:,]' parliament.txt</pre>
+</div>
+
 <li>
 Write an egrep command to print all the lines in the file where there is any part of the
 MP's name or the electorate name that ends in ng.
 
 <!--#include execute_output="egrep 'ng[^a-z]' parliament.txt" -->
-<p></p>
+
+<div class="answer">
+Sample answer:
+<pre>egrep 'ng[^a-z]' parliament.txt</pre>
+</div>
+
 <li>
 Write an egrep command that will print all the lines in the file where the MP's
 surname (last name) both begins and ends with a vowel.
@@ -177,7 +247,11 @@ surname (last name) both begins and ends with a vowel.
 {{execute("egrep '[AEIOU][^ ]*[aeiou]:' parliament.txt", show_command=False)}}
 
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep '[AEIOU][^ ]*[aeiou]:' parliament.txt</pre>
+</div>
+
 <li>
 Most electorate have names that are a single word, e.g. Warringah, Lyons &amp; Grayndler.
 A few electorates have multiple word names, for example, Kingsford Smith.
@@ -188,7 +262,11 @@ multiple words (separated by spaces or hyphens).
 
 {{execute("egrep -i 'Member for [a-z]+[ -][a-z]' parliament.txt", show_command=False)}}
 
-<p></p>
+<div class="answer">
+Sample answer:
+<pre>egrep -i 'Member for [a-z]+[ -][a-z]' parliament.txt</pre>
+</div>
+
 <li>
 
 Write a shell pipeline which prints the 8 Australians states &amp; territory in order of the number of MPs they have.
@@ -201,7 +279,12 @@ Hint: check out the Unix filters cut, sort, uniq in the lecture notes.
 
 {{execute("cut -d, -f2 parliament.txt|sort | uniq -c |sort -n|cut -c10-", show_command=False)}}
 
-<p></p>
+<div class="answer">
+
+Sample answer:
+<pre>cut -d, -f2 parliament.txt|sort | uniq -c |sort -n|cut -c10-</pre>
+</div>
+
 <li>
 Challenge: The most common first name for an MP is Andrew.
 Write a shell pipeline which prints the 2nd most common MP first name.
@@ -213,30 +296,36 @@ Hint: check out the Unix filters cut, sort, sed, head, tail &amp; uniq in the le
 
 {{execute("cut -d: -f1 parliament.txt|sed 's/ [^ ]*$//;s/.* //'|sort|uniq -c|sort -nr|head -3|sed 's/.* //'|head -2|tail -1", show_command=False)}}
 
-<p></p>
+<div class="answer">
+
+Sample answer:
+<pre>cut -d: -f1 parliament.txt|sed 's/ [^ ]*$//;s/.* //'|sort|uniq -c|sort -nr|head -3|sed 's/.* //'|head -2|tail -1</pre>
+</div>
+
 <h3>Challenge: Interesting Regexps</h3>
 Use <code>egrep</code> to test your answers to these questions.
 <p>
 Try to solve these questions using the standard regular expression language described
 in lectures.
 <p>
+
 <li>
 Write a egrep command  that prints the lines in a file named <code>input.txt</code> containing
 containing at least one <code>A</code> and at least one <code>B</code>.
 For example:
 <p>
-<table border="1">
-<tr><th width="50%">Matching<th width="50%">Not Matching
+<table border='1'>
+<tr><th width='50%'>Matching<th width='50%'>Not Matching
 <tr><td>Andrew's favourite Band is not<td>George is Brillant
 <tr><td>ABBA<td>Andrew
 <tr><td>BA<td>B
 <tr><td>AB<td>A
-</td></td></tr></td></td></tr></td></td></tr></td></td></tr></th></th></tr></table>
+</table>
 <p>
 So to test with egrep you might do this:
 
 <pre class="command_line">
-<kbd class="shell">cat &gt;input.txt &lt;&lt;eof</kbd>
+<kbd class="shell">cat >input.txt &lt;&lt;eof</kbd>
 Andrew's favourite Band is not
 George is Brillant
 ABBA
@@ -252,7 +341,11 @@ ABBA
 AB
 BA
 </pre>
-<p></p>
+
+<div class="answer">
+<pre>egrep 'A.*B|B.*A' input.txt</pre>
+</div>
+
 <li>
 Write a egrep command  that prints the lines in a file named <code>input.txt</code> containing
 only the characters <code>A</code> and  <code>B</code> such that
@@ -260,45 +353,63 @@ all pairs of adjacent A's occur before any pairs of adjacent B's.
 In other words if there is pair of B's on the line , there can not be
 a pair of A's afterwards.
 <p>
-<table border="1">
-<tr><th width="50%">Matching<th width="50%">Not Matching
+<table border='1'>
+<tr><th width='50%'>Matching<th width='50%'>Not Matching
 <tr><td>ABAABAABAABBBBABB<td>BBAA
 <tr><td>ABBA<td>ABBAA
 <tr><td>ABAAAAAAAAAABBA<td>ABBABABABABAA
 <tr><td>ABABABABA<td>ABBBAAA
 <tr><td>A<td>BBABABABABABABAA
-</td></td></tr></td></td></tr></td></td></tr></td></td></tr></td></td></tr></th></th></tr></table>
+</table>
 <p>
-<p></p>
+<div class="answer">
+<pre>egrep '^(BA|A)*(|B)(AB|B)*(|A)$' input.txt</pre>
+<p>
+or courtesy Squish:
+<p>
+<pre>egrep '^(BA|A)*(BA|B)*$' input.txt</pre>
+</div>
 <li>
 Write a egrep command  that prints the lines in a file named <code>input.txt</code> containing
 only the characters <code>A</code> and  <code>B</code> such that
 the number of A's is divisible by 4.
 <p>
-<table border="1">
-<tr><th width="50%">Matching<th width="50%">Not Matching
+<table border='1'>
+<tr><th width='50%'>Matching<th width='50%'>Not Matching
 <tr><td>AAAA<td>AAAAA
 <tr><td>BABABABAB<td>ABABBBBBBBBBBBBBBBAAA
 <tr><td>AAAABBBBAAAA<td>AAAABBABBAAAA
 <tr><td>BBBAABBBBBAABBBAAAA<td>BBBAABBABBBAABBBAAAA
-</td></td></tr></td></td></tr></td></td></tr></td></td></tr></th></th></tr></table>
+</table>
 <p>
-<p></p>
+<div class="answer">
+<pre>egrep '^B*(AB*AB*AB*AB*)*$' input.txt</pre>
+</div>
+
 <li>
 Write a egrep command  that prints the lines in a file named <code>input.txt</code> containing
 only the characters <code>A</code> and  <code>B</code> such that
 there are exactly <i>n</i> A's followed by
 exactly <i>n</i> B's and no other characters.
 <p>
-<table border="1">
-<tr><th width="50%">Matching<th width="50%">Not Matching
+<table border='1'>
+<tr><th width='50%'>Matching<th width='50%'>Not Matching
 <tr><td>AAABBB<td>AAABB
 <tr><td>AB<td>BA
 <tr><td>AABB<td>AABBB
 <tr><td>AAAABBBB<td>AAAABBBBA
-</td></td></tr></td></td></tr></td></td></tr></td></td></tr></th></th></tr></table>
-<p></p>
-</p></li></p></p></li></p></p></li></p></p></li></p></p></p></p></li></p></p></li></p></li></p></li></li></p></li></p></li></p></li></p></li></p></li></p></p></li></p></p></li></p></li></p></li></p></p></p></li></ol>
+</table>
+
+<div class="answer">
+This can't be done with a (true) regular expression.
+You prove this via the the wonderfully named <a href="http://en.wikipedia.org/wiki/Pumping_lemma_for_regular_languages">pumping lemma</a>.
+<p>
+It is possible with extensions to regular expressions, e.g. as  provided in Perl.
+
+<pre>grep -P '^(A(?1)?B)$' input.txt</pre>
+</div>
+</ol>
+
 <h3>Autotest All Questions</h3>
 
 When you have all the answers entered you might like to run the autotest for all questions:
@@ -330,4 +441,3 @@ Test q19 (grep '^Q19 answer' lab02.txt|tail -1|sed 's/.*answer[: ]*//'|sh) - pas
 The autotests for this week are very simple but they will pick up silly mistakes.
 
 {% endblock %}
-</p></p></p>

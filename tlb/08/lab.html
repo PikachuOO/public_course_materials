@@ -4,7 +4,7 @@
 <ul>
 <li> Developing Perl skills
 <li> Exploring a simple approach to scraping data from the web
-</li></li></ul>
+</ul>
 {% endblock %}
 
 {% block lab_exercises %}
@@ -15,14 +15,15 @@ We have covered only a small amount of Perl in lectures. In fact, to
 cover the whole language in detail would take a whole semester, so
 we're going to rely on you finding out about the language yourself
 in tutes, labs and assignments. A good place to start is
-the Perl documentation &amp; tutorial links on the class home page
+the Perl documentation & tutorial links on the class home page
 For example you might find these useful:
 
 <ul>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlsyn.pod" target="doc">Perl language syntax</a>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlsub.pod" target="doc">Perl functions</a>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlop.pod" target="doc">Perl operators</a>
-</li></li></li></ul>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsyn.pod">Perl language syntax</a>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsub.pod">Perl functions</a>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlop.pod">Perl operators</a>
+</ul>
+
 <h3>Exercise: Scraping Course Codes</h3>
 Write a Perl script <code>courses.pl</code> which prints the course codes with a given prefix of all UNSW courses with lectures on the
 Kensington Campus this session.  For example:
@@ -39,6 +40,7 @@ VISN3111
 VISN3211
 VISN4003
 </pre>
+
 <b>Hints:</b> The course codes with prefix <code>VISN</code> can be found in this web page:
 <a href="http://www.timetable.unsw.edu.au/current/VISNKENS.html"><code>http://www.timetable.unsw.edu.au/current/VISNKENS.html</code></a>.  You can assume this is the case
 for all prefixes.  You saw how to retrieve a web page using wget in a previous lab.
@@ -46,7 +48,16 @@ So you can perform this task in less than 10 lines of Perl.
 
 {{autotest_reminder("courses.pl")}}
 
-<p></p>
+<div class="answer">
+Sample Perl solution
+
+{{include_code("solutions/courses.pl")}}
+
+Sample Shell solution
+
+{{include_code("solutions/courses.sh")}}
+</div>
+
 <h3>Exercise: Scraping Lecture Times</h3>
 
 Write a Perl script <code>lectures0.pl</code> which given course codes as arguments prints details of their
@@ -63,10 +74,10 @@ COMP9024: S2 Thu 18:00 - 21:00 (Weeks:1-9,10-12)
 COMP3231: S1 Mon 14:00 - 16:00 (Weeks:1-7,8-12), Thu 15:00 - 16:00 (Weeks:1-7,8-12)
 </pre>
 
-Don't print identical lecture streams (where times &amp; weeks are identical) multiple times.
+Don't print identical lecture streams (where times & weeks are identical) multiple times.
 <p>
 Some timetable entries include the same stream twice, in other cases there is a parallel stream -
-but for simplicity if times &amp; weeks are identical don't print the stream twice (hint: use a hash).
+but for simplicity if times & weeks are identical don't print the stream twice (hint: use a hash).
 <p>
 <b>Hint:</b> You can assume that a course's lecture times will be found in a web page equivalent to:
 <a href="http://timetable.unsw.edu.au/current/COMP2041.html">http://timetable.unsw.edu.au/current/COMP2041.html</a>.
@@ -82,7 +93,15 @@ your tutor will be generous  with hints.
 
 {{autotest_reminder("lectures0.pl")}}
 
-<p></p>
+<div class="answer">
+
+Sample solution for lectures0.pl
+
+{{include_code("solutions/lectures0.pl")}}
+
+
+</div>
+
 <h3>Semi-Challenge Exercise: Lecture Times as Tuples</h3>
 
 The output from <code>lectures0.pl</code> is (more or less) human readable but is less convenient for other uses.
@@ -133,7 +152,12 @@ hints.
 {{autotest_reminder("lectures1.pl")}}
 
 
-<p></p>
+<div class="answer">
+
+See sample solution for lectures2.pl
+
+</div>
+
 <h3>Semi-Challenge Exercise: Lecture Times as a Table</h3>
 
 Copy <code>lectures1.pl</code> to <code>lectures2.pl</code> and
@@ -233,7 +257,14 @@ Getting this exercise completely correct is difficult - again your tutor will ge
 
 {{autotest_reminder("lectures2.pl")}}
 
-<p></p>
+<div class="answer">
+
+Sample solution for lectures2.pl
+
+{{include_code("solutions/lectures2.pl")}}
+
+</div>
+
 <h3>Challenge Exercise: Extracting Tags in Python</h3>
 
 The  introduction to Python in lectures will come later.
@@ -267,7 +298,23 @@ Note tags which occur with equal frequency should ordered alphabetically.
 
 {{autotest_reminder("tags.py")}}
 
-<p></p>
+<div class="answer">
+
+Sample solution using wget
+
+{{include_code("solutions/tags.v0.py")}}
+
+Sample solution using urllib & adding -f option
+
+{{include_code("solutions/tags.v1.py")}}
+
+Sample solution using Beautiful soup to parse HTML
+
+{{include_code("solutions/tags.v2.py")}}
+
+
+</div>
+
 <b>Hint:</b> see last week's tute for a sample solution in Perl.
 
 
@@ -297,7 +344,19 @@ break up input lines. Its easy to implement <a href="http://en.wikibooks.org/wik
 
 {{autotest_reminder("shortest_path.py")}}
 
-<p></p>
+<div class="answer">
+Python sample solution translated from Perl
+
+{{include_code("solutions/shortest_path.v0.py")}}
+
+More python-ish sample solution
+
+{{include_code("solutions/shortest_path.v1.py")}}
+
+Slightly different python-ish sample solution
+
+{{include_code("solutions/shortest_path.v2.py")}}
+
+</div>
 
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></p>
