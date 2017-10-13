@@ -1,0 +1,785 @@
+\input{include.tex}
+\begin{document}
+\section{Version Control}
+\begin{frame}
+\frametitle{Version Control}
+
+Any large, useful software system ...
+
+\begin{itemize}
+\item  will undergo many changes in its lifetime
+\item  multiple programmers making changes
+\item  who may work on the code concurrently and independently
+\end{itemize}
+
+The process of code change needs to be managed so that
+
+\begin{itemize}
+\item  changes produce "consistent" versions of the system
+\item  many programmers can easily work simultaneously
+\item  we can roll back to earlier version if needed
+\item  documentation of when, who, \& why changes made
+\item  multiple versions of system can be distributed, tested, merged
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Version Control}
+Consider the following simple scenario:
+\begin{itemize}
+\item  a software system contains a source code file \textbf{\tt{x.c}}
+\item  system is worked on by several teams of programmers
+\item  Ann in Sydney adds a new feature in her copy of \textbf{\tt{x.c}}
+\item  Bob in Singapore fixes a bug in his copy of \textbf{\tt{x.c}}
+\end{itemize}
+Ultimately, we need to ensure that
+\begin{itemize}
+\item  all changes are properly recorded ~ {\small (when, who, why)}
+\item  both the new feature and the bug fix are in the next release
+\item  if we later find bugs in old release, they can be fixed
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Human Version Control}
+Manual solution to above problems:
+\begin{itemize}
+\item  Ann requests/receives a copy of \textbf{\tt{x.c}} v2.1 from Manager
+\item  Bob requests/receives a copy of \textbf{\tt{x.c}} v2.1 from Manager
+\item  Ann sends her new version of \textbf{\tt{x.c}} back to Manager
+\item  Bob sends his new version of \textbf{\tt{x.c}} back to Manager
+\item  Manager ensures that all changes are incorporated
+{\small 
+\begin{itemize}
+\item  might need to ask Ann and Bob for help if changes conflict
+\end{itemize}
+}
+\item  Manager sets up the merged version as v2.2 of \textbf{\tt{x.c}}
+\item  Col requests/receives a copy of \textbf{\tt{x.c}} v2.2 from Manager
+\end{itemize}
+Problem: eventually Manager not available 24x7 \& as system scales
+will be overwhelmed with requests.
+\end{frame}
+
+\begin{frame}
+\frametitle{Version Control Systems}
+{\em{Version control systems}} aim to solve the above problems.
+
+Version control systems (VCSs) are also called ...
+\begin{itemize}
+\item  revision control systems
+\item  source (code) control systems
+\item  (source) code management systems
+\end{itemize}
+There are various approaches to solving the problems, \\
+leading to different families of version control systems.
+
+While VCSs could be used for all kinds of documents, \\
+we focus on their use for managing source code files.
+\end{frame}
+
+\begin{frame}
+\frametitle{Version Control Systems}
+A {\em{version control system}} allows software developers to:
+\begin{itemize}
+\item  share development work on a system
+\item  recreate old versions of a system when needed
+\item  identify the current versions of source code files
+\item  restrict who is allowed to modify each source code file
+\end{itemize}
+This allows change to be managed/controlled in a systematic way.
+
+VCSs also try to minimise resource use in maintaining multiple versions.
+\end{frame}
+
+\begin{frame}
+\frametitle{Labelling Versions}
+How to name an important version? ~ {\small (unique identifier)}
+
+Common approach: file name + version "number" (e.g. Perl 5.8.1)
+
+No "standard" for $a.b.c$ version numbers, but typically:
+\begin{itemize}
+\item  $a$ is major version number {\small (changes when functionality/API changes)}
+\item  $b$ is minor version number {\small (changes when internals change)}
+\item  $c$ is patch level {\small (changes after each set of bug fixes are added)}
+\end{itemize}
+{\small 
+Examples: ~ Oracle 7.3.2, 8.0.5, 8.1.5, ... 
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Labelling Versions}
+How to store multiple versions (e.g. v$3.2.3$ and v$3.2.4$)?
+
+We {\em{could}} simply store one complete file for each version.
+
+Alternative approach:
+\begin{itemize}
+\item  store complete file for version $3.2.3$
+\item  store differences between $3.2.3$ and $3.2.4$
+\end{itemize}
+A {\em{delta}} is the set of differences between two successive
+versions of a file.
+
+Many VCSs store a combination of complete versions and deltas for each file.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Labelling Versions}
+Creating version $N$ of file F (F$_{N}$) from a collection of
+\begin{itemize}
+\item  complete copies of F whose versions $< N$
+\item  deltas for all versions in between complete copies
+\end{itemize}
+is acheived via:
+\begin{sh}
+    get list of complete copies of F
+    choose highest complete version V << N
+    f = copy of F{V}
+    foreach delta between V .. N {
+       f = f + delta
+    }
+    # f == F{N} (i.e. version N of F)
+\end{sh}
+
+Programs like \textbf{\tt{patch}} can apply deltas.
+\end{frame}
+
+\begin{frame}
+\frametitle{Delta Bandwidth Efficiency}
+An example of why deltas are useful:
+{\small 
+\begin{itemize}
+\item  Google Chrome for Windows upgrades in the background almost daily
+\item  Google Chrome is ~10MB
+\item  bsdiff delta = 700KB
+\item  google custom delta (Courgette) = 80KB
+\item  200 full upgrades/year = 2GB/year
+\item  200 bsdiff upgrades/year = 140Mb/year
+\item  200 Courgette upgrades/year = 16Mb/year
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Unix VCS - Generation 1 (Unix)}
+1970's ... {\em{SCCS}} (source code control system)
+\begin{itemize}
+\item  first version control system
+\item  centralized VCS - single central repository
+\item  introduced idea of multiple versions via delta's
+\item  single user model: lock - modify - unlock
+\item  only one user working on a file at a time 
+\end{itemize}
+
+1980's ... {\em{RCS}} (revision control system)
+\begin{itemize}
+\item  similar functionality to SCCS \\
+    {\small (essentially a clean open-source re-write of SCCS)}
+\item  centralized VCS - single central repository
+\item  single user model: lock - modify - unlock
+\item  only one user working on a file at a time 
+\item  still available and in use 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Unix VCS - Generation 2 (Unix)}
+~1990 ... {\em{CVS}} (concurrent version system)
+\begin{itemize}
+\item  centralized VCS - single central repository
+\item  locked check-out replaced by copy-modify-merge model
+\item  users can work simultaneously and later merge changes
+\item  allows remote development essential for open source projects
+\item  web-accessible interface promoted wide-dist projects
+\item  poor handling of file metadata, renames, links 
+\end{itemize}
+
+Early 2000's ... {\em{Subversion}} (svn)
+\begin{itemize}
+\item  depicted as "CVS done right"
+\item  many cvs weakness fixed 
+\item  solid, well documented, widely used system
+\item  but essentially the same model as CVS
+\item  centralized VCS - single central repository
+\item  svn is suitable for  assignments/small-medium projects
+\item  easier to understand than distributed VCSs, well supported
+\item  but Andrew recommends git
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Unix VCS - Generation 3}
+Early 2000s... {\em{Bitkeeper}} 
+\begin{itemize}
+\item  distributed VCS - multiple repositories, no "master"
+\item  every user has their own repository
+\item  written by Larry McVoy
+\item  Commercial system but allowed limited use for Linux kernel until dispute over  licensing issues
+\item  Linus Torvalds + others  then wrote GIT open source distributed VCS
+\item  Other open source distributed VCS's appeared, e.g: bazaar {\small (Canonical!)}, darcs {\small (Haskell!)}, Mercurial
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Git}
+\begin{itemize}
+\item  distributed VCS - multiple repositories, no "master"
+\item  every user has their own repository
+\item  created by Linux Torvalds for Linux kernel
+\item  external revisions imported as new branches
+\item  flexible handling of branching
+\item  various auto-merging algorithms
+\item  Andrew recommends you use git unless good reason not to
+\item  not better than competitors but better supported/more widely used (e.g. github/bitbucket)
+\item  at first stick with a small subset of commands
+\item  substantial time investment to learn to use Git's  full power
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Repository}
+Many VCSs use the notion of a {\em{repository}}
+
+\begin{itemize}
+\item  store all versions of all objects (files) managed by VCS
+\item  may be  single file, directory tree, database,...
+\item  possibly accessed by filesystem, http, ssh or custom protocol
+\item  possibly structured as a collection of {\em{projects}}
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Git Repository}
+Git uses the sub-directory {\tt .git} to store the repository.
+
+Inside  {\tt .git} there are:
+
+\begin{itemize}
+\item  {\bf blobs} file contents identified by SHA-1 hash
+\item  {\bf tree objects} links blobs to info about directories, link, permssions (limited)
+\item  {\bf commit objects} links trees objects with info about parents, time, log message
+\end{itemize}
+
+\begin{itemize}
+\item  Create repository {\bf git init}
+\item  Copy exiting repository {\bf git clone}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tracking a Project with Git}
+
+\begin{itemize}
+\item  Project must be in single directory tree.
+
+\item Usually don't want to track all files in directory tree
+
+\item Don't track binaries, derived files, temporary files, large static files
+
+\item Use {\bf .gitignore} files  to indicate files never want to track
+
+\item Use {\bf git add {\it file}} to indicate you want to track {\it file}
+
+\item Careful: {\bf git add {\it directory}} will every file in {\it file} and sub-directories
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Git Commit}
+
+\begin{itemize}
+\item A git commit is a snapshot of all the files in the project.
+
+\item Can return the project to this state using {\bf git checkout}
+
+\item Beware if you  accidentally  add a file with confidential info 
+to git - need to remove it from all commits.
+
+\item {\bf git add} copies file to staging area for next commit
+
+\item {\bf git commit -a} if you want commit current versions of all files being tracked
+
+\item commits have parent commit(s), most have 1 parent
+
+\item merge produce commit with 2 parents, first commit has no parent
+
+\item merge commits labelled with SHA-1 hash
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Git Branch}
+
+\begin{itemize}
+\item Git branch is pointer to a commit
+
+\item Allows you to name a series of commits
+
+\item Provides convenient tracking of versions of parallel version of projects
+
+\item New features can be developed in a branch and eventually merged with other branches
+
+\item Default branch is called master. 
+
+\item {\bf HEAD} is a reference to the last commit in the current branch
+
+\item  {\bf git branch {\it name}} creates branch {\it name}
+
+\item  {\bf git checkout {\it name}} changes all project files to their version on this branch
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Git Merge}
+
+\begin{itemize}
+\item merges branches
+\item git mergetool shows conflicts
+\item configure your own mergetool - many choices kdiff3, meld, p4merge
+\item kaleidoscope popular on OSX 
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Git Push}
+
+\begin{itemize}
+\item {\bf git push {\it repository-name} {\it branch}} adds commits from your {\it branch} to remote repository {\it repository-name} 
+
+\item Can set defaults, e.g. {\bf git push -u origin master} then run {\bf git push}
+
+\item {\bf git remotel} lets you give names to other repositories
+
+\item Note {\bf git clone} sets {\tt origin} to be name for cloned repository
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Git Fetch/Pull}
+
+\begin{itemize}
+\item {\bf git fetch {\it repository-name} {\it branch}} adds commits from {\it branch} in remote repository {\it repository-name} 
+
+\item Usually  {\bf git pull} - combines fetch and merge
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Git \& conflicts}
+
+\begin{sh}
+$ git init /home/cs2041
+Initialized empty Git repository in /home/cs2041/.git/
+$ git add main.c 
+$ git commit main.c 
+Aborting commit due to empty commit message.
+$ git commit main.c -m initial
+[master (root-commit) 8c7d287] initial
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 main.c
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+Suppose Fred does:
+
+\begin{sh}
+$ cd /home/fred
+$ git clone /home/cs2041/.git /home/fred
+Cloning into /home/fred...
+done.
+$ echo >fred.c
+$ git commit -m 'created fred.c'
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+Suppose Jane does: 
+\begin{sh}
+$ cd /home/jane
+$ git clone /home/cs2041/.git /home/jane
+Cloning into /home/jane...
+done.
+$ echo '/* Jane Rules */' >>main.c
+$ git commit -a  -m 'did some documentation'
+[master 1eb8d32] did some documentation
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+Fred can now get Jane's work like this:
+
+\begin{sh}
+$ git pull /home/jane/.git
+remote: Counting objects: 5, done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From /home/jane/.git
+ * branch            HEAD       -> FETCH_HEAD
+Merge made by recursive.
+ main.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+And Jane can now get Fred's work like this:
+
+\begin{sh}
+$  git pull /home/fred/.git
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 5 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (5/5), done.
+From /home/fred/.git
+ * branch            HEAD       -> FETCH_HEAD
+Updating 1eb8d32..63af286
+Fast-forward
+ fred.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+ create mode 100644 fred.c
+\end{sh}
+\end{frame}
+
+\begin{frame}[shrink,fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+But if Fred  does this:
+
+\begin{sh}
+$ echo '// Fred Rules' >fred.c
+$ git commit -a  -m 'added documentation'
+\end{sh}
+
+And Jane does this:
+
+\begin{sh}
+$ echo '// Jane Rules' >fred.c
+$ git commit -a  -m 'inserted comments'
+\end{sh}
+\end{frame}
+
+\begin{frame}[shrink,fragile]
+\frametitle{Example: Git \& conflicts}
+ 
+
+When  Fred tries to get Jane's work:
+
+\begin{sh}
+$ git pull /home/jane/.git
+remote: Counting objects: 5, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From ../jane/
+ * branch            HEAD       -> FETCH_HEAD
+Auto-merging fred.c
+CONFLICT (content): Merge conflict in fred.c
+Automatic merge failed; fix conflicts and then commit the result.
+$ git  mergetool
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: making Git Repository Public via Github}
+Github popular repo hosting site (see competitors e.g. bitbucket)
+
+Github free for small number of public repos 
+
+Github and competitors also let you setup collaborators, wiki, web pages, issue tracking
+
+Web access to git repo e.g. https://github.com/mirrors/linux
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example: making Git Repository Public via Github}
+
+Its a week after the 2041 assignment was due and you want to publish your code to the world.
+
+Create github account - assume you choose {\it{2041rocks}} as your login
+
+Create a repository - assume you choose {\it{my\_code}} for the repo name
+
+Add your ssh key ({\tt{.ssh/id\_rsa.pub}}) to github (Account Settings - SSH Public Keys - Add another public key)
+
+\begin{sh}
+$ cd ~/cs2041/ass2
+$ git remote add origin git@github.com:2041rocks/my_code.git
+$ git push -u origin master
+\end{sh}
+
+Now anyone anywhere can clone your repository by 
+
+\begin{sh}
+git clone git@github.com:2041rocks/my_code.git
+\end{sh}
+\end{frame}
+
+\begin{frame}[fragile,shrink]
+\frametitle{Simple Version Control System}
+
+You can implement in a small amount of  Perl the  basic operations of a VCS.
+We'll use these utility functions:
+
+\begin{small}
+\begin{perl}
+sub read_file {
+  my ($file) = @_;
+  open(my $f, '<', $file) or die "Can noyt read $file: $!\n";
+  return do {local $/; <$f>}
+}
+
+sub write_file {
+  my ($file, $contents) = @_;
+  open my $f, '>', $file or die "Can not write $file: $!\n";
+  print $f $contents;
+}
+
+sub read_dir {
+  my ($dir) = @_;
+  my @files = glob "$dir/*";
+  s/.*\/// foreach @files;
+  return  @files;
+}
+\end{perl}
+\end{small}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Repository}
+
+Git uses a directory tree in {\tt .git} by default to store the repository.
+
+Our simple VCS (sit.pl) uses {\tt .sit}, storing each version
+in a separate numbered subdirectory.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Creating an empty repository:}
+\begin{itemize}
+\item  git init
+\item  sit.pl init
+\end{itemize}
+
+Our simple VCS just needs to create a directory and initialize a file.
+
+\begin{small}
+\begin{perl}
+die "repository already exists\n" if -d $repository_dir;
+mkdir $repository_dir or
+    die "$0: can not create $repository_dir:$!";
+write_file($commit_file, 0);
+print "Created empty repository\n";
+\end{perl}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Placing Files under Version Control}
+\begin{itemize}
+\item  git add FILES
+\item  sit.pl add FILES
+\end{itemize}
+
+Our simple VCS copies the files into a sub-directory of the repository (the stage area)
+
+Git does also stages the files for commit.
+
+\begin{small}
+\begin{perl}
+-d $staging_area or mkdir $staging_area or
+    die "$0: can not create $staging_area: $!\n";
+write_file("$staging_area/$_",read_file($_)) foreach @ARGV; 
+my @staged_files = read_dir("$staging_area");
+print "Files now staged: @staged_files\n";
+\end{perl}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Saving a Version}
+\begin{itemize}
+\item  git commit  -m LOG\_MESSAGE
+\item  sit.pl commit LOG\_MESSAGE
+\end{itemize}
+
+Git labels commits with a SHA-1 hash (160 bit 40 hex digits). 
+
+Our simple VCS labels each commit with consecutive integer.
+
+It moves the files from its staging area into a sub-directory named with this number and writes the log message.
+
+\begin{small}
+\begin{perl}
+die "No files staged for commit\n" if !-d $staging_area;
+my $last_commit = read_file($commit_file);
+my $commit = $last_commit + 1;
+write_file($commit_file,  $commit);
+$version_dir = "$repository_dir/$commit";
+rename $staging_area, $version_dir;
+write_file("$repository_dir/log_message.$commit", "@ARGV"); 
+my @commited_files = read_dir("$repository_dir/$commit");
+print "Commited as commit #$commit: @commited_files\n";
+\end{perl}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile,shrink]
+\frametitle{Checking out a version}
+Common to want to examine a particular version of a file.
+\begin{itemize}
+\item  git show file  [branch]
+\item  sit.pl show file  [version]
+\end{itemize}
+
+Our simple VCS has to work backwards through versions
+from the requested version to find the appropriate version of the file.
+
+\begin{small}
+\begin{perl}
+my $file =  shift @ARGV or die "Usage: $0 <file>\n";
+my $checkout_commit = shift @ARGV or read_file($commit_file);
+# go through commits in reverse order
+# finding last commit of each file
+foreach $commit (reverse 1..$checkout_commit) {
+    my $path =  "$repository_dir/$commit/$file";
+    next if !-r $path;
+    print STDERR "Commit #$commit: $file\n";
+    print read_file($path);
+    exit(0);
+}
+die "$0: no commit of $file\n";
+\end{perl}
+\end{small}
+
+\end{frame}
+
+\begin{frame}[fragile,shrink]
+\frametitle{Reviewing commits}
+\begin{itemize}
+\item  git log [huge number of options]
+\item  sit.pl log
+\end{itemize}
+
+Our simple VCS just prints the log message for each commit and
+which files it contained.
+
+\begin{small}
+\begin{perl}
+my $last_commit = read_file($commit_file);
+foreach $commit (1..$last_commit) {
+}
+\end{perl}
+\end{small}
+\end{frame}
+
+\begin{frame}[fragile,shrink]
+\frametitle{Checking Status of Files}
+\begin{itemize}
+\item  git status 
+\item  sit.pl log
+\end{itemize}
+
+Our simple VCS indicates files in the current directory
+not in the repository or which are different to the latest version in the repository.
+
+\begin{small}
+\begin{perl}
+my $last_commit = read_file($commit_file);
+FILE: foreach $file (glob "*") {
+    my $path =  "$staging_area/$file";
+    if (-r $path) {
+        if (read_file($file) ne read_file($path)) {
+           print "Modified since staged: $file\n";
+        } else {
+           print "Staged for commit: $file\n";
+        }
+    } else {
+        foreach $commit (reverse 1..$last_commit) {
+            my $path =  "$repository_dir/$commit/$file";
+            next if !-r $path;
+            if (read_file($file) ne read_file($path)) {
+               print "Modified and unstaged: $file\n";
+            } else {
+               print "Unmodified since committed: $file\n";
+            }
+            next FILE;
+        }
+        print "Untracked: $file\n";
+    }
+}
+\end{perl}
+\end{small}
+\end{frame}
+
+\begin{frame}
+\frametitle{Inspecting file differences}
+\begin{itemize}
+\item  git diff [many options]
+\item  sit.pl unimplemented
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Updating your copy from repository}
+\begin{itemize}
+\item  git pull   (or fetch)
+\item  sit.pl unimplemented
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[shrink,fragile]
+\frametitle{Using our simple Simple Version Control System}
+\begin{sh}
+$ sit.pl init
+Created empty repository
+$ sit.pl add *.[ch]
+Files staged are: world.c world.h graphics.c graphics.h main.c
+$ sit.pl commit 'initial import'
+Commited as commit #1: world.c world.h graphics.c graphics.h main.c
+$ echo >>world.c
+$ echo >>graphics.c
+$ sit.pl add world.c
+$ echo >>world.c
+$  sit.pl status
+Untracked: Makefile
+Unstaged: graphics.c
+Modified: world.c
+$ sit.pl add world.c graphics Makefile
+Files staged are: world.c graphics.c Makefile
+$ sit.pl commit 'Minor changes'
+Commited as commit #2: world.c graphics.c Makefile
+$ sit.pl log
+Commit #1
+Log message: initial import
+Files: world.c world.h graphics.c graphics.h main.c
+Commit #2
+Log message: Minor changes
+Files: world.c graphics.c Makefile
+\end{sh}
+\end{frame}
+
+
+\end{document}

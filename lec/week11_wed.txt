@@ -1,0 +1,2 @@
+oct 11
+cgi insecure_shell.fixed.cgi.txt insecure_mail.cgi.txt insecure_mail.fixed.cgi.txt insecure_mail.fixed.1.cgi.txt insecure_open.cgi.txt insecure_open.fixed.cgi.txt admin_script.cgi admin_script.fixed.cgi admin_script.token.cgi insecure_linksys.cgi.txt insecure_linksys.fixed.cgi.txt insecure_sql_injection.cgi insecure_sql_injection.fixed.cgi xss.cgi.txt xss.fixed.cgi.txt 
