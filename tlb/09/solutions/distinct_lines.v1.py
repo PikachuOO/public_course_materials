@@ -2,10 +2,11 @@
 # written by evank@cse.unsw.edu.au
 
 import sys
+import re
 n = int(sys.argv[1])
 seen = set()
 for i, line in enumerate(sys.stdin, start=1):
-    seen.add(line)
+    seen.add(re.sub(r"\s", "", line.lower())
     if len(seen) == n:
         print("{} distinct lines seen after {} lines read.".format(len(seen), i)
         break
