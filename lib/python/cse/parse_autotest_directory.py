@@ -54,7 +54,7 @@ from cse.run_test import Test
 # expected_stderr_file
 #        defaults to label.expected_stderr
 
-# expected_file(\w*) - name of file that should be created by command
+# expected_file(\w*)_name - name of file that should be created by command
 
 # expected_file(\w+)_file - file containing contents of file that should be created by command
 #                            defaults to label.expected_file(\w+)
@@ -335,7 +335,7 @@ if __name__ == '__main__':
                 expected_contents_file =  test.label + '.expected_' + expected_file
                 print('Creating', expected_contents_file)
                 shutil.copyfile(filename, expected_contents_file)
-                shutil.copymode(path, file)
+                shutil.copymode(filename, expected_contents_file)
                 unlink_files.append(filename)
     except subprocess.CalledProcessError:
         pass

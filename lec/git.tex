@@ -135,7 +135,7 @@ Creating version $N$ of file F (F$_{N}$) from a collection of
 \item  complete copies of F whose versions $< N$
 \item  deltas for all versions in between complete copies
 \end{itemize}
-is acheived via:
+is achieved via:
 \begin{sh}
     get list of complete copies of F
     choose highest complete version V << N
@@ -264,7 +264,7 @@ Inside  {\tt .git} there are:
 
 \begin{itemize}
 \item  {\bf blobs} file contents identified by SHA-1 hash
-\item  {\bf tree objects} links blobs to info about directories, link, permssions (limited)
+\item  {\bf tree objects} links blobs to info about directories, link, permissions (limited)
 \item  {\bf commit objects} links trees objects with info about parents, time, log message
 \end{itemize}
 
@@ -359,7 +359,7 @@ to git - need to remove it from all commits.
 
 \item Can set defaults, e.g. {\bf git push -u origin master} then run {\bf git push}
 
-\item {\bf git remotel} lets you give names to other repositories
+\item {\bf git remote} lets you give names to other repositories
 
 \item Note {\bf git clone} sets {\tt origin} to be name for cloned repository
 \end{itemize}
@@ -545,7 +545,7 @@ We'll use these utility functions:
 \begin{perl}
 sub read_file {
   my ($file) = @_;
-  open(my $f, '<', $file) or die "Can noyt read $file: $!\n";
+  open(my $f, '<', $file) or die "Can not read $file: $!\n";
   return do {local $/; <$f>}
 }
 
