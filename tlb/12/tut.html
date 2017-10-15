@@ -1,0 +1,179 @@
+{% extends "templates/tut.html" %}
+{% block questions %}
+<ol>
+<li>
+What is  Unicode
+<p></p>
+<li>
+What is UTF-8
+<p></p>
+<li>
+Do I need to I know about UTF-8 for the assignment.
+
+<p></p>
+<li>
+The  UNSWtalk Perl starting-point code contains this function. Discuss how it works.
+<pre class="program">
+sub student_page {
+    my $n = param('n') || 0;
+    my @students = sort(glob("$students_dir/*"));
+    my $student_to_show  = $students[$n % @students];
+    my $details_filename = "$student_to_show/student.txt";
+    open my $p, "$details_filename" or die "can not open $details_filename: $!";
+    $details = join '', &lt;$p&gt;;
+    close $p;
+    my $next_student = $n + 1;
+    return &lt;&lt;eof
+&lt;div class="unswtalk_student_details"&gt;
+$details
+&lt;/div&gt;
+&lt;p&gt;
+&lt;form method="POST" action=""&gt;
+    &lt;input type="hidden" name="n" value="$next_student"&gt;
+    &lt;input type="submit" value="Next student" class="unswtalk_button"&gt;
+&lt;/form&gt;
+eof
+}
+</pre>
+<li>
+The UNSWtalk Python starting point code contains this function. Discuss how it works.
+<pre class="program">
+@app.route('/', methods=['GET','POST'])
+@app.route('/start', methods=['GET','POST'])
+def start():
+    n = session.get('n', 0)
+    students = sorted(os.listdir(students_dir))
+    student_to_show = students[n % len(students)]
+    details_filename = os.path.join(students_dir, student_to_show, "student.txt")
+    with open(details_filename) as f:
+        details = f.read()
+    session['n'] = n + 1
+    return render_template('start.html', student_details=details)
+</pre>
+<li>
+Both Perl starting point code for assignment 2 and the Python starting point code will
+prints out approximately these lines (followed by more output) when run ?
+
+<pre class="program">
+Content-Type: text/html
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;title&gt;UNSWtalk&lt;/title&gt;
+&lt;link href="unswtalk.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="unswtalk_heading"&gt;
+UNSWtalk
+&lt;/div&gt;
+</pre>
+
+Quickly discuss why these lines are being printed, in particular
+
+<ol>
+<li> Why is line 2 blank?
+<li> What else might appear in the first 2 lines?
+<li> What does <code>class="unswtalk_heading"</code> mean?
+</li></li></li></ol>
+<p></p>
+<li>
+
+The file <code>UNSWtalk.css</code> supplied for the assignment contains this:
+
+<pre class="program">
+.unswtalk_heading {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    text-align: center;
+    font-size: x-large;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.unswtalk_user_details {
+    background-color: #ABCDEF;
+    color: #204142;
+    white-space: pre;
+    border:thin solid #204142;
+    border-radius: 1em;
+    padding-left: 0.42em;
+}
+
+.unswtalk_button {
+    background-color: #FEDBCA;
+    border:thin solid #904142;
+    border-radius: 0.42em;
+    color: #904142;
+}
+</pre>
+
+CSS isn't really covered in COMP[29]041 - but can you quickly guess what the CSS does?
+
+
+<li>
+
+A good way to test out code for assignment 2 is to write
+small programs which can be run from the command line.
+<p>
+A COMP[29]041 student wrote this small  program
+to test  Perl that wanted to use in UNSWtalk.
+<p>
+It takes a zid as a command-line argument and is meant
+to print the filenames of the students's posts in reverse chronological order (most recent first).
+
+{{include_code("solutions/print_posts.pl")}}
+
+They also wrote this equivalent program in Python
+{{include_code("solutions/print_posts.py")}}
+
+Unfortunately both when run print the wrong files, and posts aren't in reverse chronological order - <code>10.txt</code> is the users mosr recent post not <code>9.txt</code>
+
+{{execute("./print_posts.pl z5194548")}}
+
+<p>
+What is wrong with the programs.
+<p>
+How would you fix it?
+
+<p></p>
+<li>
+Write a shell pipeline that reports any  e-mail address which is being used
+by more than 1 UNSWtalk users in the large dataset
+
+<p></p>
+<li>
+
+Write a Perl program script <code>distance_from_unsw.pl</code> which lists the latitude, longitude and
+suburb (if provided) of all UNSWtalk users in a dataset it is given as argument.
+<p>
+The users must be listed in increasing order of distance from UNSW.
+<p>
+For example:
+
+{{execute("./distance_from_unsw.pl dataset-small", cwd="solutions")}}
+
+Assume UNSW's (latitiude, longitude) is (-33.9172238,151.2302268).
+<p>
+Don't print  users who don't provide their latitude/longitude.
+<p>
+You can assume if a user provides either latitude or longitude they provide both.
+
+<p></p>
+<li>
+
+Translate  distance_from_unsw.pl to Python.
+
+
+<p></p>
+
+{% endblock %}
+{% block revision_questions %}
+<li>
+
+Write a CGI script to play the <a href="http://en.wikipedia.org/wiki/Bulls_and_cows">Bulls and Cows</a> guessing game.
+<p>
+Here is an example implementation: <a href="https://cgi.cse.unsw.edu.au/~cs2041cgi/tlb/12/bullscows.cgi">reference implementation</a>
+<p></p>
+{% endblock %}
+</p></li></li></p></p></p></p></li></li></p></p></p></p></li></li></li></li></li></li></li></li></ol>

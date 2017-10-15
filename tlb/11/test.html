@@ -1,0 +1,111 @@
+{% set programs = 'median_number.pl median_number.py devowel_file.pl devowel_file.py devowel_file.sh' %}
+{% set submission_deadline = 'Sunday 20 October 23:59' %}
+{% extends "templates/test.html" %}
+
+{% block questions %}
+
+<h3>Exercise: Median Number</h3>
+
+Write a Perl program <b>median_number.pl</b> that given positive
+integers as command line arguments prints the median (middle) value.
+<p>
+Your program can assume is give an odd number of arguments.
+<p>
+Your program can assume all its arguments are positive integers.
+<p>
+For example:
+
+{{execute("./median_number.pl 1 333 42")}}
+
+{{execute("./median_number.pl 3 4 2 1 7 6 5")}}
+
+{{execute("./median_number.pl 15 15 8 11 8")}}
+
+{{execute("./median_number.pl 42 42 244 244 42")}}
+
+
+{{autotest_reminder("median_number.pl")}}
+
+<p></p>
+<h3>Exercise: Median Number Filter in Python</h3>
+
+Write a Python program <b>median_number.py</b> which performs the same task
+as the above question. For example:
+
+{{execute("./median_number.py 1 333 42")}}
+
+{{execute("./median_number.py 3 4 2 1 7 6 5")}}
+
+{{execute("./median_number.py 15 15 8 11 8")}}
+
+{{execute("./median_number.py 42 42 244 244 42")}}
+
+
+{{autotest_reminder("median_number.py")}}
+
+<p></p>
+<h3>Exercise: Devowelling a File</h3>
+
+Write a Perl program, <code>devowel.pl</code> which removes any
+vowels from a specified file.
+<p>
+Your program can assume vowels are there are 5 vowel {'a', 'e', 'i', 'o', 'u'}
+and their upper-case equivalents {'a', 'e', 'i', 'o', 'u'}
+<p>
+Your program can assume it is given one argument which is the name of a file.
+<p>
+Your program can assume the file exists.
+<p>
+Your program should not print anything to stdout.  The only thing it should do is change
+the file.
+<p>
+For example:
+
+<pre class="command_line">
+<kbd class="shell">cat frost.txt</kbd>
+I shall be telling this with a sigh
+Somewhere ages and ages hence:
+Two roads diverged in a wood, and I --
+I took the one less traveled by,
+And that has made all the difference.
+<kbd class="shell">./devowel_file.pl frost.txt</kbd>
+<kbd class="shell">cat frost.txt</kbd>
+ shll b tllng ths wth  sgh
+Smwhr gs nd gs hnc:
+Tw rds dvrgd n  wd, nd  --
+ tk th n lss trvld by,
+nd tht hs md ll th dffrnc.
+</pre>
+
+
+
+{{autotest_reminder("devowel_file.pl")}}
+
+<p></p>
+<h3>Exercise: Devowelling a File in Python </h3>
+
+
+Write a Python program, <code>devowel.py</code> which performs the same task
+as the previous question.
+
+
+{{autotest_reminder("devowel_file.py")}}
+
+<p></p>
+<h3>Exercise: Devowelling a File in Shell </h3>
+
+
+Write a Shell program, <code>devowel.sh</code> which performs the same task
+as the previous question.
+<p>
+Your Shell program can not use Perl or Python.
+<p>
+Your shell program may create a temporary file.
+
+{{autotest_reminder("devowel_file.sh")}}
+
+<p></p>
+
+
+{% endblock %}
+</p></p></p></p></p></p></p></p></p></p>

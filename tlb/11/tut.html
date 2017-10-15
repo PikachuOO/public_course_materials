@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <title>Week 11 Tutorial</title>
 <link href="2041.css" rel="stylesheet">
-</link></head>
+</head>
 <body>
 <div class="container">
 <div id="heading">
@@ -20,18 +19,101 @@ Why is Flask good for COMP[29]041?
 <p>
 Can it also be used for large real applications?
 
-<p></p>
+<div class="answer">
+Flask is a a very popular web framework based on Python.
+<p>
+It is good for COMP[29]041 because it is possible to write very
+simple Flask application.
+<p>
+It has powerful features available and is  used in large high traffic applications at companies such
+as pinterest, linkedin, twilio and lyft.
+</div>
 <li>
 Discuss the lines in this "hello world" Flask app:
 
 {{ include_code("hello_word_flask.py") }}
 
-<p></p>
+<div class="answer">
+
+<pre class="program">
+from flask import Flask
+</pre>
+imports the main <code>Flask</code> into the program's webspace.
+<p>
+Apps usually need to import other names as well, as you can
+see in the code you have been given for the lab.
+
+<pre class="program">
+app = Flask(__name__)
+</pre>
+
+creates the a Flask object.
+<p>
+Its argument (<code>__name__</code>) is not important for our the little apps your
+work on in the lab.
+<p>
+<code>__name__</code> is a special Python name which evaluates to the name
+of the current package, or <code> '__main__'</code> when the code is run directly.
+
+<pre class="program">
+@app.route('/')
+</pre>
+
+This line associates a URL pattern with the following function (<code>hello_world</code>).
+<p>
+This means if Flask receives a request for a URL fitting this pattern it will
+call the function.
+<p>
+Its argument (<code>__name__</code>) is not important for our the little apps your
+work on in the lab.
+<p>
+The <b>@</b> character is Python syntax for a <b>decorator</b>.  Decorators provide a
+readable way of altering the behaviour of Python function using other functions.
+<p>
+In this case the <b>route</b> decorator just causes the Flask app to record that
+URL of this pattern should be "routed" to this function.
+<p>
+You don't need to understand decorators to use Flask or do the lab,
+but its highly recommended (at some stage)
+you try to write your  decorators to understand properly how they work.
+
+<pre class="program">
+def hello_world():
+    return 'Hello, World!'
+</pre>
+
+This function returns the content for the URL that has been "routed" to it.
+<p>
+Note the function name doesn't matter.
+
+<pre class="program">
+if __name__ == '__main__':
+    app.run(debug=True)
+</pre>
+
+If the script is run directly (rather than imported).  This will run Flask as a webserver.
+</div>
+
 <li>
 
 How do you the run the Flask  "hello world" Flask app
 
-<p></p>
+<div class="answer">
+
+Like this
+<pre class="command_line">
+<kbd class="shell">./hello_world_flask.py</kbd>
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 204-542-564
+</pre>
+
+Then access <a href= "http://127.0.0.1:5000/">http://127.0.0.1:5000/</a> from a web browser
+running on the same machine.  Note you can't do this on CSE's login servers or vlab.
+</div>
+
+
 <li>
 
 Discuss this code from game.py which you are given for the lab.
@@ -43,19 +125,98 @@ def start():
     session['number_to_guess'] = random.randint(1, MAX_NUMBER_TO_GUESS)
     return render_template('game_start.html', max_number_to_guess=MAX_NUMBER_TO_GUESS)
 </pre>
-<p></p>
+
+<div class="answer">
+
+<pre class="program">
+@app.route('/', methods=['GET','POST'])
+@app.route('/start', methods=['GET','POST'])
+</pre>
+
+These 2  lines (decorators) cause Flask to route requests matching eietehr of
+those patterns to the following function.
+
+<pre class="program">
+    session['number_to_guess'] = random.randint(1, MAX_NUMBER_TO_GUESS)
+</pre>
+
+creates a random number and stores in a session cookie so it will be available
+in subsquent requests to Flask from the same client.
+
+<pre class="program">
+    return render_template('game_start.html', max_number_to_guess=MAX_NUMBER_TO_GUESS)
+</pre>
+
+This returns the contents of <code>game_start.html</code> after applying Jinja
+templating to it.  The variable <code>max_number_to_guess</code> can be used in the template
+and will have the value <code>MAX_NUMBER_TO_GUESS</code>
+</div>
+
 <li>
 
 What is Jinja?
 
-<p></p>
+<div class="answer">
+Jinja is popular templating engine provided with Flask.
+<p>
+It is useful when you want to embed dynamic-generated values in HTML content.
+<p>
+It allows you to embed Python within HTML.
+</div>
 <li>
 
 Discuss the contents of <code>game_start.html</code>:
 
 {{ include_code("game_start.html") }}
 
-<p></p>
+<div class="answer">
+<pre class="program">
+{% raw %}
+{% extends "game_base.html" %}
+{% endraw %}
+</pre>
+
+This says this page will inherit the contents <code>game_start.html</code>
+<p>
+This is useful because often many pages have common content.
+<p>
+This simple inheritence allows the content to be placed in a single file.
+
+<pre class="program">
+{% raw %}
+{% block body %}
+{% endblock %}
+{% endraw %}
+</pre>
+
+This says replace the <code>body</code> block of the inherited page
+with what is between the Jinja <code>block</code> and <code>endblock</code> statements.
+
+<pre class="program">
+{% raw %}
+    Enter a guess between 1 and {{max_number_to_guess}} (inclusive):
+{% endblock %}
+{% endraw %}
+</pre>
+
+The {{'{{'}} {{'}}'}} allows us to include a Python expression in a Jina template
+<p>
+In this case its just a variable,  <code>max_number_to_guess</code>, whose value we passed
+in via <code>render_template</code>.
+
+<pre class="program">
+{% raw %}
+{% block body %}
+&lt;form method="POST" action="guess">
+    &lt;input type="textfield" name="guess">
+&lt;/form>
+{% endblock %}
+{% endraw %}
+</pre>
+
+This is the  HTML for a form.
+</div>
+
 <li>
 
 Discuss what you need to do for the first lab exercise including which files you change or create.
@@ -76,7 +237,7 @@ Discuss the contents of the <code>assessments</code> directory for the peer asse
 A CGI script contains the following Perl:
 <p>
 <pre>
-print "&lt;!-- ".join(",", map({"$_='".param($_)."'"} param()))."--&gt;\n";
+print "&lt;!-- ".join(",", map({"$_='".param($_)."'"} param()))."-->\n";
 </pre>
 <p>
 What does it do?
@@ -87,7 +248,30 @@ Indicate a bug and why it creates a security hole.
 <p>
 Rewrite the code, fixing the bug.
 
-<p></p>
+<div class="answer">
+It outputs an HTML comment containing the value of all parameters.
+<p>
+This is useful for debugging because these parameters are
+usually the key input to your CGI script.
+<p>
+It doesn't check if  the value of a parameter contains HTML code.
+<p>
+Displaying HTML code from a malicious user is an <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">easily exploited security hole</a>.
+<p>
+This code is simpler and avoids some possible problems:
+
+<pre>
+print "&lt;!-- ";
+foreach $param (param()) {
+    my $value = param($param);
+    $value =~ s/\&gt;/&amp;gt;/g;
+    print "$param='$value' "
+}
+print "-->\n";
+</pre>
+
+</div>
+
 <li>
 
 The following CGI script sends a message to the script author,
@@ -95,7 +279,7 @@ whose login name is <code>you</code>.
 The message subject and the message body are available via the
 script parameters <code>MailSubject</code> and <code>MailBody</code>
 provided by filling in a form.
-<p>
+<P>
 Consider for a moment that you are a hacker
 (yes, I know it's difficult but just pretend :-).
 What are the potential security problems with such a script
@@ -118,6 +302,7 @@ if (!open(MAIL, "|mail -s \"$subject\" you")) {
 }
 print end_html;
 </pre>
+
 <div class="written_answer">
 Some of the potential security problems that I know about (there may be others):
 
@@ -137,8 +322,8 @@ mail -s "`/bin/rm -fr *`" you
 which removes a whole bunch of files, and uses the output of the
 <code>rm</code> command (which ought to be the empty string)
 as the subject of the mail.
-<p>
-<i>Note:</i> using single quotes in the mail command
+<P>
+<I>Note:</I> using single quotes in the mail command
 would protect against back ticks, but not the next exploit.
 <li>
 People could supply a <code>$subject</code> that terminated the
@@ -166,7 +351,7 @@ mechanisms to embed arbitrary commands in the body of the message.
 Example: <code>$message == "Hello\n.!rm -fr *\nHope you liked the surprise!"</code>
 sends the message "Hello\nHope you liked the surprise!", but as a side-effect also
 executes the <code>rm</code> command to remove a whole bunch of files.
-</p></li></p></li></p></p></li></ul>
+</ul>
 <p>
 To avoid such problems, you would need to make both the
 <code>$subject</code> and <code>$message</code> variables
@@ -178,13 +363,13 @@ You should also run the script using Perl's <code>-T</code> flag
 which causes Perl to not even execute your
 script if you haven't taken enough precautions to avoid
 (many) potential problems.
-</p></div>
+</div>
 <li>
 The validation algorithm
  used for credit cards is an old one devised by
 <a href="http://en.wikipedia.org/wiki/Hans_Peter_Luhn">Hans-Peter Luhn</a>
 (1896-1964), a mathematician at IBM.
-<p>
+<P>
 The <a href="https://en.wikipedia.org/wiki/Luhn_algorithm">Luhn formula</a> sums all the digits,
 with weights of 1 for odd positions and 2 for even positions (so every even digit is
 doubled before adding it to the sum). Odd and even is worked out by counting from the right, as usual.
@@ -194,7 +379,7 @@ For example, a digit 7 in an even position is doubled to make 14,
 so its contribution to the total is
 1+4=5.
 The credit card number is valid if the total is a multiple of 10.
-<p>
+<P>
 Here is a (fictitious) VISA card number,
 entered the way web forms should allow if their developers
 weren't so lazy:
@@ -222,6 +407,7 @@ $ ./creditcard.py 2389423423423467 9182387723427777 9182380923427773 45644564456
 9182380923427773 is invalid
 4564456445644564 is valid
 </pre>
+
 <ol>
 <li>
 Discuss how the Luhn Formula is calculated.
@@ -232,7 +418,8 @@ Discuss how the Python works including why the functions <i>reversed</i>, <i>enu
 Also discuss the use of <code>sys.argv</code> and  <code>__name__</code>
 <li>
 Discuss how the features of this program can be translated to Perl.
-</li></li></li></li></ol>
-<p></p>
+</ol>
+<div class="answer">
+{{include_code("solutions/creditcard.pl")}}
+</div>
 {% endblock %}
-</p></p></p></li></p></li></p></p></p></p></p></li></li></li></li></li></li></li></li></li></li></p></p></li></ol></div></body></html>

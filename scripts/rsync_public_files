@@ -106,7 +106,9 @@ def copy_without_solutions(censored_file, public_dir):
 			tag.replaceWith(soup.new_tag('p'))
 		page = str(soup)
 		page = re.sub('__ESCAPE_JINJA_LT__', '<', page)
-	with open(os.path.join(public_dir, censored_file),"w") as f:
+	public_file = os.path.join(public_dir, censored_file)
+	os.makedirs(os.path.dirname(public_file), mode=0o755, exist_ok=True)
+	with open(public_file,"w") as f:
 		f.write(page)
 	
 private_dir = os.path.join(config.variables['public_html_session_directory'], 'private')
