@@ -22,7 +22,7 @@ try:
     CGIHandler().run(DebuggedApplication(app))
 except Exception:
     # catch any exceptions that escape Flask and print useful information
-    print('Content-Type: text/plain\n')
+    print('Content-Type: text/plain\n', flush=True)
     etype, evalue, etraceback = sys.exc_info()
-    print("\n".join(traceback.format_exception_only(etype, evalue)))
-    traceback.print_exc()
+    print("\n".join(traceback.format_exception_only(etype, evalue)), flush=True)
+    traceback.print_exc(file=sys.stdout)
