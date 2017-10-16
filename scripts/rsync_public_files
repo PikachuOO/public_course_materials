@@ -140,7 +140,7 @@ for pathname in p.stdout.splitlines():
 			public_files.add(pathname)
 			break
 			
-subprocess.run(['rsync', '-rlt', '--chmod=Du=rwx,Dgo=rx,Fu=rwX,Fgo=rX', '--files-from=-', '.', public_dir], input='\n'.join(public_files).encode('utf-8'))
+subprocess.run(['rsync', '-prlt', '--chmod=Du=rwx,Dgo=rx,Fu=rwX,Fgo=rX', '--files-from=-', '.', public_dir], input='\n'.join(public_files).encode('utf-8'))
 
 for censored_file in censored_files:
 	copy_without_solutions(censored_file, public_dir)
