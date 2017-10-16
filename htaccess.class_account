@@ -65,6 +65,8 @@ RewriteRule ^(notes/[0-9][0-9])$ %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
 
 RewriteRule ^tutors_only$ %{ENV:BASE_URL}/flask_tutors.cgi [L]
 
+RewriteRule ^(submission/) %{ENV:BASE_URL}/flask_tutors.cgi/$1 [L]
+
 # Skip all remaining rewrites if already going to be served by flask.cgi
 
 RewriteRule ^flask\.cgi - [L]

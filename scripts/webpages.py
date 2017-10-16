@@ -1,6 +1,6 @@
 #!/usr/bin/python3.5
 
-import datetime, glob, gzip, html, json, os, re, subprocess, traceback
+import datetime, glob, gzip, html, json, os, re, subprocess, tarfile, traceback
 from collections import defaultdict, OrderedDict
 from io import BytesIO as IO
 
@@ -186,6 +186,78 @@ def lecture_code_topic_url(topic):
         code_files[html.escape(os.path.basename(pathname))] = None
     return render_template_with_variables('templates/lecture_example_code.html', topic=topic, code_files=code_files.keys())
 
+@app.route('/submission/', methods=['GET'])
+def submission0():
+    if not is_tutor():
+        abort(404)
+    give_spec_files = glob.glob(os.path.join(config.variables['WORK'], '*', 'give.spec'))
+    exercises = [os.path.basename(os.path.dirname(g))  for g in give_spec_files]
+    links = [os.path.join('submission', e) + '/' for e in sorted(exercises)]
+    return render_template_with_variables('templates/link_list.html', links=links)
+
+@app.route('/submission/<exercise>/', methods=['GET'])
+def submission1(exercise):
+    if not is_tutor():
+        abort(404)
+    work_dir =  os.path.join(config.variables['WORK'], exercise)
+    groups_file = os.path.join(work_dir, 'GROUPS')
+    try:
+        with open(groups_file) as f:
+            groups = f.read().strip().split()
+    except OSError:
+        abort(404)
+    groups = [g for g in groups if glob.glob(os.path.join(work_dir, g, '[0-9]*[0-9]'))]
+    links = [os.path.join('submission', exercise, g) + '/' for g in sorted(groups)]
+    return render_template_with_variables('templates/link_list.html', links=links)
+
+@app.route('/submission/<exercise>/<tlb_group>/',methods=['GET'])
+def submission2(exercise, tlb_group):
+    if not is_tutor():
+        abort(404)
+    submissions_dir = os.path.join(config.variables['WORK'], exercise, tlb_group)
+    try:
+        zids = [z for z in os.listdir(submissions_dir) if re.match(r'^\d{7}$', z)]
+    except OSError:
+        abort(404)
+    links = [os.path.join('submission', exercise, tlb_group, z) + '/' for z in sorted(zids)]
+    return render_template_with_variables('templates/link_list.html', links=links)
+
+@app.route('/submission/<exercise>/<tlb_group>/<zid>/',methods=['GET'])
+def submission3(exercise, tlb_group, zid):
+    if not is_tutor():
+        abort(404)
+    zid = zid.lstrip('z')
+    tar_file = os.path.join(config.variables['WORK'], exercise, tlb_group, zid, 'submission.tar')
+    if not os.path.exists(tar_file):
+        abort(404)
+    try:
+        tar = tarfile.open(tar_file, 'r:*')
+        filenames = tar.getnames()
+    except tarfile.CompressionError as e:
+        return 500, str(e)
+    links = [os.path.join('submission', exercise, tlb_group, zid, f) for f in sorted(filenames)]
+    return render_template_with_variables('templates/link_list.html', links=links)
+
+@app.route('/submission/<exercise>/<tlb_group>/<zid>/<filename>',methods=['GET'])
+def submission_file(exercise, tlb_group, zid, filename):
+    if not is_tutor():
+        abort(404)
+    zid = zid.lstrip('z')
+    tar_file = os.path.join(config.variables['WORK'], exercise, tlb_group, zid, 'submission.tar')
+    if not os.path.exists(tar_file):
+        abort(404)
+    try:
+        tar = tarfile.open(tar_file, 'r:*')
+        try:
+            tarinfo = tar.getmember(filename)
+        except KeyError:
+            abort(404)
+        if not tarinfo.isreg():
+            abort(404)
+        with tar.extractfile(filename) as f:
+            return Response(f.read(), mimetype='text/plain')
+    except tarfile.CompressionError as e:
+        return 500, str(e)
 
 @app.route('/peer_assess/<exercise>/',methods=['GET'])
 def peer_assess_login(exercise):
@@ -193,7 +265,7 @@ def peer_assess_login(exercise):
         del session['zid_assessment_dir']
     return render_template_with_variables('templates/peer_assess_login.html')
 
-@app.route('/peer_assess/<exercise>/',methods=['POST'])
+@app.route('/peer_assess/<exercise>/', methods=['POST'])
 def peer_assess_authenticate(exercise):
     try:
         zid = re.sub(r'\D', '', request.form['zid'])
@@ -224,8 +296,8 @@ def peer_assess_authenticate(exercise):
     grades = peer_assessment_grades(zid_assessment_dir)
     return render_template_with_variables('templates/peer_assess_assess.html', students=students, assessed=assessed, questions=questions, grades=grades)
 
-@app.route('/peer_assess/<exercise>/<assessee>',methods=['GET'])
-@app.route('/peer_assess/<exercise>/<assessee>/<question>',methods=['GET'])
+@app.route('/peer_assess/<exercise>/<assessee>', methods=['GET'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>', methods=['GET'])
 def peer_assess_get_grade(assessee, exercise='', question=''):
     # check assessee?
     try:
@@ -244,9 +316,9 @@ def peer_assess_get_grade(assessee, exercise='', question=''):
     else:
         return json.dumps(grade)
 
-@app.route('/peer_assess/<exercise>/<assessee>',methods=['DELETE'])
-@app.route('/peer_assess/<exercise>/<assessee>/<question>',methods=['DELETE'])
-@app.route('/peer_assess/<exercise>/<assessee>/<question>/<grade>',methods=['PUT'])
+@app.route('/peer_assess/<exercise>/<assessee>', methods=['DELETE'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>', methods=['DELETE'])
+@app.route('/peer_assess/<exercise>/<assessee>/<question>/<grade>', methods=['PUT'])
 def peer_assess_set_grade(assessee,  exercise='', question='', grade=''):
     # check assessee?
     if not re.match('^\d{7}$', assessee):
