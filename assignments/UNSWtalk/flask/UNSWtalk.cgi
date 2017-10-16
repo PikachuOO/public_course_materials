@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# This script allows game.py to also be run as a CGI script
+# This script allows UNSwtalk.py to also be run as a CGI script
 #
 # You should not need to change this script
 #
