@@ -2,8 +2,15 @@
 {% block body %}
 
 <ul>
-{% for link in links  %}
-<li> <a HREF="{{url_root}}{{link}}">{{link}}</a>
+{% for link in links %}
+<li>
+<a HREF="{{url_root}}{{link}}">
+{% if isinstance(links, dict) %}
+{{links[link]}}
+{% else %}
+{{link}}
+{% endif %}
+</a>
 {% endfor%}
 </ul>
 {% endblock %}

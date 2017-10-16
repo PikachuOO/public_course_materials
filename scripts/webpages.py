@@ -1,6 +1,6 @@
 #!/usr/bin/python3.5
 
-import datetime, glob, gzip, html, json, os, re, subprocess, tarfile, traceback
+import datetime, glob, gzip, html, json, os, re, subprocess, tarfile, time,  traceback
 from collections import defaultdict, OrderedDict
 from io import BytesIO as IO
 
@@ -219,7 +219,16 @@ def submission2(exercise, tlb_group):
         zids = [z for z in os.listdir(submissions_dir) if re.match(r'^\d{7}$', z)]
     except OSError:
         abort(404)
-    links = [os.path.join('submission', exercise, tlb_group, z) + '/' for z in sorted(zids)]
+    try:
+        with open(config.variables['enrollments_file']) as f:
+            enrollments = json.load(f)
+        student_names = dict([(e[1], e[2]) for e in enrollments])
+    except OSError:
+        student_names = {}
+    links = OrderedDict()
+    for zid in sorted(zids):
+        link = os.path.join('submission', exercise, tlb_group, zid) + '/'
+        links[link] = link + ' ' + student_names.get(zid, '')
     return render_template_with_variables('templates/link_list.html', links=links)
 
 @app.route('/submission/<exercise>/<tlb_group>/<zid>/',methods=['GET'])
@@ -232,10 +241,16 @@ def submission3(exercise, tlb_group, zid):
         abort(404)
     try:
         tar = tarfile.open(tar_file, 'r:*')
-        filenames = tar.getnames()
+        members = tar.getmembers()
     except tarfile.CompressionError as e:
         return 500, str(e)
-    links = [os.path.join('submission', exercise, tlb_group, zid, f) for f in sorted(filenames)]
+    links = OrderedDict()
+    for member in sorted(members, key=lambda m: m.name):
+        name = member.name
+        if not set("<>'\"").isdisjoint(name):
+            continue
+        link = os.path.join('submission', exercise, tlb_group, zid, member.name)
+        links[link] = link + ' (' + str(member.size) + ' bytes, last modified ' + time.ctime(member.mtime) + ')'
     return render_template_with_variables('templates/link_list.html', links=links)
 
 @app.route('/submission/<exercise>/<tlb_group>/<zid>/<filename>',methods=['GET'])
