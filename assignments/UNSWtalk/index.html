@@ -449,6 +449,24 @@ If you are using Flask you run the starting code directly on a CSE lab machine:
 This won't work on  a CSE login server or Vlab.
 
 
+<h3>Updates To Python starting Code</h3>
+
+The first line of the  Python starting point code has been updated
+to be <code>#!/web/cs2041/bin/python3.6.3</code>
+<p>
+<code>/web/cs2041/bin/python3.6.3</code> a Python version with an upto date set of modules installed.
+<p>
+The script <code>UNSWtalk.cgi</code>  allows <code>UNSWtalk.py</code> to be run as
+a CGI script has been updated since the assignment was released to give
+useful information that than just a 500 error when an exception occurs in
+<code>UNSWtalk.py</code>.  You can get the latest version with this command:
+
+<pre>
+cp -p /web/cs2041/17s2/assignments/UNSWtalk/flask/UNSWtalk.cgi  ~/public_html/ass2/UNSWtalk.cgi
+</pre>
+
+DO NOT DO THIS if you are doing the assignment in Perl - it would overwrite your Perl in <code>UNSWtalk.cgi</code>.
+
 <h3>Pushing to Gitlab</h3>
 
 Every time you work on the assignment you must push work to gitlab

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/web/cs2041/bin/python3.6.3
 
 # This script allows UNSwtalk.py to also be run as a CGI script
 #
