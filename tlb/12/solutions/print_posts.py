@@ -2,7 +2,7 @@
 
 import glob, os, sys
 
-dataset ="dataset-small"
+dataset = "dataset-medium"
 
 def student_post_filenames(student):
 	post_filenames = glob.glob(os.path.join(dataset, student, '*.txt'))

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-$dataset ="dataset-medium";
+$dataset = "dataset-medium";
 
 sub student_post_filenames {
 	my ($student) = @_;
