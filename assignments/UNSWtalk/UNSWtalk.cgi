@@ -8,16 +8,16 @@ use CGI qw/:all/;
 use CGI::Carp qw/fatalsToBrowser warningsToBrowser/;
 
 
-sub main() {
+sub main {
     # print start of HTML ASAP to assist debugging if there is an error in the script
     print page_header();
-    
+
     # Now tell CGI::Carp to embed any warning in HTML
     warningsToBrowser(1);
-    
+
     # define some global variables
     $students_dir = "dataset-medium";
-    
+
     print student_page();
     print page_trailer();
 }
@@ -36,8 +36,8 @@ sub student_page {
     $details = join '', <$p>;
     close $p;
     my $next_student = $n + 1;
-    return <<eof
-<div class="unswtalk_student_details">
+    return <<eof;
+<div class="unswtalk_user_details">
 $details
 </div>
 <p>
@@ -53,8 +53,8 @@ eof
 # HTML placed at the top of every page
 #
 sub page_header {
-    return <<eof
-Content-Type: text/html;charset=utf-8
+    return <<eof;
+Content-Type: text/html; charset=utf-8
 
 <!DOCTYPE html>
 <html lang="en">
@@ -76,12 +76,12 @@ eof
 #
 sub page_trailer {
     my $html = "<!--\n";
-	foreach $param (param()) {
-	    my $value = param($param);
-	    $value =~ s/\>/\&gt;/g;
-	    $html .= "    $param='$value'\n"
-	}
-	$html .= "-->\n";
+    foreach $param (param()) {
+        my $value = param($param);
+        $value =~ s/\>/\&gt;/g;
+        $html .= "    $param='$value'\n"
+    }
+    $html .= "-->\n";
     $html .= "</body>\n";
     $html .= "</html>\n";
     return $html;

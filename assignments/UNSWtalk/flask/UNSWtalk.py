@@ -11,8 +11,8 @@ students_dir = "dataset-medium";
 
 app = Flask(__name__)
 
-#Show unformatted details for student "n".
-# Increment  n and store it in the session cookie
+# Show unformatted details for student "n"
+# Increment n and store it in the session cookie
 
 @app.route('/', methods=['GET','POST'])
 @app.route('/start', methods=['GET','POST'])
