@@ -32,7 +32,7 @@ and replies to these comments to be added.
 <p>
 He wants <i>UNSWtalk</i> to allows students  to indicate other students are their <i>friends</i>.
 <p>
-Your task is to produce a CGI script <code>UNSWtalk.cgi</code> which provides the core features of <i>UNSWtalk</i>.
+Your task is to produce either Python or Perl code which provides the core features of <i>UNSWtalk</i>.
 <p>
 In other words your task is to implement a simple but fully functional social media web site.
 <p>
@@ -489,7 +489,7 @@ I expect most students will just work in their CSE account and push work to gitl
 from CSE, but you can try setting up a git repository on your home machine
 and pushing work to gitlab.cse.unsw.edu.au from there.
 <p>
-You wiull need to use a CSE vpn to access gitlab from outside UNSW.
+You will need to use a CSE vpn to access gitlab from outside UNSW.
 <p>
 If you do this you'll want to
 use git's pull command to update the repository in your CSE account.
@@ -658,19 +658,27 @@ taken without your consent or knowledge.
 <h2>Submission</h2>
 
 This assignment is  due at 23:59pm Sunday October 29.
-Submit the assignment using this <I>give</I> command:
-
-
-<pre class="command_line">
-<kbd class="shell">give cs2041 ass2 UNSWtalk.cgi UNSWtalk.css diary.txt [files.tar] [any-other-files]</kbd>
-</pre>
-
+Submit the assignment using <I>give</I>.
+<p>
 If you have need to submit many other files, files in a sub-directory or a
 directory hierarchy, submit them as a tar file named files.tar.  For example
 if you have subdirectories named <i>css</i>, <i>js</i> and <i>images</i>, this
 will submit all the files in them (including directories they contain).
 <p>
 Do not submit the datasets unless you have changed them.
+<p>
+For example if you complete the assignment using Python and had files
+in the sub-directories <code>static</code> and <code>templates</code>,
+you might submit the assignment using these commands:
+
+<pre class="command_line">
+<kbd class="shell">tar -Jcf files.tar static templates</kbd>
+<kbd class="shell">give cs2041 ass2 UNSWtalk.cgi UNSWtalk.py diary.txt files.tar</kbd>
+</pre>
+
+For example if you complete the assignment using Perl and had files
+in the sub-directories <code>css</code>, <code>js</code> and <code>images</code>, you might submit the assignment
+uysing these commands:
 
 <pre class="command_line">
 <kbd class="shell">tar -Jcf files.tar css js images</kbd>
