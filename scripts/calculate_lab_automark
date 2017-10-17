@@ -49,8 +49,32 @@ def get_test_results(exercise, automarking_results_file):
 
 grade2mark = {'A' : 1, 'B' : 0.8, 'C' : 0.6, 'D' : 0.5, 'E' : 0.4};
 
-# Yuk - fix me
-def	add_peer_assessments(exercise, zid, test_results):
+def	add_peer_assessments(exercises_dir, zid, test_results):
+	peer_assessment_dir = os.path.join(exercises_dir, 'peer_assessment')
+	try:
+		with open(os.path.join(peer_assessment_dir, 'questions.json')) as f:
+			questions = json.load(f)
+	except OSError:
+		return
+	for (test_label, question) in questions:
+		test_group =test_label # fix?
+		assessments = glob.glob(os.path.join(peer_assessment_dir, '*', zid + "." + test_label))
+		mark = 0
+		if assessments:
+			try:
+				with open(assessments[0]) as f:
+					grade = f.read().strip()
+					mark = grade2mark.get(grade, 0)
+			except IOError:
+				print("can not read", file=sys.stderr)
+		if mark:
+			print('\n*** Test {} ({}) - peer assessed grade: {}'.format(test_label, question, grade))
+		else:
+			print('\n*** Test {} ({}) - no peer assessment'.format(test_label, question))
+		test_results[test_group][test_label] = mark
+		
+# Yuk - d me
+def	add_peer_assessments_old(exercise, zid, test_results):
 	dir = os.path.join(config.variables['public_html_session_directory'], 'cgi', 'peer', 'assessments')
 	if exercise == 'lab04':
 		test_group = 'email_image.sh'
@@ -144,7 +168,7 @@ def main():
 	exercise = os.path.basename(exercises_dir)
 	automarking_results_file = os.path.join(exercises_dir, 'automarking_results', zid)
 	test_results = get_test_results(exercise, automarking_results_file)
-	add_peer_assessments(exercise, zid, test_results)
+	add_peer_assessments(exercises_dir, zid, test_results)
 	mark = "%.1f" % calculate_mark(test_results)
 	with open('tmp.total', 'w') as f:
 		print(mark, file=f)
