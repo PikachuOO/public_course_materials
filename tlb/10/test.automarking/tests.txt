@@ -1,0 +1,20 @@
+max_cpu=3
+max_wall_clock=30
+
+program=equi_filter.pl
+command=./equi_filter.pl
+equi_filter_pl_0 stdin="abc abca\n"
+equi_filter_pl_1 stdin="abccbaabc baabccbaabc\n"
+equi_filter_pl_2 stdin="tromometer tsetse tucotuco taffetases tromometers tsetses tucotucot taffetase\n"
+equi_filter_pl_3 stdin="Caucasus Eggett BERBEr CCcaucasus EgGGgett BERBErrR \n"
+equi_filter_pl_4 stdin="duck bulbul Gaga tocktocktock wwwwweeeee goose baboon bonobo Guage tock-tock wwwwweee\nxerophytic\nDeeded\nsestettes\nzZz\nteammate\nhorseshoer\nhappenchance\nelephant\ndecorator\nagaga\nwwwwweeee\nteammates\nhorseshoe\narraigning araignment appeases appeasess\n"
+equi_filter_pl_5 stdin="And did those feet in ancient time\nWalk upon Englands mountains green\nAnd was the holy Lamb of God\nOn Englands pleasant pastures seen\n"
+
+program=equi_filter.py
+command=./equi_filter.py
+equi_filter_py_0 stdin="abc abca\n"
+equi_filter_py_1 stdin="abccbaabc baabccbaabc\n"
+equi_filter_py_2 stdin="tromometer tsetse tucotuco taffetases tromometers tsetses tucotucot taffetase\n"
+equi_filter_py_3 stdin="Caucasus Eggett BERBEr CCcaucasus EgGGgett BERBErrR \n"
+equi_filter_py_4 stdin="duck bulbul Gaga tocktocktock wwwwweeeee goose baboon bonobo Guage tock-tock wwwwweee\nxerophytic\nDeeded\nsestettes\nzZz\nteammate\nhorseshoer\nhappenchance\nelephant\ndecorator\nagaga\nwwwwweeee\nteammates\nhorseshoe\narraigning araignment appeases appeasess\n"
+equi_filter_py_5 stdin="And did those feet in ancient time\nWalk upon Englands mountains green\nAnd was the holy Lamb of God\nOn Englands pyeasant pastures seen\n"
