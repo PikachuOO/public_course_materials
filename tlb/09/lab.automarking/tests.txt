@@ -1,0 +1,30 @@
+ignore_case=1
+ignore_white_space=1
+max_cpu=30 
+
+bashpl_0 shell=1 command="./bashpl.pl echo.sh|perl"
+bashpl_1 shell=1 command="./bashpl.pl sum.sh|perl"
+bashpl_2 shell=1 command="./bashpl.pl not_sum.sh|perl"
+bashpl_3 shell=1 command="./bashpl.pl double.sh|perl"
+bashpl_4 shell=1 command="./bashpl.pl not_double.sh|perl"
+bashpl_5 shell=1 command="./bashpl.pl pythagorean_triple.sh|perl"
+bashpl_6 shell=1 command="./bashpl.pl collatz.sh|perl"
+
+challenge_printpy_0 shell=1 command="./printpy.pl hello-world|python3"
+challenge_printpy_1 shell=1 command="./printpy.pl '5 words in this test'|python3"
+challenge_printpy_2 shell=1 command="./printpy.pl 'space  4\nspaces    tab\tnewline\nmore \ttext'|python3"
+challenge_printpy_3 shell=1 command="./printpy.pl \"single'' quotes' ' '' ''' '' ' '\" |python3"
+challenge_printpy_4 shell=1 command="./printpy.pl 'dou\"ble\" quott\"\"t\"\"\"\"es \"  \"\" \"\"\" \"\" \"' |python3"
+challenge_printpy_5 shell=1 command="./printpy.pl \"backslashes \\ \\\" |python3"
+challenge_printpy_6 shell=1 command="./printpy.pl \"\\\\n\\\\r\\\\t\\\\x042\o042\" |python3"
+
+challenge_iterated_printpy_0 shell=1 command="iterated_printpy.pl 3 'And rew Rocks!'|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_1 shell=1 command="iterated_printpy.pl 4 'And rew Rocks!'|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_2 shell=1 command="iterated_printpy.pl 5 'And rew Rocks!'|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_3 shell=1 command="iterated_printpy.pl 6 'And rew Rocks!'|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_4 shell=1 command="iterated_printpy.pl 10 'And rew Rocks!'|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_5 shell=1 command="iterated_printpy.pl 3 'space 4 spaces    tab\tnewline\nmore text'|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_6 shell=1 command="iterated_printpy.pl 4 \"single quo tes ' '' ''' '' '\" |python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_7 shell=1 command="iterated_printpy.pl 5 'double quo tes \"  \"\" \"\"\" \"\" \"'|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_8 shell=1 command="iterated_printpy.pl 6 \"backslas hes \\ \\\" |python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"
+challenge_iterated_printpy_9 shell=1 command="iterated_printpy.pl 10 \"escape sequences \\\\n\\\\r\\\\t\\\\x042\o042\" |python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3|perl|python3"

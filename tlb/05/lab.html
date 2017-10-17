@@ -11,14 +11,15 @@ We have covered only a small amount of Perl in lectures. In fact, to
 cover the whole language in detail would take a whole semester, so
 we're going to rely on you finding out about the language yourself
 in tutes, labs and assignments. A good place to start is
-the Perl documentation &amp; tutorial links on the class home page
+the Perl documentation & tutorial links on the class home page
 For example you might find these useful:
 </p>
 <ul>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlsyn.pod" target="doc">Perl language syntax</a>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlsub.pod" target="doc">Perl functions</a>
-<li> <a href="http://search.cpan.org/dist/perl/pod/perlop.pod" target="doc">Perl operators</a>
-</li></li></li></ul>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsyn.pod">Perl language syntax</a>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlsub.pod">Perl functions</a>
+<li> <a target="doc" href="http://search.cpan.org/dist/perl/pod/perlop.pod">Perl operators</a>
+</ul>
+
 <h3>Exercise: Mapping Digits</h3>
 
 Write a Perl script <code>digits.pl</code> that reads from standard input and writes to standard output
@@ -27,9 +28,10 @@ less than 5 into the character '<code>&lt;</code>' and all digit characters
 whose values are greater than 5 into the character '<code>&gt;</code>'.
 The digit character '5' should be left unchanged.
 <p>
-<table border="1" cellpadding="6">
+
+<table border=1 cellpadding=6>
 <tr><th>Sample Input Data</th><th>Corresponding Output</th></tr>
-<tr valign="top"><td>
+<tr valign=top><td>
 <pre>
 1 234 5 678 9
 </pre>
@@ -37,7 +39,7 @@ The digit character '5' should be left unchanged.
 <pre>
 &lt; &lt;&lt;&lt; 5 &gt;&gt;&gt; &gt;
 </pre>
-<tr valign="top"><td>
+<tr valign=top><td>
 <pre>
 I can think of 100's
 of other things I'd rather
@@ -50,7 +52,7 @@ of other things I'd rather
 be doing than these &lt; questions
 </pre>
 </td></tr>
-<tr valign="top"><td>
+<tr valign=top><td>
 <pre>
 A line with lots of numbers:
 123456789123456789123456789
@@ -69,7 +71,7 @@ A line with blanks at the end
 &lt; &lt; &lt;
 </pre>
 </td></tr>
-<tr valign="top"><td>
+<tr valign=top><td>
 <pre>
 Input with absolutely 0 digits in it
 Well ... apart from that one ...
@@ -80,7 +82,7 @@ Input with absolutely &lt; digits in it
 Well ... apart from that one ...
 </pre>
 </td></tr>
-<tr valign="top"><td>
+<tr valign=top><td>
 <pre>
 1 2 4 8 16 32 64 128 256 512 1024
 2048 4096 8192 16384 32768 65536
@@ -91,11 +93,25 @@ Well ... apart from that one ...
 &lt;&lt;&lt;&gt; &lt;&lt;&gt;&gt; &gt;&lt;&gt;&lt; &lt;&gt;&lt;&gt;&lt; &lt;&lt;&gt;&gt;&gt; &gt;55&lt;&gt;
 </pre>
 </td></tr>
-</td></tr></table>
+</table>
 
 {{autotest_reminder("digits.pl")}}
 
-<p></p>
+<div class="answer">
+Sample solution #0 for digits.pl
+
+{{include_code("solutions/digits.v0.pl")}}
+
+Sample solution #1 for digits.pl
+
+{{include_code("solutions/digits.v1.pl")}}
+
+Sample solution #2 for digits.pl
+
+{{include_code("solutions/digits.v2.pl")}}
+
+</div>
+
 <h3>Exercise: Repeated Echo</h3>
 
 Write a Perl script <code>echon.pl</code> which given exactly two arguments, an integer <i>n</i>
@@ -137,8 +153,26 @@ its first argument isn't a non-negative integer:
 
 {{autotest_reminder("echon.pl")}}
 
-<p></p>
+<div class="answer">
+Sample solution #0 for echon.pl
+
+{{include_code("solutions/echon.pl")}}
+
+Sample solution #1 for echon.pl
+
+{{include_code("solutions/echon.v1.pl")}}
+
+Sample solution #2 for echon.pl
+
+{{include_code("solutions/echon.v2.pl")}}
+
+Sample solution #3 for echon.pl
+
+{{include_code("solutions/echon.v3.pl")}}
+</div>
+
 <h3>Exercise: Tail</h3>
+
 <h4>Perl file manipulation</h4>
 <p>
 The standard approach in Perl for dealing with a collection of files
@@ -157,7 +191,7 @@ It should support the following features of <code>tail</code>:
 <li> can adjust the number of lines displayed via an optional first argument <code>-</code><i>N</i>
 <li> if there is more than one named file, separate each by
     <code>==&gt; <i>FileName</i> &lt;==</code>
-</li></li></li></li></li></li></ul>
+</ul>
 <p>
 To assist with testing your solution, there are three small test
 files: <a href="t1.txt">t1.txt</a>, <a href="t2.txt">t2.txt</a>, and
@@ -181,7 +215,12 @@ to ensure that no warning messages are produced.
 
 {{autotest_reminder("tail.pl")}}
 
-<p></p>
+<div class="answer">
+Sample solution for tail.pl
+
+{{include_code("solutions/tail.pl")}}
+</div>
+
 <h3>Challenge Exercise: Shuffling Lines</h3>
 
 Write a Perl script <code>shuffle.pl</code> which prints its input with the
@@ -205,7 +244,15 @@ For example:
 
 <b>Hint:</b> perl ignores the fractional part of a number if you use it to index an array
 
-<p></p>
+<div class="answer">
+Sample solution for shuffle.pl
+
+{{include_code("solutions/shuffle.v0.pl")}}
+
+Sample solution using List::Util
+
+{{include_code("solutions/shuffle.v1.pl")}}
+</div>
 <p>
 There is no autotest and no automarking of this question.
 <p>
@@ -215,6 +262,7 @@ and ask them to enter a
 It is prefered you do this during your lab, but if this is not possible
 you may demonstrate your work to any COMP[29]041  student before Sunday midnight.
 <p>
+
 <h3>Challenge Question: Testing Shuffling Lines</h3>
 <p>
 There is no dryrun test for <code>shuffle.pl</code>.
@@ -233,8 +281,17 @@ and ask them to enter a
 It is prefered you do this during your lab, but if this is not possible
 you may demonstrate your work to any COMP[29]041  student before Sunday midnight.
 <p>
-<p></p>
-<p></p>
+
+<div class="answer">
+Sample solution that just checks coverage
+
+{{include_code("solutions/shuffle_test.sh")}}
+</div>
+
+<div class="answer">
+A more elaborate solution from Donny Yang which takes a more statistical approach
+
+{{include_code("solutions/shuffle_test.sh")}}
+</div>
 
 {% endblock %}
-</p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p></p>
