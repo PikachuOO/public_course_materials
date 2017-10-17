@@ -5,3 +5,4 @@ max_cpu=3
 files=browser.cgi
 program=browser.cgi
 browser_0 shell=1 command=". ./environment_variables; ./browser.cgi|perl -p -e 's/<.*?>//g'"
+browser_1 shell=1 command=". ./environment_variables.new; ./browser.cgi|perl -p -e 's/<.*?>//g'"
