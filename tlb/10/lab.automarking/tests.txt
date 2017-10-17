@@ -1,0 +1,7 @@
+ignore_case=1
+ignore_white_space=1
+ignore_blank_lines=1
+max_cpu=3
+files=browser.cgi
+program=browser.cgi
+browser_0 shell=1 command=". ./environment_variables; ./browser.cgi|perl -p -e 's/<.*?>//g'"
