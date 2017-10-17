@@ -30,6 +30,8 @@ clobber: clean
 
 %.ps: %.fig $(TOOLS)
 	fig2dev -L eps -m 1.25 $*.fig $*.ps
+	
+%.png: %.fig $(TOOLS)
 	fig2dev -L png -m 2 -S 4 $*.fig $*.png
 
 %.ps: %.gif
