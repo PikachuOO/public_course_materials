@@ -85,7 +85,7 @@ while (1) {
 	                last if $uptime =~ /load average: (0.\d+)/ and $1 < 0.1;
 	                print STDERR "$machine busy\n" if $debug;;
 	            }
-	            $prefix = "$ssh $machine ";
+	            $prefix = "$ssh $machine nice";
 	        }
 	        print "$prefix $dir/automark_student $submission >$output.$$ 2>&1 && mv $output.$$ $output\n" if $debug;
 	        system "$prefix $dir/automark_student $submission >$output.$$ 2>&1 && mv $output.$$ $output";

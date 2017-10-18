@@ -119,7 +119,7 @@ then
     fi
 fi
 
-test -e $TESTFILE_DIR/tests.txt || $TESTFILE_DIR/automark || exit 0
+test -e $TESTFILE_DIR/tests.txt || test -e $TESTFILE_DIR/automark || exit 0
 
 if test -n "$submission_dir" && test -d "$submission_dir/repo" 
 then
