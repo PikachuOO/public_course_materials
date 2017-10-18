@@ -4,7 +4,7 @@ import glob,os,re,subprocess, sys
 from bs4 import BeautifulSoup
 import config
 
-debug = 1
+debug = 0
 
 # return a list of all public files for a tut-lab
 

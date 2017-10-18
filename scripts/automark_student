@@ -119,7 +119,7 @@ then
     fi
 fi
 
-test -e $TESTFILE_DIR/tests.txt || exit 0
+test -e $TESTFILE_DIR/tests.txt || $TESTFILE_DIR/automark || exit 0
 
 if test -n "$submission_dir" && test -d "$submission_dir/repo" 
 then
@@ -133,7 +133,14 @@ then
 	done
 fi
 
-$public_html_session_directory/lib/python/cse/autotest.py --no_show_input --no_show_expected --no_fail_tests_for_errors --show_stdout_if_errors --no_show_reproduce_command --no_check_hash_bang_line --autotest_directory $TESTFILE_DIR
+if test -x $TESTFILE_DIR/automark
+then
+	$TESTFILE_DIR/automark
+else
+	$public_html_session_directory/lib/python/cse/autotest.py --no_show_input --no_show_expected --no_fail_tests_for_errors --show_stdout_if_errors --no_show_reproduce_command --no_check_hash_bang_line --autotest_directory $TESTFILE_DIR
+fi
+
+
 
 
 exit_status=$?
