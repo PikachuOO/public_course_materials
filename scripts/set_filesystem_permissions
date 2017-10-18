@@ -44,6 +44,7 @@ for line in sys.stdin:
         "random_test",
         "automark_student",
         "automark_assignment"
+        "automark"
         ]:
         needs_public = True
         needs_execute = True

@@ -1,5 +1,5 @@
 #!/bin/sh
-TESTS_DIR=/home/cs2041/public_html/17s2/private/assignments/pypl/automarking
+TESTS_DIR=/home/cs2041/public_html/assignments/pypl/automarking
 PATH=/home/give/stable/bin/:/usr/bin/:/bin:/usr/local/bin
 timelim=/home/cs2041/public_html/16s2/scripts/timelim
 export PATH
