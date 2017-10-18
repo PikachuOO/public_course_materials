@@ -34,6 +34,14 @@ def explain_output_differences(name, expected, canonical_expected, canonical_exp
     canonical_expected_lines = canonical_expected_plus_newlines.splitlines()
     n_canonical_expected_lines = len(canonical_expected_lines)
 
+    if not expected and actual:
+        explanation = colored(
+            "No {0} was expected for this test and your program produced {1} lines of {0}\n".format(name, n_actual_lines)
+            , 'red')
+        if show_actual:
+            explanation += "Your program produced these %d lines of %s:\n" % (n_actual_lines, name)
+            explanation += sanitize_string(actual, max_lines_shown=max_lines_shown,max_line_length_shown=max_line_length_shown, line_color= defaultdict(lambda:'red'))
+        return explanation
     if len(canonical_expected_lines) == len(canonical_actual_lines) and 2 < len(canonical_actual_lines) < 1000 and sorted(canonical_expected_lines) == sorted(canonical_actual_lines):
         explanation += colored("\nYour program produced the correct %s lines but in the wrong order.\n" % name, 'red')
 
