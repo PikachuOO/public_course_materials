@@ -3,4 +3,4 @@
 # Strings with bad symbols in them.
 x = ["[", "]", ",", "@", "#"]
 for y in x:
-	print(y)
+    print(y)

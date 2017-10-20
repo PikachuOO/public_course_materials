@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.5gc
+#!/usr/bin/env python3.5
 
 import asyncio,  locale, re, os, resource, signal, subprocess, sys, tempfile, threading
 
@@ -171,4 +171,5 @@ class SubprocessProtocol(asyncio.SubprocessProtocol):
             pass
 
 if __name__ == '__main__':
-    print(run(sys.argv[1], stdin=" ".join(sys.argv[2:]), max_cpu=1, debug=2))
+#    print(run(sys.argv[1], inpuy=" ".join(sys.argv[2:]), max_cpu=1, debug=2))
+    print(run(sys.argv[1:], max_cpu=10, max_wall_clock=30, debug=0))

@@ -13,7 +13,7 @@ for exercise_dir in sorted(glob.glob(os.path.join(os.environ['WORK'], '*', 'auto
 		command = ['autotest', exercise, '--print_test_names']
 		if automarking:
 			command = ['autotest', exercise, '--print_test_names', '--marking']
-		stdout = subprocess.check_output(command,universal_newlines=True)
+		stdout = subprocess.check_output(command, stderr=subprocess.DEVNULL, universal_newlines=True)
 		if debug > 1:
 			print(command, '\n', stdout, file=sys.stderr)
 		test_group_json = json.loads(stdout)
